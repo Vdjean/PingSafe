@@ -10,9 +10,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_12_01_151211) do
+ActiveRecord::Schema[7.1].define(version: 2025_12_01_152848) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "chats", force: :cascade do |t|
+    t.bigint "pings_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["pings_id"], name: "index_chats_on_pings_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.text "content"
+    t.bigint "chats_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chats_id"], name: "index_messages_on_chats_id"
+  end
+
+  create_table "pings", force: :cascade do |t|
+    t.date "date"
+    t.time "time"
+    t.text "comment"
+    t.string "photo"
+    t.float "latitude"
+    t.float "longitude"
+    t.bigint "users_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["users_id"], name: "index_pings_on_users_id"
+  end
 
   create_table "rewards", force: :cascade do |t|
     t.string "type"
@@ -40,6 +68,9 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_01_151211) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "chats", "pings", column: "pings_id"
+  add_foreign_key "messages", "chats", column: "chats_id"
+  add_foreign_key "pings", "users", column: "users_id"
   add_foreign_key "user_rewards", "rewards", column: "rewards_id"
   add_foreign_key "user_rewards", "users", column: "users_id"
 end
