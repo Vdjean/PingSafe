@@ -4,5 +4,4 @@ class Level < ApplicationRecord
 
   validates :points, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :points, uniqueness: true
-
 end
