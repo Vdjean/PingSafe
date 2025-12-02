@@ -1,0 +1,98 @@
+<div class="pingsafe-mobile-container">
+
+  <div class="pingsafe-header-back">
+    <%= link_to root_path, class: 'pingsafe-back-btn' do %>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m15 18-6-6 6-6"/>
+      </svg>
+    <% end %>
+    <h1 class="pingsafe-page-title">Ping Details</h1>
+  </div>
+
+  <div class="pingsafe-show-content">
+    <% if @Ping.photo.present? %>
+      <div class="pingsafe-ping-photo">
+        <%= image_tag @Ping.photo, alt: "Ping photo", class: "pingsafe-photo-img" %>
+      </div>
+    <% else %>
+      <div class="pingsafe-ping-photo pingsafe-photo-placeholder">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/>
+          <circle cx="9" cy="9" r="2"/>
+          <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
+        </svg>
+        <span>No photo</span>
+      </div>
+    <% end %>
+
+    <div class="pingsafe-ping-info">
+      <div class="pingsafe-info-card">
+        <div class="pingsafe-info-row">
+          <div class="pingsafe-info-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
+              <line x1="16" x2="16" y1="2" y2="6"/>
+              <line x1="8" x2="8" y1="2" y2="6"/>
+              <line x1="3" x2="21" y1="10" y2="10"/>
+            </svg>
+          </div>
+          <div class="pingsafe-info-content">
+            <span class="pingsafe-info-label">Date</span>
+            <span class="pingsafe-info-value"><%= @Ping.date&.strftime("%d/%m/%Y") || "N/A" %></span>
+          </div>
+        </div>
+
+        <div class="pingsafe-info-row">
+          <div class="pingsafe-info-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <div class="pingsafe-info-content">
+            <span class="pingsafe-info-label">Time</span>
+            <span class="pingsafe-info-value"><%= @Ping.heure&.strftime("%H:%M") || "N/A" %></span>
+          </div>
+        </div>
+
+        <div class="pingsafe-info-row">
+          <div class="pingsafe-info-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+          </div>
+          <div class="pingsafe-info-content">
+            <span class="pingsafe-info-label">Location</span>
+            <span class="pingsafe-info-value"><%= @Ping.latitude %>, <%= @Ping.longitude %></span>
+          </div>
+        </div>
+
+        <div class="pingsafe-info-row">
+          <div class="pingsafe-info-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </div>
+          <div class="pingsafe-info-content">
+            <span class="pingsafe-info-label">Reported by</span>
+            <span class="pingsafe-info-value"><%= @Ping.user.pseudo || @Ping.user.email %></span>
+          </div>
+        </div>
+      </div>
+
+      <% if @Ping.comment.present? %>
+        <div class="pingsafe-comment-card">
+          <h3 class="pingsafe-comment-title">Comment</h3>
+          <p class="pingsafe-comment-text"><%= @Ping.comment %></p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="pingsafe-footer">
+    <%= render "shared/footer" %>
+  </div>
+
+</div>
