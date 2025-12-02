@@ -1,12 +1,49 @@
-.navbar-lewagon {
-  justify-content: space-between;
-  background: white;
+.pingsafe-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem 1rem;
+  background: none;
+  border: none;
+  color: #9ca3af;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  text-decoration: none;
+
+  svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  &:hover {
+    color: #6b7280;
+  }
 }
 
-.navbar-lewagon .navbar-collapse {
-  flex-grow: 0;
+.pingsafe-nav-item-active {
+  color: $blue;
 }
 
-.navbar-lewagon .navbar-brand img {
-  width: 40px;
+.pingsafe-nav-sos {
+  width: 4rem;
+  height: 4rem;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+  transition: all 0.2s ease;
+  font-weight: 700;
+  font-size: 1rem;
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  span {
+    font-size: 1.125rem;
+  }
 }
