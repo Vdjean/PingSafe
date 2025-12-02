@@ -27,12 +27,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_02_105333) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "levels", force: :cascade do |t|
-    t.integer "points"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "messages", force: :cascade do |t|
     t.text "content"
     t.bigint "chat_id", null: false
