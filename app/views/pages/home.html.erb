@@ -1,9 +1,10 @@
 <div class="pingsafe-mobile-container">
 
- <%= render "shared/header" %>
 
-
-<div class="pingsafe-map-container pingsafe-map-tall">
+<div id="map"
+     class="pingsafe-map-container pingsafe-map-tall"
+     data-controller="map-footer"
+     data-map-footer-target="map">
   <div class="pingsafe-map-overlay">
     <div class="pingsafe-location-marker">
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -18,6 +19,8 @@
   </div>
 </div>
 
+
+<div class="pingsafe-lower-panel">
   <div class="pingsafe-content">
     <h2 class="pingsafe-section-title">Quick actions</h2>
 
@@ -47,9 +50,12 @@
     </div>
   <% end %>
 </div>
-
  <%= render "shared/alert" %>
+</div>
 
- <%= render "shared/footer" %>
+ <div class="pingsafe-footer" data-map-footer-target="footer">
+  <%= render "shared/footer" %>
+</div>
+
 
 </div>

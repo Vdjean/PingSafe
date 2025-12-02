@@ -32,7 +32,6 @@
   align-items: center;
   text-align: center;
   padding: 1.5rem 1rem;
-  min-height: 10rem;
   justify-content: center;
 }
 
@@ -47,11 +46,15 @@
 .pingsafe-card-primary {
   background: linear-gradient(135deg, #ff6b6b 0%, #ff8e72 100%);
   box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+  width: 140px;
+  height: 120px;
 }
 
 .pingsafe-card-secondary {
   background: linear-gradient(135deg, $blue 0%, #2d5a8f 100%);
   box-shadow: 0 4px 12px rgba(30, 58, 95, 0.3);
+  width: 140px;
+  height: 120px;
 }
 
 .pingsafe-card-icon {
