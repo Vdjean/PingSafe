@@ -9,4 +9,7 @@ class User < ApplicationRecord
   has_many :levels, through: :user_levels
   has_many :user_rewards
   has_many :rewards, through: :user_rewards
+
+  validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :password, length: { minimum: 6 }
 end
