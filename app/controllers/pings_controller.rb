@@ -9,7 +9,7 @@ class PingsController < ApplicationController
     @Ping = Ping.find(params[:id])
   end
 
-  def new
+  def new # homepage
     @Ping = Ping.new
   end
 
@@ -18,7 +18,7 @@ class PingsController < ApplicationController
     if @Ping.save
       redirect_to new_ping_path, notice: "Ping created."
     else
-      render :show 
+      render :show
     end
   end
 
