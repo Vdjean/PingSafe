@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_12_01_152848) do
+ActiveRecord::Schema[7.1].define(version: 2025_12_01_164529) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -19,6 +19,12 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_01_152848) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["pings_id"], name: "index_chats_on_pings_id"
+  end
+
+  create_table "levels", force: :cascade do |t|
+    t.integer "points"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "messages", force: :cascade do |t|
@@ -48,6 +54,16 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_01_152848) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "user_levels", force: :cascade do |t|
+    t.bigint "users_id", null: false
+    t.bigint "levels_id", null: false
+    t.string "level_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["levels_id"], name: "index_user_levels_on_levels_id"
+    t.index ["users_id"], name: "index_user_levels_on_users_id"
+  end
+
   create_table "user_rewards", force: :cascade do |t|
     t.bigint "rewards_id", null: false
     t.bigint "users_id", null: false
@@ -71,6 +87,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_01_152848) do
   add_foreign_key "chats", "pings", column: "pings_id"
   add_foreign_key "messages", "chats", column: "chats_id"
   add_foreign_key "pings", "users", column: "users_id"
+  add_foreign_key "user_levels", "levels", column: "levels_id"
+  add_foreign_key "user_levels", "users", column: "users_id"
   add_foreign_key "user_rewards", "rewards", column: "rewards_id"
   add_foreign_key "user_rewards", "users", column: "users_id"
 end
