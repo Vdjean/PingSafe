@@ -9,10 +9,6 @@ class PingsController < ApplicationController
     @Ping = Ping.find(params[:id])
   end
 
-  def new # homepage
-    @Ping = Ping.new
-  end
-
   def create
     @Ping = Ping.new(ping_params)
     if @Ping.save
