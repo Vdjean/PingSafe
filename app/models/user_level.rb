@@ -1,4 +1,4 @@
 class UserLevel < ApplicationRecord
-  belongs_to :users
-  belongs_to :levels
+  belongs_to :user
+  belongs_to :level
 end

@@ -10,67 +10,91 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_12_01_152848) do
+ActiveRecord::Schema[7.1].define(version: 2025_12_02_105333) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "chats", force: :cascade do |t|
-    t.bigint "pings_id", null: false
+    t.bigint "ping_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["pings_id"], name: "index_chats_on_pings_id"
+    t.index ["ping_id"], name: "index_chats_on_ping_id"
+  end
+
+  create_table "levels", force: :cascade do |t|
+    t.integer "points"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "messages", force: :cascade do |t|
     t.text "content"
-    t.bigint "chats_id", null: false
+    t.bigint "chat_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["chats_id"], name: "index_messages_on_chats_id"
+    t.index ["chat_id"], name: "index_messages_on_chat_id"
   end
 
   create_table "pings", force: :cascade do |t|
     t.date "date"
-    t.time "time"
+    t.time "heure"
     t.text "comment"
     t.string "photo"
-    t.float "latitude"
-    t.float "longitude"
-    t.bigint "users_id", null: false
+    t.decimal "latitude"
+    t.decimal "longitude"
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["users_id"], name: "index_pings_on_users_id"
+    t.index ["user_id"], name: "index_pings_on_user_id"
   end
 
   create_table "rewards", force: :cascade do |t|
-    t.string "type"
+    t.string "reward_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "user_levels", force: :cascade do |t|
+    t.string "level_name"
+    t.bigint "user_id", null: false
+    t.bigint "level_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["level_id"], name: "index_user_levels_on_level_id"
+    t.index ["user_id"], name: "index_user_levels_on_user_id"
   end
 
   create_table "user_rewards", force: :cascade do |t|
-    t.bigint "rewards_id", null: false
-    t.bigint "users_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "reward_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["rewards_id"], name: "index_user_rewards_on_rewards_id"
-    t.index ["users_id"], name: "index_user_rewards_on_users_id"
+    t.index ["reward_id"], name: "index_user_rewards_on_reward_id"
+    t.index ["user_id"], name: "index_user_rewards_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "first_name"
     t.string "last_name"
     t.string "pseudo"
-    t.string "password"
     t.string "phone"
     t.integer "score"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "chats", "pings", column: "pings_id"
-  add_foreign_key "messages", "chats", column: "chats_id"
-  add_foreign_key "pings", "users", column: "users_id"
-  add_foreign_key "user_rewards", "rewards", column: "rewards_id"
-  add_foreign_key "user_rewards", "users", column: "users_id"
+  add_foreign_key "chats", "pings"
+  add_foreign_key "messages", "chats"
+  add_foreign_key "pings", "users"
+  add_foreign_key "user_levels", "levels"
+  add_foreign_key "user_levels", "users"
+  add_foreign_key "user_rewards", "rewards"
+  add_foreign_key "user_rewards", "users"
 end
