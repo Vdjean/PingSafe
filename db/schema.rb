@@ -27,12 +27,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_02_105333) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "levels", force: :cascade do |t|
-    t.integer "points"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "messages", force: :cascade do |t|
     t.text "content"
     t.bigint "chat_id", null: false
@@ -68,16 +62,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_02_105333) do
     t.datetime "updated_at", null: false
     t.index ["level_id"], name: "index_user_levels_on_level_id"
     t.index ["user_id"], name: "index_user_levels_on_user_id"
-  end
-
-  create_table "user_levels", force: :cascade do |t|
-    t.bigint "users_id", null: false
-    t.bigint "levels_id", null: false
-    t.string "level_name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["levels_id"], name: "index_user_levels_on_levels_id"
-    t.index ["users_id"], name: "index_user_levels_on_users_id"
   end
 
   create_table "user_rewards", force: :cascade do |t|

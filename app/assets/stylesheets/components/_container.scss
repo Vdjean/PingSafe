@@ -4,7 +4,8 @@
   }
 
   .pingsafe-nav {
-    max-width: 100%;
+    max-width: 28rem;
+    margin: 0 auto;
   }
 }
 
@@ -15,4 +16,16 @@
   flex-direction: column;
   max-width: 28rem;
   margin: 0 auto;
+}
+
+.container {
+  @media (min-width: 769px) {
+    max-width: 428px !important;
+    margin: 0 auto !important;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
+    position: relative;
+    overflow-y: auto; 
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
 }

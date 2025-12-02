@@ -27,3 +27,4 @@ class PingsController < ApplicationController
   def ping_params
     params.require(:ping).permit(:date, :time, :comment, :photo, :latitude, :longitude, :users_id)
   end
+end

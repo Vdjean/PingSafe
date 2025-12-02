@@ -1,0 +1,19 @@
+<div class="pingsafe-content-scrollable" style="margin-top: 80px;">
+    <div class="pingsafe-pings-header">
+      <h1 class="title">Your Pings</h1>
+    </div>
+</div>
+
+<div class="pings-list">
+  <% @Pings.each do |ping| %>
+    <div class="ping-item">
+      <h2>Ping #<%= ping.id %></h2>
+      <p><strong>Date:</strong> <%= ping.date %></p>
+      <p><strong>Time:</strong> <%= ping.time %></p>
+      <p><strong>Comment:</strong> <%= ping.comment %></p>
+      <p><strong>Latitude:</strong> <%= ping.latitude %></p>
+      <p><strong>Longitude:</strong> <%= ping.longitude %></p>
+
+    </div>
+  <% end %>
+</div>
