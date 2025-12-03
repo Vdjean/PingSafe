@@ -19,6 +19,8 @@
 }
 
 .container {
+ margin-top: 80px;
+
   @media (min-width: 769px) {
     max-width: 428px !important;
     margin: 0 auto !important;
