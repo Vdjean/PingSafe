@@ -1,42 +1,40 @@
 class MessagesController < ApplicationController
-SYSTEM_PROMPT_PICTURE = "Floute dans l’image seulement les visages en conservant les couleurs et les formes générales.
-Applique un flou gaussien homogène sans recadrage, sans ajout d’éléments et sans modification des contrastes.
-Résultat attendu : image avec visages floutés et le reste sans aucune modification."
-
-SYSTEM_PROMPT_LOCALISATION = "À partir des coordonnées GPS suivantes :
-Latitude : [LATITUDE]
-Longitude : [LONGITUDE]
-
-Analyse les données géographiques disponibles et identifie les 5 sites potentiellement en danger dans un rayon de 500 mètres autour de ce point.
-
-Les sites à risque peuvent inclure : monuments historiques, sites sensibles, lieux très fréquentés, établissements publics, établissements scolaires.
-
-Pour chaque site, retourne :
-- Nom ou type du site
-- Distance exacte et temps de trajet à pied depuis le point de départ (en mètres)
-- Type de risque associé (ex : vandalisme, vol, agression, etc.)
-- Niveau de danger (faible, modéré, élevé)
-
-Retourne les résultats sous forme de liste structurée en JSON."
-
-  def initialize(ping)
-    @ping = plan
-    @llm_chat = RubyLLM.chat
-  end
-
   def create
+    @ping = Ping.find(params[:ping_id])
     @chat = Chat.find(params[:chat_id])
     @message = Message.new(message_params)
     @message.chat = @chat
+
     if @message.save
-      redirect_to chat_path(@chat), notice: "Message sent."
+      llm_response = get_llm_response(@message.content, @chat)
+
+      if llm_response.present?
+        Message.create(chat: @chat, content: llm_response, role: "assistant")
+      end
+
+      redirect_to ping_path(@ping), notice: "Message sent."
     else
-      redirect_to chat_path(@chat), alert: "Failed to send message."
+      redirect_to ping_path(@ping), alert: "Failed to send message."
     end
   end
 
   private
+
   def message_params
     params.require(:message).permit(:content)
+  end
+
+  def get_llm_response(user_message, chat)
+    llm_chat = RubyLLM.chat
+    previous_messages = chat.messages.order(:created_at).map do |msg|
+      { role: msg.role || "user", content: msg.content }
+    end
+    all_messages = previous_messages + [{ role: "user", content: user_message }]
+    response = llm_chat.completion(messages: all_messages)
+
+    response.dig("choices", 0, "message", "content")
+  rescue => e
+    Rails.logger.error "Error getting LLM response: #{e.message}"
+    nil
   end
 end

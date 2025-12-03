@@ -1,0 +1,48 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>My Pings</h1>
+    <%= link_to "Create New Ping", new_ping_path, class: "btn btn-primary" %>
+  </div>
+
+  <% if @pings.any? %>
+    <div class="row">
+      <% @pings.order(created_at: :desc).each do |ping| %>
+        <div class="col-md-6 mb-3">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">
+                Ping from <%= ping.date.strftime("%B %d, %Y") if ping.date %>
+              </h5>
+              <p class="card-text">
+                <strong>Time:</strong> <%= ping.heure.strftime("%H:%M") if ping.heure %><br>
+                <strong>Location:</strong> <%= ping.latitude %>, <%= ping.longitude %><br>
+                <% if ping.comment.present? %>
+                  <strong>Comment:</strong> <%= truncate(ping.comment, length: 100) %>
+                <% end %>
+              </p>
+
+              <% if ping.chat.present? %>
+                <span class="badge bg-success">Analyzed</span>
+              <% elsif ping.photo.present? %>
+                <span class="badge bg-warning">Processing...</span>
+              <% else %>
+                <span class="badge bg-secondary">No Photo</span>
+              <% end %>
+
+              <div class="mt-3">
+                <%= link_to "View Details", ping_path(ping), class: "btn btn-sm btn-primary" %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="alert alert-info">
+      <h4>No pings yet</h4>
+      <p>Start by creating your first ping! Click "Create New Ping" to get started.</p>
+    </div>
+  <% end %>
+
+  <%= link_to "Back to Home", root_path, class: "btn btn-secondary mt-3" %>
+</div>

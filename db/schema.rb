@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_12_02_105333) do
+ActiveRecord::Schema[7.1].define(version: 2025_12_03_101339) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -18,13 +18,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_02_105333) do
     t.bigint "ping_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "danger_sites_json"
     t.index ["ping_id"], name: "index_chats_on_ping_id"
-  end
-
-  create_table "levels", force: :cascade do |t|
-    t.integer "points"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "levels", force: :cascade do |t|
@@ -38,6 +33,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_02_105333) do
     t.bigint "chat_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "role"
     t.index ["chat_id"], name: "index_messages_on_chat_id"
   end
 
@@ -51,6 +47,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_02_105333) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "blurred_photo_url"
     t.index ["user_id"], name: "index_pings_on_user_id"
   end
 
@@ -68,16 +65,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_02_105333) do
     t.datetime "updated_at", null: false
     t.index ["level_id"], name: "index_user_levels_on_level_id"
     t.index ["user_id"], name: "index_user_levels_on_user_id"
-  end
-
-  create_table "user_levels", force: :cascade do |t|
-    t.bigint "users_id", null: false
-    t.bigint "levels_id", null: false
-    t.string "level_name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["levels_id"], name: "index_user_levels_on_levels_id"
-    t.index ["users_id"], name: "index_user_levels_on_users_id"
   end
 
   create_table "user_rewards", force: :cascade do |t|
