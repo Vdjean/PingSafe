@@ -47,3 +47,43 @@
     font-size: 1.125rem;
   }
 }
+
+@keyframes pingsafe-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes pingsafe-bounce {
+  0%, 100% {
+    transform: rotate(-45deg) translateY(0);
+  }
+  50% {
+    transform: rotate(-45deg) translateY(-0.5rem);
+  }
+}
+
+.pingsafe-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 4;
+}
+
+.pingsafe-nav {
+  background: white;
+  padding: 0.75rem 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08);
+  width: 100%;
+}
+
+.pingsafe-content {
+  margin-bottom: 100px;
+}

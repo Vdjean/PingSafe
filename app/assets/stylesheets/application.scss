@@ -2,6 +2,7 @@
 @import "config/fonts";
 @import "config/colors";
 @import "config/bootstrap_variables";
+@import "config/dimension";
 
 // External libraries
 @import "bootstrap";
@@ -13,4 +14,4 @@
 @import "pages/home";
 @import "components/header";
 @import "components/cardclasses";
-@import "components/container"
+@import "components/container";

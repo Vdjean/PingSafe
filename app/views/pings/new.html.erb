@@ -1,4 +1,4 @@
-<div class="container mt-4">
+<div class="container">
   <h1>Create New Ping</h1>
 
   <%= form_with model: @ping, local: true, html: { id: 'ping-form', multipart: true } do |f| %>
@@ -268,3 +268,7 @@
     });
   });
 </script>
+
+<div class="pingsafe-footer" data-map-footer-target="footer">
+  <%= render "shared/footer2" %>
+</div>

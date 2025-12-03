@@ -1,4 +1,6 @@
 class PingsController < ApplicationController
+  before_action :authenticate_user!
+
   def index
     @pings = current_user.pings
   end
