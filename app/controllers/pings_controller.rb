@@ -17,13 +17,22 @@ class PingsController < ApplicationController
     @ping.user = current_user
 
     if @ping.save
-      if @ping.photo.present?
-        create_chat_and_process(@ping)
+      # Create chat immediately
+      chat = Chat.create(ping: @ping)
+
+      # Process in a thread to avoid blocking the response
+      Thread.new do
+        Rails.application.executor.wrap do
+          if @ping.photo.present?
+            process_photo_with_llm(@ping)
+          end
+          process_location_with_llm(@ping, chat)
+        end
       end
 
       redirect_to ping_path(@ping), notice: "Ping created successfully! Analysis in progress..."
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -44,7 +53,7 @@ class PingsController < ApplicationController
   private
 
   def ping_params
-    params.require(:ping).permit(:date, :heure, :comment, :photo, :latitude, :longitude)
+    params.require(:ping).permit(:date, :heure, :comment, :photo, :latitude, :longitude, :nombre_personnes, :signe_distinctif)
   end
 
   def create_chat_and_process(ping)

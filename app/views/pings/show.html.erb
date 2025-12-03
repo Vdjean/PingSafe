@@ -4,10 +4,16 @@
     <%= button_to "Refresh", ping_path(@ping), method: :get, class: "btn btn-sm btn-outline-primary" %>
   </div>
 
-  <% if @ping.photo.present? && (@ping.blurred_photo_url.blank? || (@chat.present? && @chat.danger_sites_json.blank?)) %>
+  <% if (@ping.photo.present? && @ping.blurred_photo_url.blank?) || (@chat.present? && @chat.danger_sites_json.blank?) %>
     <div class="alert alert-info">
-      <i class="fa fa-spinner fa-spin"></i> AI is analyzing your photo and location... Refresh the page in a few seconds to see the results.
+      <i class="fa fa-spinner fa-spin"></i> AI is analyzing your location<%= @ping.photo.present? ? ' and photo' : '' %>... Page will auto-refresh.
     </div>
+    <script>
+      // Auto-refresh every 3 seconds while processing
+      setTimeout(function() {
+        window.location.reload();
+      }, 3000);
+    </script>
   <% end %>
 
   <div class="card mb-3">
@@ -43,7 +49,7 @@
       <div class="card-body">
         <h5 class="card-title">Photo</h5>
         <% if @ping.blurred_photo_url.present? %>
-          <p class="text-success"> Faces have been automatically blurred</p>
+          <p class="text-success">Faces have been automatically blurred</p>
           <p><strong>Processed Photo:</strong> <%= @ping.blurred_photo_url %></p>
         <% else %>
           <p><strong>Original Photo:</strong> <%= @ping.photo %></p>

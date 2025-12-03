@@ -1,7 +1,7 @@
 <div class="container mt-4">
   <h1>Create New Ping</h1>
 
-  <%= form_with model: @ping, local: true, html: { id: 'ping-form' } do |f| %>
+  <%= form_with model: @ping, local: true, html: { id: 'ping-form', multipart: true } do |f| %>
     <% if @ping.errors.any? %>
       <div class="alert alert-danger">
         <h4><%= pluralize(@ping.errors.count, "error") %> prohibited this ping from being saved:</h4>
@@ -30,89 +30,136 @@
       </div>
     </div>
 
-    <!-- Camera/Upload Section -->
-    <div class="card mb-3">
-      <div class="card-body">
-        <h5 class="card-title">Photo</h5>
+    <% if params[:camera] == "true" %>
+      <!-- Camera/Upload Section -->
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">Photo</h5>
 
-        <div class="d-grid gap-2 mb-3">
-          <button type="button" class="btn btn-primary btn-lg" onclick="takePicture()">
-            <i class="fa fa-camera"></i> Take Picture
-          </button>
-          <button type="button" class="btn btn-outline-primary btn-lg" onclick="uploadPicture()">
-            <i class="fa fa-upload"></i> Upload Picture
-          </button>
-        </div>
+          <div class="d-grid gap-2 mb-3">
+            <button type="button" class="btn btn-primary btn-lg" onclick="takePicture()">
+              <i class="fa fa-camera"></i> Take Picture
+            </button>
+            <button type="button" class="btn btn-outline-primary btn-lg" onclick="uploadPicture()">
+              <i class="fa fa-upload"></i> Upload Picture
+            </button>
+          </div>
 
-        <!-- Hidden file input -->
-        <%= f.file_field :photo,
-                        accept: "image/*",
-                        class: "d-none",
-                        id: "photo-input",
-                        onchange: "previewPhoto(event)" %>
+          <!-- Hidden file input -->
+          <input type="file"
+                 accept="image/*"
+                 class="d-none"
+                 id="photo-input"
+                 onchange="previewPhoto(event)">
 
-        <!-- Hidden file input for camera -->
-        <%= f.file_field :photo,
-                        accept: "image/*",
-                        capture: "environment",
-                        class: "d-none",
-                        id: "camera-input",
-                        onchange: "previewPhoto(event)" %>
+          <!-- Hidden file input for camera -->
+          <input type="file"
+                 accept="image/*"
+                 capture="environment"
+                 class="d-none"
+                 id="camera-input"
+                 onchange="previewPhoto(event)">
 
-        <!-- Photo Preview -->
-        <div id="photo-preview" style="display: none;">
-          <img id="preview-image" src="" alt="Photo preview" class="img-fluid rounded mb-2" style="max-height: 300px;">
-          <p class="text-success"><i class="fa fa-check-circle"></i> Photo captured!</p>
-        </div>
+          <!-- Hidden field to store base64 photo -->
+          <%= f.hidden_field :photo, id: "photo-data" %>
 
-        <!-- Location status -->
-        <div id="location-status" class="alert alert-info" style="display: none;">
-          <i class="fa fa-location-arrow"></i> <span id="location-message">Getting your location...</span>
+          <!-- Photo Preview -->
+          <div id="photo-preview" style="display: none;">
+            <img id="preview-image" src="" alt="Photo preview" class="img-fluid rounded mb-2" style="max-height: 300px;">
+            <p class="text-success"><i class="fa fa-check-circle"></i> Photo captured!</p>
+          </div>
+
+          <!-- Location status -->
+          <div id="location-status" class="alert alert-info" style="display: none;">
+            <i class="fa fa-location-arrow"></i> <span id="location-message">Getting your location...</span>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Additional Information Form -->
-    <div class="card mb-3" id="details-form" style="display: none;">
-      <div class="card-body">
-        <h5 class="card-title">Details</h5>
+      <!-- Additional Information Form -->
+      <div class="card mb-3" id="details-form" style="display: none;">
+        <div class="card-body">
+          <h5 class="card-title">Details</h5>
 
-        <div class="mb-3">
-          <%= f.label :comment, "Number of Persons", class: "form-label" %>
-          <%= f.number_field :comment,
+          <div class="mb-3">
+            <%= f.label :nombre_personnes, "Number of Persons", class: "form-label" %>
+            <%= f.number_field :nombre_personnes,
+                              class: "form-control",
+                              placeholder: "How many people are involved?",
+                              id: "nombre-personnes-input",
+                              min: 0 %>
+            <div class="form-text">Enter the number of persons</div>
+          </div>
+
+          <div class="mb-3">
+            <%= f.label :signe_distinctif, "Distinguishing Sign", class: "form-label" %>
+            <%= f.text_field :signe_distinctif,
                             class: "form-control",
-                            placeholder: "How many people are involved?",
-                            id: "nombre-personnes-input",
-                            min: 0 %>
-          <div class="form-text">Enter the number of persons</div>
-        </div>
+                            id: "signe-distinctif-input",
+                            placeholder: "Any distinctive features or signs..." %>
+            <div class="form-text">Describe any distinguishing characteristics</div>
+          </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="signe-distinctif-input">Distinguishing Sign</label>
-          <input type="text"
-                 class="form-control"
-                 id="signe-distinctif-input"
-                 placeholder="Any distinctive features or signs...">
-          <div class="form-text">Describe any distinguishing characteristics</div>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="additional-comments-input">Comments</label>
-          <textarea class="form-control"
-                    id="additional-comments-input"
-                    rows="4"
-                    placeholder="Add any additional details or context..."></textarea>
-          <div class="form-text">Additional information about the situation</div>
+          <div class="mb-3">
+            <%= f.label :comment, "Comments", class: "form-label" %>
+            <%= f.text_area :comment,
+                           class: "form-control",
+                           id: "additional-comments-input",
+                           rows: 4,
+                           placeholder: "Add any additional details or context..." %>
+            <div class="form-text">Additional information about the situation</div>
+          </div>
         </div>
       </div>
-    </div>
+    <% else %>
+      <!-- Location status -->
+      <div id="location-status" class="alert alert-info" style="display: none;">
+        <i class="fa fa-location-arrow"></i> <span id="location-message">Getting your location...</span>
+      </div>
+
+      <!-- Details Form (No Camera Mode) -->
+      <div class="card mb-3" id="details-form">
+        <div class="card-body">
+          <h5 class="card-title">Details</h5>
+
+          <div class="mb-3">
+            <%= f.label :nombre_personnes, "Number of Persons", class: "form-label" %>
+            <%= f.number_field :nombre_personnes,
+                              class: "form-control",
+                              placeholder: "How many people are involved?",
+                              id: "nombre-personnes-input",
+                              min: 0 %>
+            <div class="form-text">Enter the number of persons</div>
+          </div>
+
+          <div class="mb-3">
+            <%= f.label :signe_distinctif, "Distinguishing Sign", class: "form-label" %>
+            <%= f.text_field :signe_distinctif,
+                            class: "form-control",
+                            id: "signe-distinctif-input",
+                            placeholder: "Any distinctive features or signs..." %>
+            <div class="form-text">Describe any distinguishing characteristics</div>
+          </div>
+
+          <div class="mb-3">
+            <%= f.label :comment, "Comments", class: "form-label" %>
+            <%= f.text_area :comment,
+                           class: "form-control",
+                           id: "additional-comments-input",
+                           rows: 4,
+                           placeholder: "Add any additional details or context..." %>
+            <div class="form-text">Additional information about the situation</div>
+          </div>
+        </div>
+      </div>
+    <% end %>
 
     <!-- Hidden location fields (auto-filled) -->
     <%= f.hidden_field :latitude, id: "latitude-input" %>
     <%= f.hidden_field :longitude, id: "longitude-input" %>
 
     <div class="d-grid gap-2">
-      <%= f.submit "Create Ping & Analyze", class: "btn btn-success btn-lg", id: "submit-btn", style: "display: none;" %>
+      <%= f.submit "Create Ping & Analyze", class: "btn btn-success btn-lg", id: "submit-btn", style: params[:camera] == "true" ? "display: none;" : "" %>
       <%= link_to "Cancel", root_path, class: "btn btn-outline-secondary" %>
     </div>
   <% end %>
@@ -120,6 +167,7 @@
 
 <script>
   let locationCaptured = false;
+  const cameraMode = <%= params[:camera] == "true" ? "true" : "false" %>;
 
   function takePicture() {
     // Trigger location capture
@@ -174,7 +222,13 @@
     if (file) {
       const reader = new FileReader();
       reader.onload = function(e) {
-        document.getElementById('preview-image').src = e.target.result;
+        const base64Data = e.target.result;
+
+        // Store base64 data in hidden field
+        document.getElementById('photo-data').value = base64Data;
+
+        // Show preview
+        document.getElementById('preview-image').src = base64Data;
         document.getElementById('photo-preview').style.display = 'block';
 
         // Show the details form
@@ -187,19 +241,30 @@
     }
   }
 
-  // Combine all form fields into comment before submit
-  document.getElementById('ping-form').addEventListener('submit', function(e) {
-    const nombrePersonnes = document.getElementById('nombre-personnes-input').value;
-    const signeDistinctif = document.getElementById('signe-distinctif-input').value;
-    const additionalComments = document.getElementById('additional-comments-input').value;
+  // Capture location when page loads (non-camera mode only)
+  document.addEventListener('DOMContentLoaded', function() {
+    if (!cameraMode) {
+      captureLocation();
+    }
 
-    // Construct combined comment
-    let finalComment = '';
-    if (nombrePersonnes) finalComment += `Number of persons: ${nombrePersonnes}\n`;
-    if (signeDistinctif) finalComment += `Distinguishing sign: ${signeDistinctif}\n`;
-    if (additionalComments) finalComment += `Comments: ${additionalComments}`;
+    // Form validation before submit
+    const form = document.getElementById('ping-form');
+    form.addEventListener('submit', function(e) {
+      const latitude = document.getElementById('latitude-input').value;
+      const longitude = document.getElementById('longitude-input').value;
 
-    // Set the combined comment to the hidden comment field
-    document.getElementById('nombre-personnes-input').value = finalComment || '';
+      if (!latitude || !longitude) {
+        e.preventDefault();
+        alert('Please wait for location to be captured before submitting.');
+        captureLocation();
+        return false;
+      }
+
+      console.log('Form submitting with:', {
+        latitude: latitude,
+        longitude: longitude,
+        photo: document.getElementById('photo-data') ? document.getElementById('photo-data').value.substring(0, 50) + '...' : 'none'
+      });
+    });
   });
 </script>
