@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
   get "up" => "rails/health#show", as: :rails_health_check
 
-get "profile", to: "pages#profile"
+  get "profile", to: "pages#profile"
 
   resources :pages, only: :new do
     collection do

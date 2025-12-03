@@ -1,6 +1,7 @@
 $blue: #1e3a5f;
 $desktop-min: 769px;
 
+/* === PROFILE CONTAINER === */
 .pingsafe-profile-container {
   padding: 80px 16px 100px;
   min-height: 100vh;
@@ -12,6 +13,7 @@ $desktop-min: 769px;
   }
 }
 
+/* === PROFILE HEADER === */
 .pingsafe-profile-header {
   text-align: center;
   padding: 2rem 0 2.5rem;
@@ -44,6 +46,16 @@ $desktop-min: 769px;
   object-fit: contain;
 }
 
+.pingsafe-avatar-initials {
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+
+  @media (min-width: 400px) {
+    font-size: 2.5rem;
+  }
+}
+
 .pingsafe-profile-name {
   font-size: 1.5rem;
   font-weight: 700;
@@ -58,9 +70,28 @@ $desktop-min: 769px;
 .pingsafe-profile-email {
   font-size: 0.875rem;
   color: #6b7280;
-  margin: 0;
+  margin: 0 0 0.75rem 0;
 }
 
+.pingsafe-profile-score-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(251, 191, 36, 0.3);
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+/* === PROFILE MENU === */
 .pingsafe-profile-menu {
   background: white;
   border-radius: 1.5rem;
@@ -163,6 +194,7 @@ $desktop-min: 769px;
   transition: transform 0.2s ease;
 }
 
+/* === LOGOUT SECTION === */
 .pingsafe-profile-logout-section {
   padding: 0 1rem;
 }

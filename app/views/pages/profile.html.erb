@@ -1,31 +1,46 @@
 <div class="pingsafe-mobile-wrapper">
-
   <div class="pingsafe-profile-container">
 
     <div class="pingsafe-profile-header">
       <div class="pingsafe-profile-avatar">
-        <%= image_tag 'logo.png', alt: 'Profile', class: 'pingsafe-avatar-img' %>
+        <% if current_user.pseudo.present? %>
+          <div class="pingsafe-avatar-initials">
+            <%= current_user.pseudo.first.upcase %>
+          </div>
+        <% elsif current_user.first_name.present? %>
+          <div class="pingsafe-avatar-initials">
+            <%= current_user.first_name.first.upcase %>
+          </div>
+        <% else %>
+          <%= image_tag 'logo.png', alt: 'Profile', class: 'pingsafe-avatar-img' %>
+        <% end %>
       </div>
-      <h2 class="pingsafe-profile-name">PingSafe</h2>
-      <p class="pingsafe-profile-email">user@pingsafe.com</p>
+
+      <h2 class="pingsafe-profile-name">
+        <% if current_user.pseudo.present? %>
+          <%= current_user.pseudo %>
+        <% elsif current_user.first_name.present? && current_user.last_name.present? %>
+          <%= "#{current_user.first_name} #{current_user.last_name}" %>
+        <% elsif current_user.first_name.present? %>
+          <%= current_user.first_name %>
+        <% else %>
+          PingSafe User
+        <% end %>
+      </h2>
+
+      <p class="pingsafe-profile-email"><%= current_user.email %></p>
+
+      <% if current_user.score.present? %>
+        <div class="pingsafe-profile-score-badge">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+          </svg>
+          <span><%= current_user.score %> points</span>
+        </div>
+      <% end %>
     </div>
 
     <div class="pingsafe-profile-menu">
-
-      <%= link_to '#', class: 'pingsafe-profile-item' do %>
-        <div class="pingsafe-profile-item-content">
-          <div class="pingsafe-profile-item-icon pingsafe-profile-icon-account">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
-              <circle cx="12" cy="7" r="4"/>
-            </svg>
-          </div>
-          <span class="pingsafe-profile-item-text">Account</span>
-        </div>
-        <svg class="pingsafe-profile-arrow" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="9 18 15 12 9 6"/>
-        </svg>
-      <% end %>
 
       <%= link_to '#', class: 'pingsafe-profile-item' do %>
         <div class="pingsafe-profile-item-content">
@@ -94,8 +109,7 @@
     </div>
 
     <div class="pingsafe-profile-logout-section">
-      <%= button_tag type: 'button', class: 'pingsafe-profile-logout' do %>
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<%= button_to destroy_user_session_path, method: :delete, class: 'pingsafe-profile-logout', data: { turbo: false } do %>        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
           <polyline points="16 17 21 12 16 7"/>
           <line x1="21" y1="12" x2="9" y2="12"/>
