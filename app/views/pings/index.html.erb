@@ -17,3 +17,28 @@
     </div>
   <% end %>
 </div>
+
+<div class="pingsafe-footer" data-map-footer-target="footer">
+  <nav class="pingsafe-nav">
+    <%= link_to '#', class: 'pingsafe-nav-item pingsafe-nav-item-active' do %>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+        <path d="M12 17h.01"/>
+      </svg>
+      <span>FAQ</span>
+    <% end %>
+
+    <%= link_to root_path, class: 'pingsafe-nav-item' do %>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+        <circle cx="12" cy="10" r="3"/>
+      </svg>
+      <span>Location</span>
+    <% end %>
+
+    <%= button_tag type: 'button', class: 'pingsafe-nav-sos' do %>
+      <span>SOS</span>
+    <% end %>
+  </nav>
+</div>
