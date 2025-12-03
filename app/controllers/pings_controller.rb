@@ -52,6 +52,21 @@ class PingsController < ApplicationController
     end
   end
 
+  def share
+    @ping = Ping.find(params[:id])
+
+    # Mark ping as shared with the community
+    @ping.update(shared_at: Time.current)
+
+    # TODO: In the future, notify users within 300m radius
+    # This could be implemented with:
+    # - Background job to find nearby users
+    # - Push notifications or in-app notifications
+    # - Email notifications
+
+    redirect_to ping_path(@ping), notice: "Ping shared with the Pinger community within 300 meters!"
+  end
+
   private
 
   def ping_params
@@ -86,37 +101,71 @@ Résultat attendu : image avec visages floutés et le reste sans aucune modifica
     ping.update(blurred_photo_url: blurred_url)
   rescue => e
     Rails.logger.error "Error processing photo: #{e.message}"
+    Rails.logger.error e.backtrace.join("\n")
   end
 
   def process_location_with_llm(ping, chat)
     llm_chat = RubyLLM.chat
 
-    prompt = "À partir des coordonnées GPS suivantes :
-Latitude : #{ping.latitude}
-Longitude : #{ping.longitude}
+    prompt = "You are a location safety analyst. Based on the GPS coordinates provided (Latitude: #{ping.latitude}, Longitude: #{ping.longitude}), analyze and identify 5 potentially dangerous or at-risk sites within a 500-meter radius.
 
-Analyse les données géographiques disponibles et identifie les 5 sites potentiellement en danger dans un rayon de 500 mètres autour de ce point.
+Consider these types of locations:
+- Historical monuments
+- Sensitive sites
+- Highly frequented areas
+- Public establishments
+- Schools and educational facilities
+- Dark alleys or isolated areas
+- Areas with known crime statistics
 
-Les sites à risque peuvent inclure : monuments historiques, sites sensibles, lieux très fréquentés, établissements publics, établissements scolaires.
+For each site, provide:
+1. Name or type of the site
+2. Exact distance in meters from the starting point
+3. Walking time to reach it
+4. Type of associated risk (e.g., vandalism, theft, assault, etc.)
+5. Danger level: low, moderate, or high
 
-Pour chaque site, retourne :
-- Nom ou type du site
-- Distance exacte et temps de trajet à pied depuis le point de départ (en mètres)
-- Type de risque associé (ex : vandalisme, vol, agression, etc.)
-- Niveau de danger (faible, modéré, élevé)
+Return ONLY a valid JSON array with this structure:
+[
+  {
+    \"name\": \"Site name\",
+    \"distance_meters\": 250,
+    \"walking_time\": \"3 minutes\",
+    \"risk_type\": \"theft\",
+    \"danger_level\": \"moderate\"
+  }
+]
 
-Retourne les résultats sous forme de liste structurée en JSON."
+Return ONLY the JSON array, no additional text."
 
     response = llm_chat.completion(
       messages: [
-        { role: "system", content: prompt },
-        { role: "user", content: "Analyze the dangerous sites near these coordinates." }
+        { role: "system", content: "You are a safety analyst that returns only JSON responses." },
+        { role: "user", content: prompt }
       ]
     )
 
     danger_sites = response.dig("choices", 0, "message", "content")
-    chat.update(danger_sites_json: danger_sites)
+
+    # Clean up the response to ensure it's valid JSON
+    if danger_sites
+      # Remove markdown code blocks if present
+      danger_sites = danger_sites.gsub(/```json\n?/, '').gsub(/```\n?/, '').strip
+
+      # Validate JSON
+      begin
+        JSON.parse(danger_sites)
+        chat.update(danger_sites_json: danger_sites)
+        Rails.logger.info "Successfully saved danger sites analysis"
+      rescue JSON::ParserError => e
+        Rails.logger.error "Invalid JSON response: #{danger_sites}"
+        Rails.logger.error "JSON Parse Error: #{e.message}"
+        chat.update(danger_sites_json: "[{\"error\": \"Could not parse AI response\"}]")
+      end
+    end
   rescue => e
     Rails.logger.error "Error processing location: #{e.message}"
+    Rails.logger.error e.backtrace.join("\n")
+    chat.update(danger_sites_json: "[{\"error\": \"#{e.message}\"}]")
   end
 end

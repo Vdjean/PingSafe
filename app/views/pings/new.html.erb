@@ -113,8 +113,8 @@
       </div>
     <% else %>
       <!-- Location status -->
-      <div id="location-status" class="alert alert-info" style="display: none;">
-        <i class="fa fa-location-arrow"></i> <span id="location-message">Getting your location...</span>
+      <div id="location-status" class="alert alert-info">
+        <span id="location-message"><i class="fa fa-spinner fa-spin"></i> Getting your location...</span>
       </div>
 
       <!-- Details Form (No Camera Mode) -->
@@ -159,7 +159,7 @@
     <%= f.hidden_field :longitude, id: "longitude-input" %>
 
     <div class="d-grid gap-2">
-      <%= f.submit "Create Ping & Analyze", class: "btn btn-success btn-lg", id: "submit-btn", style: params[:camera] == "true" ? "display: none;" : "" %>
+      <%= f.submit "Create Ping & Analyze", class: "btn btn-success btn-lg", id: "submit-btn", disabled: true, style: params[:camera] == "true" ? "display: none;" : "" %>
       <%= link_to "Cancel", root_path, class: "btn btn-outline-secondary" %>
     </div>
   <% end %>
@@ -170,17 +170,39 @@
   const cameraMode = <%= params[:camera] == "true" ? "true" : "false" %>;
 
   function takePicture() {
-    // Trigger location capture
-    captureLocation();
+    // Trigger location capture if not already captured
+    if (!locationCaptured) {
+      captureLocation();
+    }
     // Open camera
     document.getElementById('camera-input').click();
   }
 
   function uploadPicture() {
-    // Trigger location capture
-    captureLocation();
+    // Trigger location capture if not already captured
+    if (!locationCaptured) {
+      captureLocation();
+    }
     // Open file picker
     document.getElementById('photo-input').click();
+  }
+
+  function enableSubmitButton() {
+    const submitBtn = document.getElementById('submit-btn');
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.classList.remove('btn-secondary');
+      submitBtn.classList.add('btn-success');
+    }
+  }
+
+  function disableSubmitButton() {
+    const submitBtn = document.getElementById('submit-btn');
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.classList.remove('btn-success');
+      submitBtn.classList.add('btn-secondary');
+    }
   }
 
   function captureLocation() {
@@ -189,32 +211,173 @@
 
     statusDiv.style.display = 'block';
     statusDiv.className = 'alert alert-info';
-    messageSpan.textContent = 'Getting your location...';
+    messageSpan.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Getting your location...';
 
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        function(position) {
-          document.getElementById('latitude-input').value = position.coords.latitude;
-          document.getElementById('longitude-input').value = position.coords.longitude;
-          locationCaptured = true;
-
-          statusDiv.className = 'alert alert-success';
-          messageSpan.textContent = 'Location captured successfully!';
-
-          // Hide after 2 seconds
-          setTimeout(() => {
-            statusDiv.style.display = 'none';
-          }, 2000);
-        },
-        function(error) {
-          statusDiv.className = 'alert alert-danger';
-          messageSpan.textContent = 'Error getting location: ' + error.message;
-        }
-      );
-    } else {
-      statusDiv.className = 'alert alert-danger';
-      messageSpan.textContent = 'Geolocation is not supported by this browser.';
+    // Check if we're in a secure context
+    if (!window.isSecureContext && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+      statusDiv.className = 'alert alert-warning';
+      messageSpan.innerHTML = `
+        <i class="fa fa-exclamation-triangle"></i>
+        <strong>Security Notice:</strong> Geolocation requires a secure connection (HTTPS) or localhost access.
+        <br><br>
+        <strong>To fix this:</strong>
+        <ol class="mb-0">
+          <li>Access the app via <a href="http://localhost:3000${window.location.pathname}" target="_blank">http://localhost:3000</a> instead of [::1]</li>
+          <li>Or manually enter coordinates below</li>
+        </ol>
+      `;
+      showManualLocationInput();
+      return;
     }
+
+    if (!navigator.geolocation) {
+      statusDiv.className = 'alert alert-danger';
+      messageSpan.innerHTML = '<i class="fa fa-exclamation-triangle"></i> Geolocation is not supported by this browser.';
+      showManualLocationInput();
+      return;
+    }
+
+    // Request location with high accuracy
+    navigator.geolocation.getCurrentPosition(
+      function(position) {
+        document.getElementById('latitude-input').value = position.coords.latitude;
+        document.getElementById('longitude-input').value = position.coords.longitude;
+        locationCaptured = true;
+
+        statusDiv.className = 'alert alert-success';
+        messageSpan.innerHTML = '<i class="fa fa-check-circle"></i> Location captured successfully! (Lat: ' +
+          position.coords.latitude.toFixed(4) + ', Lon: ' + position.coords.longitude.toFixed(4) + ')';
+
+        // Enable submit button
+        enableSubmitButton();
+
+        // Hide after 3 seconds
+        setTimeout(() => {
+          statusDiv.style.display = 'none';
+        }, 3000);
+      },
+      function(error) {
+        statusDiv.className = 'alert alert-danger';
+        let errorMessage = '';
+        let helpText = '';
+
+        switch(error.code) {
+          case error.PERMISSION_DENIED:
+            errorMessage = 'Location access was denied.';
+            helpText = `
+              <br><strong>To fix this:</strong>
+              <ul class="mb-0 mt-2">
+                <li>Click the location icon in your browser's address bar</li>
+                <li>Select "Allow" for location access</li>
+                <li>Then click the Retry button below</li>
+                <li>Or enter coordinates manually</li>
+              </ul>
+            `;
+            break;
+          case error.POSITION_UNAVAILABLE:
+            errorMessage = 'Location information is unavailable.';
+            helpText = '<br>Your device might not have GPS enabled. You can enter coordinates manually.';
+            break;
+          case error.TIMEOUT:
+            errorMessage = 'Location request timed out.';
+            helpText = '<br>Please try again or enter coordinates manually.';
+            break;
+          default:
+            errorMessage = error.message;
+        }
+
+        messageSpan.innerHTML = '<i class="fa fa-exclamation-triangle"></i> ' + errorMessage + helpText;
+
+        // Add buttons
+        const btnContainer = document.createElement('div');
+        btnContainer.className = 'd-flex gap-2 mt-3';
+
+        const retryBtn = document.createElement('button');
+        retryBtn.className = 'btn btn-sm btn-warning';
+        retryBtn.innerHTML = '<i class="fa fa-refresh"></i> Retry';
+        retryBtn.onclick = function(e) {
+          e.preventDefault();
+          captureLocation();
+        };
+
+        const manualBtn = document.createElement('button');
+        manualBtn.className = 'btn btn-sm btn-secondary';
+        manualBtn.innerHTML = '<i class="fa fa-edit"></i> Enter Manually';
+        manualBtn.onclick = function(e) {
+          e.preventDefault();
+          showManualLocationInput();
+        };
+
+        btnContainer.appendChild(retryBtn);
+        btnContainer.appendChild(manualBtn);
+        messageSpan.appendChild(btnContainer);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0
+      }
+    );
+  }
+
+  function showManualLocationInput() {
+    const statusDiv = document.getElementById('location-status');
+    const messageSpan = document.getElementById('location-message');
+
+    statusDiv.className = 'alert alert-info';
+    messageSpan.innerHTML = `
+      <strong>Enter Location Manually</strong>
+      <div class="row mt-2">
+        <div class="col-6">
+          <label class="form-label small">Latitude</label>
+          <input type="number" step="any" class="form-control form-control-sm" id="manual-lat" placeholder="45.5017">
+        </div>
+        <div class="col-6">
+          <label class="form-label small">Longitude</label>
+          <input type="number" step="any" class="form-control form-control-sm" id="manual-lon" placeholder="-73.5673">
+        </div>
+      </div>
+      <button class="btn btn-sm btn-success mt-2 w-100" onclick="saveManualLocation(event)">
+        <i class="fa fa-check"></i> Use These Coordinates
+      </button>
+      <p class="small text-muted mb-0 mt-2">
+        <i class="fa fa-info-circle"></i> You can find your coordinates on
+        <a href="https://www.google.com/maps" target="_blank">Google Maps</a> by right-clicking your location.
+      </p>
+    `;
+  }
+
+  function saveManualLocation(e) {
+    e.preventDefault();
+    const lat = parseFloat(document.getElementById('manual-lat').value);
+    const lon = parseFloat(document.getElementById('manual-lon').value);
+
+    if (isNaN(lat) || isNaN(lon)) {
+      alert('Please enter valid latitude and longitude values');
+      return;
+    }
+
+    if (lat < -90 || lat > 90 || lon < -180 || lon > 180) {
+      alert('Invalid coordinates. Latitude must be between -90 and 90, Longitude between -180 and 180');
+      return;
+    }
+
+    document.getElementById('latitude-input').value = lat;
+    document.getElementById('longitude-input').value = lon;
+    locationCaptured = true;
+
+    const statusDiv = document.getElementById('location-status');
+    const messageSpan = document.getElementById('location-message');
+
+    statusDiv.className = 'alert alert-success';
+    messageSpan.innerHTML = '<i class="fa fa-check-circle"></i> Location set manually! (Lat: ' +
+      lat.toFixed(4) + ', Lon: ' + lon.toFixed(4) + ')';
+
+    enableSubmitButton();
+
+    setTimeout(() => {
+      statusDiv.style.display = 'none';
+    }, 3000);
   }
 
   function previewPhoto(event) {

@@ -70,8 +70,16 @@
   position: fixed;
   bottom: 0;
   left: 0;
+  right: 0;
   width: 100%;
   z-index: 4;
+
+  // On desktop, constrain to mobile width
+  @media (min-width: 769px) {
+    max-width: 430px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 }
 
 .pingsafe-nav {
@@ -85,5 +93,5 @@
 }
 
 .pingsafe-content {
-  margin-bottom: 100px;
+  margin-bottom: 120px;
 }

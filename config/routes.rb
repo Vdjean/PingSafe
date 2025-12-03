@@ -11,6 +11,10 @@ Rails.application.routes.draw do
   end
 
   resources :pings, only: [:new, :create, :index, :show, :update] do
+    member do
+      post :share
+    end
+
     resources :chats, only: :create do
       resources :messages, only: :create
     end

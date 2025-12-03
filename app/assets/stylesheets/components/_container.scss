@@ -1,33 +1,47 @@
-@media (max-width: 28rem) {
-  .pingsafe-mobile-container {
-    max-width: 100%;
-  }
+// Main mobile app container - simulates a mobile device on all screens
+.pingsafe-mobile-app-container {
+  min-height: 100vh;
+  background-color: #f9fafb;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
 
-  .pingsafe-nav {
-    max-width: 28rem;
-    margin: 0 auto;
+  // On desktop, constrain to mobile width and center
+  @media (min-width: 769px) {
+    max-width: 430px;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.2);
+    background-color: white;
   }
 }
 
+// Content wrapper for pages
+.pingsafe-content-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  position: relative;
+  min-height: 100vh;
+  padding-bottom: 120px;
+}
+
+// Legacy container support
 .pingsafe-mobile-container {
   min-height: 100vh;
   background-color: #f9fafb;
   display: flex;
   flex-direction: column;
-  max-width: 28rem;
-  margin: 0 auto;
+  width: 100%;
 }
 
 .container {
- margin-top: 80px;
+  margin-top: 80px;
+  padding: 0 1rem 120px 1rem;
+  width: 100%;
 
   @media (min-width: 769px) {
-    max-width: 428px !important;
-    margin: 0 auto !important;
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
-    position: relative;
-    overflow-y: auto;
-    overflow-x: hidden;
-    min-height: 100vh;
+    padding: 0 1.5rem 120px 1.5rem;
   }
 }
