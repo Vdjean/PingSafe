@@ -1,0 +1,234 @@
+$blue: #1e3a5f;
+$desktop-min: 769px;
+
+/* === PROFILE CONTAINER === */
+.pingsafe-profile-container {
+  padding: 80px 16px 100px;
+  min-height: 100vh;
+  background-color: #f9fafb;
+
+  @media (min-width: $desktop-min) {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+}
+
+/* === PROFILE HEADER === */
+.pingsafe-profile-header {
+  text-align: center;
+  padding: 2rem 0 2.5rem;
+  background: white;
+  border-radius: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.pingsafe-profile-avatar {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  background: linear-gradient(135deg, $blue 0%, #2d5a8f 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(30, 58, 95, 0.2);
+
+  @media (min-width: 400px) {
+    width: 6rem;
+    height: 6rem;
+  }
+}
+
+.pingsafe-avatar-img {
+  width: 60%;
+  height: 60%;
+  object-fit: contain;
+}
+
+.pingsafe-avatar-initials {
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+
+  @media (min-width: 400px) {
+    font-size: 2.5rem;
+  }
+}
+
+.pingsafe-profile-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 0.25rem 0;
+
+  @media (min-width: 400px) {
+    font-size: 1.75rem;
+  }
+}
+
+.pingsafe-profile-email {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0 0 0.75rem 0;
+}
+
+.pingsafe-profile-score-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(251, 191, 36, 0.3);
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+/* === PROFILE MENU === */
+.pingsafe-profile-menu {
+  background: white;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  margin-bottom: 1.5rem;
+}
+
+.pingsafe-profile-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  background: white;
+  border: none;
+  border-bottom: 1px solid #f3f4f6;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  width: 100%;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:active {
+    background: #f9fafb;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      background: #f9fafb;
+
+      .pingsafe-profile-arrow {
+        transform: translateX(4px);
+      }
+    }
+  }
+}
+
+.pingsafe-profile-item-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.pingsafe-profile-item-icon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}
+
+.pingsafe-profile-icon-account {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff8e72 100%);
+  color: white;
+}
+
+.pingsafe-profile-icon-pings {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+}
+
+.pingsafe-profile-icon-score {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  color: white;
+}
+
+.pingsafe-profile-icon-partners {
+  background: linear-gradient(135deg, $blue 0%, #2d5a8f 100%);
+  color: white;
+}
+
+.pingsafe-profile-icon-share {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  color: white;
+}
+
+.pingsafe-profile-item-text {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+
+  @media (min-width: 400px) {
+    font-size: 1.125rem;
+  }
+}
+
+.pingsafe-profile-arrow {
+  color: #9ca3af;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+/* === LOGOUT SECTION === */
+.pingsafe-profile-logout-section {
+  padding: 0 1rem;
+}
+
+.pingsafe-profile-logout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 1rem;
+  background: white;
+  border: 2px solid #fecaca;
+  border-radius: 1rem;
+  color: #dc2626;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  &:active {
+    transform: scale(0.98);
+    background: #fef2f2;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      background: #fef2f2;
+      border-color: #fca5a5;
+    }
+  }
+}
