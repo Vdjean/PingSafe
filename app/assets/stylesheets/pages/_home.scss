@@ -19,22 +19,37 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   z-index: 1;
   background-image: url("mappa.jpg");
+
+  // On desktop, constrain to mobile width
+  @media (min-width: 769px) {
+    max-width: 430px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 }
 
 .pingsafe-lower-panel {
   position: fixed;
   bottom: 5px;
   left: 0;
+  right: 0;
   width: 100%;
   z-index: 3;
   padding: 0 16px 16px;
   display: flex;
   flex-direction: column;
   gap: 12px;
+
+  // On desktop, constrain to mobile width
+  @media (min-width: 769px) {
+    max-width: 430px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 }
 
 
@@ -227,8 +242,16 @@
   position: fixed;
   bottom: 0;
   left: 0;
+  right: 0;
   width: 100%;
   z-index: 4;
+
+  // On desktop, constrain to mobile width
+  @media (min-width: 769px) {
+    max-width: 430px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 }
 
 // Show ping styles
@@ -270,7 +293,7 @@
 
 .pingsafe-show-content {
   padding: 1rem;
-  padding-bottom: 6rem;
+  padding-bottom: 120px;
 }
 
 .pingsafe-ping-photo {
