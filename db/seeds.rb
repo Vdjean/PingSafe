@@ -93,10 +93,7 @@ ping1 = Ping.create!(
   latitude: 48.8606,
   longitude: 2.3376,
   comment: "Pickpocket repere pres du Louvre, technique d'encerclement des touristes",
-  photo: "ping_sara_pickpocket.jpg",
-  nb_individus: 3,
-  taille: "moyenne",
-  signe_distinctif: "Pull rouge et casquette noire"
+  photo: "ping_sara_pickpocket.jpg"
 )
 
 ping2 = Ping.create!(
@@ -106,10 +103,7 @@ ping2 = Ping.create!(
   latitude: 48.8584,
   longitude: 2.2945,
   comment: "Vol a la tire en cours pres de la Tour Eiffel",
-  photo: "ping_matteo_pickpocket.jpg",
-  nb_individus: 1,
-  taille: "grande",
-  signe_distinctif: "Veste noire avec capuche, sac a dos gris"
+  photo: "ping_matteo_pickpocket.jpg"
 )
 
 ping3 = Ping.create!(
@@ -119,10 +113,7 @@ ping3 = Ping.create!(
   latitude: 48.8530,
   longitude: 2.3499,
   comment: "Pickpocket dans le metro ligne 1 station Chatelet, technique de la bousculade",
-  photo: "ping_victor_pickpocket1.jpg",
-  nb_individus: 2,
-  taille: "petite",
-  signe_distinctif: "Doudoune bleue et baskets blanches"
+  photo: "ping_victor_pickpocket1.jpg"
 )
 
 ping4 = Ping.create!(
@@ -132,10 +123,7 @@ ping4 = Ping.create!(
   latitude: 48.8867,
   longitude: 2.3431,
   comment: "Arnaque a la petition a Montmartre, technique d'encerclement",
-  photo: "ping_victor_pickpocket2.jpg",
-  nb_individus: 4,
-  taille: "moyenne",
-  signe_distinctif: "Gilets jaunes fluo"
+  photo: "ping_victor_pickpocket2.jpg"
 )
 puts "Created #{Ping.count} pings"
 
