@@ -1,98 +1,94 @@
-<div class="pingsafe-mobile-container">
-
-  <div class="pingsafe-header-back">
-    <%= link_to root_path, class: 'pingsafe-back-btn' do %>
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="m15 18-6-6 6-6"/>
-      </svg>
-    <% end %>
-    <h1 class="pingsafe-page-title">Ping Details</h1>
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Ping Details</h1>
+    <%= button_to "Refresh", ping_path(@ping), method: :get, class: "btn btn-sm btn-outline-primary" %>
   </div>
 
-  <div class="pingsafe-show-content">
-    <% if @Ping.photo.present? %>
-      <div class="pingsafe-ping-photo">
-        <%= image_tag @Ping.photo, alt: "Ping photo", class: "pingsafe-photo-img" %>
-      </div>
-    <% else %>
-      <div class="pingsafe-ping-photo pingsafe-photo-placeholder">
-        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/>
-          <circle cx="9" cy="9" r="2"/>
-          <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
-        </svg>
-        <span>No photo</span>
-      </div>
-    <% end %>
+  <% if @ping.photo.present? && (@ping.blurred_photo_url.blank? || (@chat.present? && @chat.danger_sites_json.blank?)) %>
+    <div class="alert alert-info">
+      <i class="fa fa-spinner fa-spin"></i> AI is analyzing your photo and location... Refresh the page in a few seconds to see the results.
+    </div>
+  <% end %>
 
-    <div class="pingsafe-ping-info">
-      <div class="pingsafe-info-card">
-        <div class="pingsafe-info-row">
-          <div class="pingsafe-info-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
-              <line x1="16" x2="16" y1="2" y2="6"/>
-              <line x1="8" x2="8" y1="2" y2="6"/>
-              <line x1="3" x2="21" y1="10" y2="10"/>
-            </svg>
-          </div>
-          <div class="pingsafe-info-content">
-            <span class="pingsafe-info-label">Date</span>
-            <span class="pingsafe-info-value"><%= @Ping.date&.strftime("%d/%m/%Y") || "N/A" %></span>
-          </div>
-        </div>
-
-        <div class="pingsafe-info-row">
-          <div class="pingsafe-info-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"/>
-              <polyline points="12 6 12 12 16 14"/>
-            </svg>
-          </div>
-          <div class="pingsafe-info-content">
-            <span class="pingsafe-info-label">Time</span>
-            <span class="pingsafe-info-value"><%= @Ping.heure&.strftime("%H:%M") || "N/A" %></span>
-          </div>
-        </div>
-
-        <div class="pingsafe-info-row">
-          <div class="pingsafe-info-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
-              <circle cx="12" cy="10" r="3"/>
-            </svg>
-          </div>
-          <div class="pingsafe-info-content">
-            <span class="pingsafe-info-label">Location</span>
-            <span class="pingsafe-info-value"><%= @Ping.latitude %>, <%= @Ping.longitude %></span>
-          </div>
-        </div>
-
-        <div class="pingsafe-info-row">
-          <div class="pingsafe-info-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
-              <circle cx="12" cy="7" r="4"/>
-            </svg>
-          </div>
-          <div class="pingsafe-info-content">
-            <span class="pingsafe-info-label">Reported by</span>
-            <span class="pingsafe-info-value"><%= @Ping.user.pseudo || @Ping.user.email %></span>
-          </div>
-        </div>
-      </div>
-
-      <% if @Ping.comment.present? %>
-        <div class="pingsafe-comment-card">
-          <h3 class="pingsafe-comment-title">Comment</h3>
-          <p class="pingsafe-comment-text"><%= @Ping.comment %></p>
-        </div>
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5 class="card-title">Location Information</h5>
+      <p><strong>Date:</strong> <%= @ping.date %></p>
+      <p><strong>Time:</strong> <%= @ping.heure %></p>
+      <p><strong>Latitude:</strong> <%= @ping.latitude %></p>
+      <p><strong>Longitude:</strong> <%= @ping.longitude %></p>
+      <% if @ping.comment.present? %>
+        <p><strong>Comment:</strong> <%= @ping.comment %></p>
       <% end %>
     </div>
   </div>
 
-  <div class="pingsafe-footer">
-    <%= render "shared/footer" %>
-  </div>
+  <% if @ping.photo.blank? %>
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Take a Picture</h5>
+        <p>Upload a photo to analyze the area and blur faces automatically.</p>
 
+        <%= form_with model: @ping, url: ping_path(@ping), method: :patch, local: true do |f| %>
+          <div class="mb-3">
+            <%= f.file_field :photo, accept: "image/*", capture: "camera", class: "form-control", required: true %>
+            <div class="form-text">This will open your camera on mobile devices</div>
+          </div>
+          <%= f.submit "Upload Photo & Analyze", class: "btn btn-primary" %>
+        <% end %>
+      </div>
+    </div>
+  <% else %>
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Photo</h5>
+        <% if @ping.blurred_photo_url.present? %>
+          <p class="text-success"> Faces have been automatically blurred</p>
+          <p><strong>Processed Photo:</strong> <%= @ping.blurred_photo_url %></p>
+        <% else %>
+          <p><strong>Original Photo:</strong> <%= @ping.photo %></p>
+          <p class="text-muted">Processing photo...</p>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @chat.present? %>
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Nearby Danger Sites Analysis</h5>
+        <% if @chat.danger_sites_json.present? %>
+          <div class="alert alert-warning">
+            <pre><%= JSON.pretty_generate(JSON.parse(@chat.danger_sites_json)) rescue @chat.danger_sites_json %></pre>
+          </div>
+        <% else %>
+          <p class="text-muted">Analyzing location for potential danger sites...</p>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Ask Questions About Your Location</h5>
+
+        <div class="messages mb-3">
+          <% @chat.messages.each do |message| %>
+            <div class="message <%= message.role == 'assistant' ? 'bg-light' : 'bg-primary text-white' %> p-2 mb-2 rounded">
+              <strong><%= message.role == 'assistant' ? 'AI' : 'You' %>:</strong>
+              <%= message.content %>
+            </div>
+          <% end %>
+        </div>
+
+        <%= form_with model: [:ping, @chat, Message.new], url: ping_chat_messages_path(@ping, @chat), local: true do |f| %>
+          <div class="mb-3">
+            <%= f.text_area :content, class: "form-control", placeholder: "Ask about safety, nearby locations, or any concerns...", rows: 3, required: true %>
+          </div>
+          <%= f.submit "Send Message", class: "btn btn-primary" %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <%= link_to "Back to All Pings", pings_path, class: "btn btn-secondary" %>
 </div>
