@@ -4,7 +4,13 @@ Rails.application.routes.draw do
 
   get "up" => "rails/health#show", as: :rails_health_check
 
-  resources :pings, only: [:create, :index, :show] do
+  resources :pages, only: :new do
+    collection do
+      get :home
+    end
+  end
+
+  resources :pings, only: [:new, :create, :index, :show, :update] do
     resources :chats, only: :create do
       resources :messages, only: :create
     end
@@ -12,6 +18,4 @@ Rails.application.routes.draw do
     resources :levels, only: [:index, :show]
     resources :rewards, only: [:index, :show]
   end
-
-
 end

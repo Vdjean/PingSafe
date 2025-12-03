@@ -39,22 +39,39 @@
           </div>
         <% end %>
 
-        <%= link_to '#', class: 'pingsafe-action-card pingsafe-card-square pingsafe-card-secondary' do %>
-          <div class="pingsafe-card-icon pingsafe-icon-secondary">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-            </svg>
-          </div>
-          <div class="pingsafe-card-content">
-            <h3 class="pingsafe-card-title">Details</h3>
-            <p class="pingsafe-card-description">Fill the form</p>
-          </div>
-        <% end %>
-      </div>
-
-      <%= render "shared/alert" %>
+<div class="pingsafe-card-grid pingsafe-card-grid-horizontal">
+  <%= link_to new_ping_path(camera: true), class: 'pingsafe-action-card pingsafe-card-square pingsafe-card-primary' do %>
+    <div class="pingsafe-card-icon pingsafe-icon-primary">
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m22 8-6 4 6 4V8Z"/>
+        <rect width="14" height="12" x="2" y="6" rx="2" ry="2"/>
+      </svg>
     </div>
-  </div>
+    <div class="pingsafe-card-content">
+      <h3 class="pingsafe-card-title">Pinger</h3>
+      <p class="pingsafe-card-description">Take a picture</p>
+    </div>
+  <% end %>
+
+  <%= link_to new_ping_path, class: 'pingsafe-action-card pingsafe-card-square pingsafe-card-secondary' do %>
+    <div class="pingsafe-card-icon pingsafe-icon-secondary">
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      </svg>
+    </div>
+    <div class="pingsafe-card-content">
+      <h3 class="pingsafe-card-title">Details</h3>
+      <p class="pingsafe-card-description">Fill the form</p>
+    </div>
+  <% end %>
+</div>
+ <%= render "shared/alert" %>
+</div>
+
+ <div class="pingsafe-footer" data-map-footer-target="footer">
+  <%= render "shared/footer" %>
+</div>
+
 
   <div class="pingsafe-footer" data-map-footer-target="footer">
     <%= render "shared/footer" %>

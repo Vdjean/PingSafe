@@ -1,24 +1,94 @@
-<div class="pingsafe-footer" data-map-footer-target="footer">
-  <nav class="pingsafe-nav">
-    <%= link_to '#', class: 'pingsafe-nav-item pingsafe-nav-item-active' do %>
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="10"/>
-        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-        <path d="M12 17h.01"/>
-      </svg>
-      <span>FAQ</span>
-    <% end %>
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Ping Details</h1>
+    <%= button_to "Refresh", ping_path(@ping), method: :get, class: "btn btn-sm btn-outline-primary" %>
+  </div>
 
-    <%= link_to root_path, class: 'pingsafe-nav-item' do %>
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-        <circle cx="12" cy="10" r="3"/>
-      </svg>
-      <span>Location</span>
-    <% end %>
+  <% if @ping.photo.present? && (@ping.blurred_photo_url.blank? || (@chat.present? && @chat.danger_sites_json.blank?)) %>
+    <div class="alert alert-info">
+      <i class="fa fa-spinner fa-spin"></i> AI is analyzing your photo and location... Refresh the page in a few seconds to see the results.
+    </div>
+  <% end %>
 
-    <%= button_tag type: 'button', class: 'pingsafe-nav-sos' do %>
-      <span>SOS</span>
-    <% end %>
-  </nav>
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5 class="card-title">Location Information</h5>
+      <p><strong>Date:</strong> <%= @ping.date %></p>
+      <p><strong>Time:</strong> <%= @ping.heure %></p>
+      <p><strong>Latitude:</strong> <%= @ping.latitude %></p>
+      <p><strong>Longitude:</strong> <%= @ping.longitude %></p>
+      <% if @ping.comment.present? %>
+        <p><strong>Comment:</strong> <%= @ping.comment %></p>
+      <% end %>
+    </div>
+  </div>
+
+  <% if @ping.photo.blank? %>
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Take a Picture</h5>
+        <p>Upload a photo to analyze the area and blur faces automatically.</p>
+
+        <%= form_with model: @ping, url: ping_path(@ping), method: :patch, local: true do |f| %>
+          <div class="mb-3">
+            <%= f.file_field :photo, accept: "image/*", capture: "camera", class: "form-control", required: true %>
+            <div class="form-text">This will open your camera on mobile devices</div>
+          </div>
+          <%= f.submit "Upload Photo & Analyze", class: "btn btn-primary" %>
+        <% end %>
+      </div>
+    </div>
+  <% else %>
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Photo</h5>
+        <% if @ping.blurred_photo_url.present? %>
+          <p class="text-success"> Faces have been automatically blurred</p>
+          <p><strong>Processed Photo:</strong> <%= @ping.blurred_photo_url %></p>
+        <% else %>
+          <p><strong>Original Photo:</strong> <%= @ping.photo %></p>
+          <p class="text-muted">Processing photo...</p>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @chat.present? %>
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Nearby Danger Sites Analysis</h5>
+        <% if @chat.danger_sites_json.present? %>
+          <div class="alert alert-warning">
+            <pre><%= JSON.pretty_generate(JSON.parse(@chat.danger_sites_json)) rescue @chat.danger_sites_json %></pre>
+          </div>
+        <% else %>
+          <p class="text-muted">Analyzing location for potential danger sites...</p>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Ask Questions About Your Location</h5>
+
+        <div class="messages mb-3">
+          <% @chat.messages.each do |message| %>
+            <div class="message <%= message.role == 'assistant' ? 'bg-light' : 'bg-primary text-white' %> p-2 mb-2 rounded">
+              <strong><%= message.role == 'assistant' ? 'AI' : 'You' %>:</strong>
+              <%= message.content %>
+            </div>
+          <% end %>
+        </div>
+
+        <%= form_with model: [:ping, @chat, Message.new], url: ping_chat_messages_path(@ping, @chat), local: true do |f| %>
+          <div class="mb-3">
+            <%= f.text_area :content, class: "form-control", placeholder: "Ask about safety, nearby locations, or any concerns...", rows: 3, required: true %>
+          </div>
+          <%= f.submit "Send Message", class: "btn btn-primary" %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <%= link_to "Back to All Pings", pings_path, class: "btn btn-secondary" %>
 </div>

@@ -1,44 +1,48 @@
-<div class="pingsafe-content-scrollable" style="margin-top: 80px;">
-    <div class="pingsafe-pings-header">
-      <h1 class="title">Your Pings</h1>
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>My Pings</h1>
+    <%= link_to "Create New Ping", new_ping_path, class: "btn btn-primary" %>
+  </div>
+
+  <% if @pings.any? %>
+    <div class="row">
+      <% @pings.order(created_at: :desc).each do |ping| %>
+        <div class="col-md-6 mb-3">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">
+                Ping from <%= ping.date.strftime("%B %d, %Y") if ping.date %>
+              </h5>
+              <p class="card-text">
+                <strong>Time:</strong> <%= ping.heure.strftime("%H:%M") if ping.heure %><br>
+                <strong>Location:</strong> <%= ping.latitude %>, <%= ping.longitude %><br>
+                <% if ping.comment.present? %>
+                  <strong>Comment:</strong> <%= truncate(ping.comment, length: 100) %>
+                <% end %>
+              </p>
+
+              <% if ping.chat.present? %>
+                <span class="badge bg-success">Analyzed</span>
+              <% elsif ping.photo.present? %>
+                <span class="badge bg-warning">Processing...</span>
+              <% else %>
+                <span class="badge bg-secondary">No Photo</span>
+              <% end %>
+
+              <div class="mt-3">
+                <%= link_to "View Details", ping_path(ping), class: "btn btn-sm btn-primary" %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
     </div>
-</div>
-
-<div class="pings-list">
-  <% @Pings.each do |ping| %>
-    <div class="ping-item">
-      <h2>Ping #<%= ping.id %></h2>
-      <p><strong>Date:</strong> <%= ping.date %></p>
-      <p><strong>Time:</strong> <%= ping.time %></p>
-      <p><strong>Comment:</strong> <%= ping.comment %></p>
-      <p><strong>Latitude:</strong> <%= ping.latitude %></p>
-      <p><strong>Longitude:</strong> <%= ping.longitude %></p>
-
+  <% else %>
+    <div class="alert alert-info">
+      <h4>No pings yet</h4>
+      <p>Start by creating your first ping! Click "Create New Ping" to get started.</p>
     </div>
   <% end %>
-</div>
 
-<div class="pingsafe-footer" data-map-footer-target="footer">
-  <nav class="pingsafe-nav">
-    <%= link_to '#', class: 'pingsafe-nav-item pingsafe-nav-item-active' do %>
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="10"/>
-        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-        <path d="M12 17h.01"/>
-      </svg>
-      <span>FAQ</span>
-    <% end %>
-
-    <%= link_to root_path, class: 'pingsafe-nav-item' do %>
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
-        <circle cx="12" cy="10" r="3"/>
-      </svg>
-      <span>Location</span>
-    <% end %>
-
-    <%= button_tag type: 'button', class: 'pingsafe-nav-sos' do %>
-      <span>SOS</span>
-    <% end %>
-  </nav>
+  <%= link_to "Back to Home", root_path, class: "btn btn-secondary mt-3" %>
 </div>
