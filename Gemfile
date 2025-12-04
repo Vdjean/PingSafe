@@ -84,3 +84,6 @@ gem "ruby_llm", "~> 1.2.0"
 # Image processing
 gem "mini_magick"
 gem "httparty"
+
+# Geocoding
+gem "geocoder"
