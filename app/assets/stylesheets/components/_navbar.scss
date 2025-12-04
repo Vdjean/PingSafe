@@ -27,8 +27,8 @@
 }
 
 .pingsafe-nav-sos {
-  width: 4rem;
-  height: 4rem;
+  width: 50px;
+  height: 50px;
   background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
   color: white;
   border: none;
@@ -36,7 +36,7 @@
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
   transition: all 0.2s ease;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 1rem;
 
   &:active {
@@ -74,7 +74,6 @@
   width: 100%;
   z-index: 4;
 
-  // On desktop, constrain to mobile width
   @media (min-width: 769px) {
     max-width: 430px;
     left: 50%;
@@ -84,7 +83,7 @@
 
 .pingsafe-nav {
   background: white;
-  padding: 0.75rem 1.25rem 1.5rem;
+  padding: 0.70.25rem 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-around;
