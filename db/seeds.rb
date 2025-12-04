@@ -46,7 +46,7 @@ sara = User.create!(
   last_name: "Spadari",
   pseudo: "sara_d",
   phone: "0612345678",
-  score: 450
+  score: 450,
 )
 
 matteo = User.create!(
