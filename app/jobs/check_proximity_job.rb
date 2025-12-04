@@ -1,5 +1,5 @@
 # DÉSACTIVÉ TEMPORAIREMENT - Check proximity for push notifications
-# class CheckProximityJob < ApplicationJob
+class CheckProximityJob < ApplicationJob
 #   queue_as :default
 #
 #   def perform(user_id, latitude, longitude)
@@ -27,4 +27,4 @@
 #       SendPushNotificationJob.perform_later(user_id, ping.id, latitude, longitude)
 #     end
 #   end
-# end
+end
