@@ -85,5 +85,3 @@ gem "web-push"
 gem "mini_magick"
 gem "httparty"
 
-# Geocoding
-gem "geocoder"
