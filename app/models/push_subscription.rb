@@ -1,5 +1,5 @@
 # DÉSACTIVÉ TEMPORAIREMENT - Push subscription model
-# class PushSubscription < ApplicationRecord
+class PushSubscription < ApplicationRecord
 #   belongs_to :user
 #
 #   validates :endpoint, presence: true, uniqueness: true
@@ -13,4 +13,4 @@
 #       last_location_at: Time.current
 #     )
 #   end
-# end
+ end
