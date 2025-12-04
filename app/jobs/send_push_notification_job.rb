@@ -1,5 +1,5 @@
 # DÉSACTIVÉ TEMPORAIREMENT - Web Push notifications
-# class SendPushNotificationJob < ApplicationJob
+class SendPushNotificationJob < ApplicationJob
 #   queue_as :default
 #
 #   def perform(user_id, ping_id, user_lat, user_lng)
@@ -44,4 +44,4 @@
 #   rescue StandardError => e
 #     Rails.logger.error "Push notification failed: #{e.message}"
 #   end
-# end
+end

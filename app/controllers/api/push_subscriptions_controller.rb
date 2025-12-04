@@ -1,6 +1,6 @@
 # DÉSACTIVÉ TEMPORAIREMENT - Push subscriptions API
-# module Api
-#   class PushSubscriptionsController < ApplicationController
+module Api
+  class PushSubscriptionsController < ApplicationController
 #     before_action :authenticate_user!
 #     skip_before_action :verify_authenticity_token
 #
@@ -30,5 +30,5 @@
 #         render json: { success: false }, status: :not_found
 #       end
 #     end
-#   end
-# end
+  end
+end
