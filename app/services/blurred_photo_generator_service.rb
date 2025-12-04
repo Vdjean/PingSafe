@@ -6,7 +6,7 @@ require 'tempfile'
 class BlurredPhotoGeneratorService
   include HTTParty
 
-  AZURE_VISION_ENDPOINT = ENV['AZURE_VISION_ENDPOINT'] || 'https://YOUR_RESOURCE_NAME.cognitiveservices.azure.com'
+  AZURE_VISION_ENDPOINT = ENV['AZURE_VISION_ENDPOINT'] || 'https://PingSafe-photo.cognitiveservices.azure.com'
   AZURE_VISION_KEY = ENV['AZURE_VISION_KEY'] || ENV['GITHUB_TOKEN']
 
   def initialize(base64_image)
@@ -50,7 +50,7 @@ class BlurredPhotoGeneratorService
 
   def detect_faces_with_azure(image_data)
     # Check if Azure Vision endpoint is configured
-    if AZURE_VISION_ENDPOINT.include?('YOUR_RESOURCE_NAME')
+    if AZURE_VISION_ENDPOINT.include?('PingSafe-photo')
       Rails.logger.warn "Azure Computer Vision not configured, using fallback blur"
       return []
     end
@@ -81,11 +81,11 @@ class BlurredPhotoGeneratorService
 
   def parse_face_regions(azure_response)
     # Azure Face API returns array of face objects with faceRectangle
-    # Format: [{ "faceRectangle": { "left": x, "top": y, "width": w, "height": h } }]
+    Format: [{ "faceCircle": { "left": x, "top": y, "width": w, "height": h } }]
     return [] unless azure_response.is_a?(Array)
 
     azure_response.map do |face|
-      rect = face['faceRectangle']
+      rect = face['faceCircle']
       next unless rect
 
       {
@@ -116,7 +116,7 @@ class BlurredPhotoGeneratorService
         # Create a region and blur it
         image.combine_options do |c|
           c.region "#{width}x#{height}+#{x}+#{y}"
-          c.blur "0x20" # Gaussian blur with radius 20
+          c.blur "0x20" Gaussian blur with radius 20
         end
       end
 
