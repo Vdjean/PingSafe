@@ -81,7 +81,3 @@ gem "geocoder"
 gem "solid_queue"
 
 # gem "web-push" # Désactivé temporairement
-
-# Image processing
-gem "mini_magick"
-gem "httparty"
