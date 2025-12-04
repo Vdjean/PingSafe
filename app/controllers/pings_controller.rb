@@ -70,7 +70,7 @@ class PingsController < ApplicationController
   private
 
   def ping_params
-    params.require(:ping).permit(:date, :heure, :comment, :photo, :latitude, :longitude, :nombre_personnes, :signe_distinctif)
+    params.require(:ping).permit(:date, :heure, :comment, :photo, :latitude, :longitude, :address)
   end
 
   def create_chat_and_process(ping)
