@@ -78,7 +78,15 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  <<: *default
-  database: ping_safe_production
-  username: ping_safe
-  password: <%= ENV["PING_SAFE_DATABASE_PASSWORD"] %>
+  primary:
+    <<: *default
+    database: ping_safe_production
+    username: ping_safe
+    password: <%= ENV["PING_SAFE_DATABASE_PASSWORD"] %>
+    url: <%= ENV["DATABASE_URL"] %>
+  queue:
+    <<: *default
+    database: ping_safe_production
+    username: ping_safe
+    password: <%= ENV["PING_SAFE_DATABASE_PASSWORD"] %>
+    url: <%= ENV["DATABASE_URL"] %>
