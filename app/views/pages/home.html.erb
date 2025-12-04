@@ -1,10 +1,12 @@
 <div id="map"
        class="pingsafe-map-container pingsafe-map-tall"
-       data-controller="mapbox map-footer"
+       data-controller="mapbox map-footer service-worker"
        data-map-footer-target="map"
        data-mapbox-target="container"
        data-mapbox-access-token-value="<%= ENV['Default_public_token'] %>"
-       data-mapbox-pings-value="<%= @pings.to_json %>">
+       data-mapbox-pings-value="<%= @visible_pings.map { |p| { id: p.id, latitude: p.latitude, longitude: p.longitude, comment: p.comment, date: p.date, user_id: p.user_id, expires_at: (p.created_at + 15.minutes).iso8601 } }.to_json %>"
+       data-mapbox-current-user-id-value="<%= current_user&.id %>"
+       data-service-worker-vapid-public-key-value="<%= ENV['VAPID_PUBLIC_KEY'] %>">
   </div>
 
   <div class="pingsafe-lower-panel">
