@@ -6,6 +6,8 @@ Rails.application.routes.draw do
 
   get "profile", to: "pages#profile"
 
+  get "faq", to: "pages#faq"
+
   resources :pages, only: :new do
     collection do
       get :home

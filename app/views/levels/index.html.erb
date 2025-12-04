@@ -1,7 +1,6 @@
 <div class="pingsafe-mobile-wrapper">
   <div class="pingsafe-levels-container">
 
-    <!-- User Score Card -->
     <div class="pingsafe-score-card">
       <div class="pingsafe-score-header">
         <div class="pingsafe-score-avatar">
@@ -31,7 +30,6 @@
         </div>
       </div>
 
-      <!-- Current Level -->
       <% if @current_level %>
         <div class="pingsafe-current-level">
           <span class="pingsafe-level-badge pingsafe-level-current">
@@ -44,7 +42,6 @@
       <% end %>
     </div>
 
-    <!-- Stats Grid -->
     <div class="pingsafe-stats-section">
       <h3 class="pingsafe-section-subtitle">Statistics</h3>
       <div class="pingsafe-stats-grid-levels">
@@ -91,7 +88,6 @@
       </div>
     </div>
 
-    <!-- Levels List -->
     <div class="pingsafe-levels-section">
       <h3 class="pingsafe-section-subtitle">All Levels</h3>
 
@@ -155,7 +151,6 @@
       <% end %>
     </div>
 
-    <!-- Rewards Section -->
     <% if current_user.user_rewards.any? %>
       <div class="pingsafe-rewards-section">
         <h3 class="pingsafe-section-subtitle">Your Rewards</h3>
