@@ -1,6 +1,9 @@
 class Ping < ApplicationRecord
+  reverse_geocoded_by :latitude, :longitude
+
   belongs_to :user
   has_one :chat, dependent: :destroy
+  has_many :proximity_notifications, dependent: :destroy
 
   validates :date, presence: true
   validates :heure, presence: true
@@ -14,7 +17,6 @@ class Ping < ApplicationRecord
   # Virtual attributes for form fields
   attr_accessor :nombre_personnes, :signe_distinctif
 
-  # Combine virtual attributes into comment before saving
   before_save :combine_form_fields
 
   # Get formatted address for display (street, city, zip)
@@ -49,5 +51,12 @@ class Ping < ApplicationRecord
     parts << "Comments: #{comment}" if comment.present?
 
     self.comment = parts.join("\n") if parts.any?
+  end
+
+  def broadcast_if_shared
+    return unless saved_change_to_shared_at? && shared_at.present?
+
+    BroadcastPingJob.perform_later(self)
+    ExpirePingJob.set(wait: 15.minutes).perform_later(id)
   end
 end
