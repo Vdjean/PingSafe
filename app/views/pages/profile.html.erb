@@ -16,6 +16,7 @@
         <% end %>
       </div>
 
+
       <h2 class="pingsafe-profile-name">
         <% if current_user.pseudo.present? %>
           <%= current_user.pseudo %>
@@ -38,9 +39,16 @@
           <span><%= current_user.score %> points</span>
         </div>
       <% end %>
-    </div>
+      <div class="pingsafe-form-links">
+       <%= link_to "Edit my account", edit_user_registration_path %>
+        </div>
+           <div class="pingsafe-form-links">
+             <%= link_to "Change my password", edit_user_password_path %>
+             </div>
 
+    </div>
     <div class="pingsafe-profile-menu">
+
 
       <%= link_to pings_path, class: 'pingsafe-profile-item' do %>
         <div class="pingsafe-profile-item-content">

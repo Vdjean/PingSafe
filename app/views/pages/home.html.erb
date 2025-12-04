@@ -1,24 +1,14 @@
 <div id="map"
        class="pingsafe-map-container pingsafe-map-tall"
-       data-controller="map-footer"
-       data-map-footer-target="map">
-    <div class="pingsafe-map-overlay">
-      <div class="pingsafe-location-marker">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
-          <circle cx="12" cy="10" r="3"/>
-        </svg>
-      </div>
-      <div class="pingsafe-map-label">
-        <p class="pingsafe-map-label-subtitle">Your location</p>
-        <p class="pingsafe-map-label-title">Downtown</p>
-      </div>
-    </div>
+       data-controller="mapbox map-footer"
+       data-map-footer-target="map"
+       data-mapbox-target="container"
+       data-mapbox-access-token-value="<%= ENV['Default_public_token'] %>"
+       data-mapbox-pings-value="<%= @pings.to_json %>">
   </div>
 
   <div class="pingsafe-lower-panel">
     <div class="pingsafe-content">
-      <h2 class="pingsafe-section-title">Quick actions</h2>
 
 <div class="pingsafe-card-grid pingsafe-card-grid-horizontal">
   <%= link_to new_ping_path(camera: true), class: 'pingsafe-action-card pingsafe-card-square pingsafe-card-primary' do %>

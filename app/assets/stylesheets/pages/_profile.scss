@@ -1,7 +1,6 @@
 $blue: #1e3a5f;
 $desktop-min: 769px;
 
-/* === PROFILE CONTAINER === */
 .pingsafe-profile-container {
   padding: 80px 16px 100px;
   min-height: 100vh;
@@ -13,7 +12,6 @@ $desktop-min: 769px;
   }
 }
 
-/* === PROFILE HEADER === */
 .pingsafe-profile-header {
   text-align: center;
   padding: 2rem 0 2.5rem;
@@ -91,7 +89,6 @@ $desktop-min: 769px;
   }
 }
 
-/* === PROFILE MENU === */
 .pingsafe-profile-menu {
   background: white;
   border-radius: 1.5rem;
@@ -194,7 +191,6 @@ $desktop-min: 769px;
   transition: transform 0.2s ease;
 }
 
-/* === LOGOUT SECTION === */
 .pingsafe-profile-logout-section {
   padding: 0 1rem;
 }
