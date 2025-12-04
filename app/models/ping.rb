@@ -21,6 +21,7 @@ class Ping < ApplicationRecord
   attr_accessor :nombre_personnes, :signe_distinctif
 
   before_save :combine_form_fields
+  after_update_commit :broadcast_if_shared
 
   # Get formatted address for display (street, city, zip)
   def formatted_address
