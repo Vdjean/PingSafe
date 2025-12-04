@@ -1,5 +1,16 @@
-<div class="container">
-  <h1>Create New Ping</h1>
+<div class="pingsafe-mobile-wrapper">
+
+  <div class="pingsafe-pings-container">
+
+    <div class="pingsafe-pings-header">
+      <h1 class="pingsafe-pings-title">Create New Ping</h1>
+      <%= link_to pings_path, class: 'pingsafe-btn-create' do %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+        <span>Back</span>
+      <% end %>
+    </div>
 
   <%= form_with model: @ping, local: true, html: { id: 'ping-form', multipart: true } do |f| %>
     <% if @ping.errors.any? %>
@@ -14,19 +25,17 @@
     <% end %>
 
     <!-- Date/Time Configuration -->
-    <div class="card mb-3">
-      <div class="card-body">
-        <h5 class="card-title">Date & Time</h5>
+    <div class="pingsafe-form-card">
+      <h5 class="pingsafe-form-title">Date & Time</h5>
 
-        <div class="mb-3">
-          <%= f.label :date, class: "form-label" %>
-          <%= f.date_field :date, class: "form-control", value: Date.today, required: true %>
-        </div>
+      <div class="pingsafe-form-group">
+        <%= f.label :date, class: "pingsafe-form-label" %>
+        <%= f.date_field :date, class: "pingsafe-form-control", value: Date.today, required: true %>
+      </div>
 
-        <div class="mb-3">
-          <%= f.label :heure, "Time", class: "form-label" %>
-          <%= f.time_field :heure, class: "form-control", value: Time.now.strftime("%H:%M"), required: true %>
-        </div>
+      <div class="pingsafe-form-group">
+        <%= f.label :heure, "Time", class: "pingsafe-form-label" %>
+        <%= f.time_field :heure, class: "pingsafe-form-control", value: Time.now.strftime("%H:%M"), required: true %>
       </div>
     </div>
 
@@ -77,38 +86,36 @@
       </div>
 
       <!-- Additional Information Form -->
-      <div class="card mb-3" id="details-form" style="display: none;">
-        <div class="card-body">
-          <h5 class="card-title">Details</h5>
+      <div class="pingsafe-form-card" id="details-form" style="display: none;">
+        <h5 class="pingsafe-form-title">Details</h5>
 
-          <div class="mb-3">
-            <%= f.label :nombre_personnes, "Number of Persons", class: "form-label" %>
-            <%= f.number_field :nombre_personnes,
-                              class: "form-control",
-                              placeholder: "How many people are involved?",
-                              id: "nombre-personnes-input",
-                              min: 0 %>
-            <div class="form-text">Enter the number of persons</div>
-          </div>
+        <div class="pingsafe-form-group">
+          <%= f.label :nombre_personnes, "Number of Persons", class: "pingsafe-form-label" %>
+          <%= f.number_field :nombre_personnes,
+                            class: "pingsafe-form-control",
+                            placeholder: "How many people are involved?",
+                            id: "nombre-personnes-input",
+                            min: 0 %>
+          <div class="pingsafe-form-text">Enter the number of persons</div>
+        </div>
 
-          <div class="mb-3">
-            <%= f.label :signe_distinctif, "Distinguishing Sign", class: "form-label" %>
-            <%= f.text_field :signe_distinctif,
-                            class: "form-control",
-                            id: "signe-distinctif-input",
-                            placeholder: "Any distinctive features or signs..." %>
-            <div class="form-text">Describe any distinguishing characteristics</div>
-          </div>
+        <div class="pingsafe-form-group">
+          <%= f.label :signe_distinctif, "Distinguishing Sign", class: "pingsafe-form-label" %>
+          <%= f.text_field :signe_distinctif,
+                          class: "pingsafe-form-control",
+                          id: "signe-distinctif-input",
+                          placeholder: "Any distinctive features or signs..." %>
+          <div class="pingsafe-form-text">Describe any distinguishing characteristics</div>
+        </div>
 
-          <div class="mb-3">
-            <%= f.label :comment, "Comments", class: "form-label" %>
-            <%= f.text_area :comment,
-                           class: "form-control",
-                           id: "additional-comments-input",
-                           rows: 4,
-                           placeholder: "Add any additional details or context..." %>
-            <div class="form-text">Additional information about the situation</div>
-          </div>
+        <div class="pingsafe-form-group">
+          <%= f.label :comment, "Comments", class: "pingsafe-form-label" %>
+          <%= f.text_area :comment,
+                         class: "pingsafe-form-control",
+                         id: "additional-comments-input",
+                         rows: 4,
+                         placeholder: "Add any additional details or context..." %>
+          <div class="pingsafe-form-text">Additional information about the situation</div>
         </div>
       </div>
     <% else %>
@@ -118,38 +125,36 @@
       </div>
 
       <!-- Details Form (No Camera Mode) -->
-      <div class="card mb-3" id="details-form">
-        <div class="card-body">
-          <h5 class="card-title">Details</h5>
+      <div class="pingsafe-form-card" id="details-form">
+        <h5 class="pingsafe-form-title">Details</h5>
 
-          <div class="mb-3">
-            <%= f.label :nombre_personnes, "Number of Persons", class: "form-label" %>
-            <%= f.number_field :nombre_personnes,
-                              class: "form-control",
-                              placeholder: "How many people are involved?",
-                              id: "nombre-personnes-input",
-                              min: 0 %>
-            <div class="form-text">Enter the number of persons</div>
-          </div>
+        <div class="pingsafe-form-group">
+          <%= f.label :nombre_personnes, "Number of Persons", class: "pingsafe-form-label" %>
+          <%= f.number_field :nombre_personnes,
+                            class: "pingsafe-form-control",
+                            placeholder: "How many people are involved?",
+                            id: "nombre-personnes-input",
+                            min: 0 %>
+          <div class="pingsafe-form-text">Enter the number of persons</div>
+        </div>
 
-          <div class="mb-3">
-            <%= f.label :signe_distinctif, "Distinguishing Sign", class: "form-label" %>
-            <%= f.text_field :signe_distinctif,
-                            class: "form-control",
-                            id: "signe-distinctif-input",
-                            placeholder: "Any distinctive features or signs..." %>
-            <div class="form-text">Describe any distinguishing characteristics</div>
-          </div>
+        <div class="pingsafe-form-group">
+          <%= f.label :signe_distinctif, "Distinguishing Sign", class: "pingsafe-form-label" %>
+          <%= f.text_field :signe_distinctif,
+                          class: "pingsafe-form-control",
+                          id: "signe-distinctif-input",
+                          placeholder: "Any distinctive features or signs..." %>
+          <div class="pingsafe-form-text">Describe any distinguishing characteristics</div>
+        </div>
 
-          <div class="mb-3">
-            <%= f.label :comment, "Comments", class: "form-label" %>
-            <%= f.text_area :comment,
-                           class: "form-control",
-                           id: "additional-comments-input",
-                           rows: 4,
-                           placeholder: "Add any additional details or context..." %>
-            <div class="form-text">Additional information about the situation</div>
-          </div>
+        <div class="pingsafe-form-group">
+          <%= f.label :comment, "Comments", class: "pingsafe-form-label" %>
+          <%= f.text_area :comment,
+                         class: "pingsafe-form-control",
+                         id: "additional-comments-input",
+                         rows: 4,
+                         placeholder: "Add any additional details or context..." %>
+          <div class="pingsafe-form-text">Additional information about the situation</div>
         </div>
       </div>
     <% end %>
@@ -158,12 +163,13 @@
     <%= f.hidden_field :latitude, id: "latitude-input" %>
     <%= f.hidden_field :longitude, id: "longitude-input" %>
 
-    <div class="d-grid gap-2">
-      <%= f.submit "Create Ping & Analyze", class: "btn btn-success btn-lg", id: "submit-btn", disabled: true, style: params[:camera] == "true" ? "display: none;" : "" %>
-      <%= link_to "Cancel", root_path, class: "btn btn-outline-secondary" %>
+    <div class="pingsafe-form-actions">
+      <%= f.submit "Create Ping & Analyze", class: "pingsafe-btn-submit", id: "submit-btn", disabled: true, style: params[:camera] == "true" ? "display: none;" : "" %>
+      <%= link_to "Cancel", root_path, class: "pingsafe-btn-cancel" %>
     </div>
   <% end %>
-</div>
+
+  </div>
 
 <script>
   let locationCaptured = false;
@@ -191,8 +197,6 @@
     const submitBtn = document.getElementById('submit-btn');
     if (submitBtn) {
       submitBtn.disabled = false;
-      submitBtn.classList.remove('btn-secondary');
-      submitBtn.classList.add('btn-success');
     }
   }
 
@@ -200,8 +204,6 @@
     const submitBtn = document.getElementById('submit-btn');
     if (submitBtn) {
       submitBtn.disabled = true;
-      submitBtn.classList.remove('btn-success');
-      submitBtn.classList.add('btn-secondary');
     }
   }
 
@@ -432,6 +434,7 @@
   });
 </script>
 
-<div class="pingsafe-footer" data-map-footer-target="footer">
-  <%= render "shared/footer2" %>
+  <div class="pingsafe-footer" data-map-footer-target="footer">
+    <%= render "shared/footer" %>
+  </div>
 </div>

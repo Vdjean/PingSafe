@@ -1,20 +1,46 @@
-<div class="container">
-<h2>Forgot your password?</h2>
+<div class="pingsafe-mobile-wrapper">
+  <div class="pingsafe-form-container">
+    <div class="pingsafe-form-card">
 
-<%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-  <%= f.error_notification %>
-
-  <div class="form-inputs">
-    <%= f.input :email,
-                required: true,
-                autofocus: true,
-                input_html: { autocomplete: "email" } %>
+  <div class="pingsafe-form-header">
+    <h2 class="pingsafe-form-title">Forgot your password?</h2>
   </div>
 
-  <div class="form-actions">
-    <%= f.button :submit, "Send me reset password instructions" %>
+<%= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: "pingsafe-form" }) do |f| %>
+  <%= f.error_notification class: "pingsafe-form-error" %>
+
+  <div class="pingsafe-form-inputs">
+              <div class="pingsafe-form-group">
+            <%= f.label :email, class: 'pingsafe-form-label' do %>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="4" width="20" height="16" rx="2"/>
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+              </svg>
+              <span>Email</span>
+            <% end %>
+            <%= f.input_field :email,
+                          required: true,
+                          autofocus: true,
+                          placeholder: "your@email.com",
+                          class: 'pingsafe-form-input',
+                          input_html: { autocomplete: "email" } %>
+            <%= f.error :email, class: 'pingsafe-input-error' %>
+          </div>
+</div>
+    <div class="pingsafe-form-actions">
+    <%= f.button :submit, "Send me reset password instructions", class: "pingsafe-form-submit" %>
   </div>
 <% end %>
 
-<%= render "devise/shared/links" %>
+ <div class="pingsafe-form-links">
+  <%= render "devise/shared/links" %>
+ </div>
+</div>
+
+   </div>
+  </div>
+
+  <div class="pingsafe-footer" data-map-footer-target="footer">
+    <%= render "shared/footer2" %>
+  </div>
 </div>

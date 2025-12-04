@@ -44,21 +44,14 @@ Retourne les résultats sous forme de liste structurée en JSON."
   private
 
   def process_photo_with_llm(ping)
-    llm_chat = RubyLLM.chat
-
-    # Call LLM to blur faces in the photo
-    response = llm_chat.completion(
-      messages: [
-        { role: "system", content: SYSTEM_PROMPT_PICTURE },
-        { role: "user", content: "Process this photo: #{ping.photo}" }
-      ]
-    )
-
-    # Store the blurred photo URL
-    blurred_url = response.dig("choices", 0, "message", "content")
-    ping.update(blurred_photo_url: blurred_url)
+    # Use BlurredPhotoGeneratorService to detect faces and blur them
+    blurred_image = BlurredPhotoGeneratorService.blur_faces(ping.photo)
+    ping.update(blurred_photo_url: blurred_image)
+    Rails.logger.info "Successfully blurred faces in photo for ping #{ping.id}"
   rescue => e
     Rails.logger.error "Error processing photo: #{e.message}"
+    # Store original photo as fallback
+    ping.update(blurred_photo_url: ping.photo)
   end
 
   def process_location_with_llm(ping, chat)

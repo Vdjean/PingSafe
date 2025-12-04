@@ -1,4 +1,3 @@
-// Main mobile app container - simulates a mobile device on all screens
 .pingsafe-mobile-app-container {
   min-height: 100vh;
   background-color: #f9fafb;
@@ -8,7 +7,6 @@
   margin: 0 auto;
   position: relative;
 
-  // On desktop, constrain to mobile width and center
   @media (min-width: 769px) {
     max-width: 430px;
     box-shadow: 0 0 50px rgba(0, 0, 0, 0.2);
@@ -16,7 +14,6 @@
   }
 }
 
-// Content wrapper for pages
 .pingsafe-content-wrapper {
   flex: 1;
   display: flex;
@@ -27,7 +24,6 @@
   padding-bottom: 120px;
 }
 
-// Legacy container support
 .pingsafe-mobile-container {
   min-height: 100vh;
   background-color: #f9fafb;
