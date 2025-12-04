@@ -1,6 +1,4 @@
 class Ping < ApplicationRecord
-  reverse_geocoded_by :latitude, :longitude
-
   belongs_to :user
   has_one :chat, dependent: :destroy
   has_many :proximity_notifications, dependent: :destroy
@@ -9,6 +7,11 @@ class Ping < ApplicationRecord
   validates :heure, presence: true
   validates :latitude, presence: true
   validates :longitude, presence: true
+
+  # Scopes for visibility
+  scope :active, -> { where("created_at > ?", 15.minutes.ago) }
+  scope :shared, -> { where.not(shared_at: nil) }
+  scope :visible, -> { active.shared }
 
   # Geocoding
   reverse_geocoded_by :latitude, :longitude
