@@ -1,6 +1,6 @@
 # DÉSACTIVÉ TEMPORAIREMENT - Location tracking for push notifications
 # module Api
-#   class LocationsController < ApplicationController
+   class LocationsController < ApplicationController
 #     before_action :authenticate_user!
 #     skip_before_action :verify_authenticity_token
 #
@@ -20,5 +20,5 @@
 #
 #       render json: { success: true }
 #     end
-#   end
+    end
 # end
