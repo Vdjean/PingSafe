@@ -6,9 +6,6 @@ require 'tempfile'
 class BlurredPhotoGeneratorService
   include HTTParty
 
-  # Azure Computer Vision endpoint for face detection
-  # Note: This is different from the LLM endpoint
-  # You may need to create a Computer Vision resource in Azure Portal
   AZURE_VISION_ENDPOINT = ENV['AZURE_VISION_ENDPOINT'] || 'https://YOUR_RESOURCE_NAME.cognitiveservices.azure.com'
   AZURE_VISION_KEY = ENV['AZURE_VISION_KEY'] || ENV['GITHUB_TOKEN']
 
@@ -126,54 +123,5 @@ class BlurredPhotoGeneratorService
       # Convert back to base64
       "data:image/jpeg;base64,#{Base64.strict_encode64(image.to_blob)}"
     end
-  end
-
-  def blur_center_region(image_data)
-    # Blur the center 60% of the image where faces typically appear
-    Tempfile.create(['original', '.jpg']) do |file|
-      file.binmode
-      file.write(image_data)
-      file.flush
-
-      image = MiniMagick::Image.open(file.path)
-
-      # Get image dimensions
-      width = image.width
-      height = image.height
-
-      # Calculate center region (60% of image)
-      blur_width = (width * 0.6).to_i
-      blur_height = (height * 0.6).to_i
-      blur_x = (width * 0.2).to_i
-      blur_y = (height * 0.2).to_i
-
-      # Apply strong blur to center region using region
-      image.combine_options do |c|
-        c.region "#{blur_width}x#{blur_height}+#{blur_x}+#{blur_y}"
-        c.blur "0x25"  # Strong Gaussian blur
-      end
-
-      "data:image/jpeg;base64,#{Base64.strict_encode64(image.to_blob)}"
-    end
-  rescue StandardError => e
-    Rails.logger.error "Center blur error: #{e.message}"
-    @base64_image # Return original as last resort
-  end
-
-  def blur_entire_image(image_data)
-    # Fallback: apply mild blur to entire image
-    Tempfile.create(['original', '.jpg']) do |file|
-      file.binmode
-      file.write(image_data)
-      file.flush
-
-      image = MiniMagick::Image.open(file.path)
-      image.blur "0x8" # Mild blur
-
-      "data:image/jpeg;base64,#{Base64.strict_encode64(image.to_blob)}"
-    end
-  rescue StandardError => e
-    Rails.logger.error "Fallback blur error: #{e.message}"
-    @base64_image # Return original as last resort
   end
 end
