@@ -1,7 +1,7 @@
 // DÉSACTIVÉ TEMPORAIREMENT - Service Worker pour Push Notifications
-// import { Controller } from "@hotwired/stimulus"
-//
-// export default class extends Controller {
+import { Controller } from "@hotwired/stimulus"
+
+export default class extends Controller {
 //   static values = {
 //     vapidPublicKey: String
 //   }
@@ -114,4 +114,4 @@
 //   disconnect() {
 //     if (this.locationInterval) clearInterval(this.locationInterval)
 //   }
-// }
+}
