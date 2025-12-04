@@ -10,15 +10,37 @@ class Ping < ApplicationRecord
   validates :latitude, presence: true
   validates :longitude, presence: true
 
-  scope :active, -> { where("created_at > ?", 15.minutes.ago) }
-  scope :shared, -> { where.not(shared_at: nil) }
-  scope :visible, -> { active.shared }
+  # Geocoding
+  reverse_geocoded_by :latitude, :longitude
+  after_validation :reverse_geocode, if: ->(obj) { obj.latitude.present? && obj.longitude.present? && obj.address.blank? }
 
+  # Virtual attributes for form fields
   attr_accessor :nombre_personnes, :signe_distinctif
 
   before_save :combine_form_fields
 
-  after_update_commit :broadcast_if_shared
+  # Get formatted address for display (street, city, zip)
+  def formatted_address
+    # If address is not yet populated, try to geocode now
+    if address.blank? && latitude.present? && longitude.present?
+      begin
+        result = Geocoder.search([latitude, longitude]).first
+        if result
+          parts = []
+          parts << result.street if result.street.present?
+          parts << result.city if result.city.present?
+          parts << result.postal_code if result.postal_code.present?
+          return parts.join(", ") if parts.any?
+        end
+      rescue
+        # If geocoding fails, fall back to coordinates
+      end
+      return "#{latitude.round(4)}, #{longitude.round(4)}"
+    end
+
+    # Return stored address or coordinates as fallback
+    address.presence || "#{latitude.round(4)}, #{longitude.round(4)}"
+  end
 
   private
 

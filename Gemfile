@@ -84,3 +84,6 @@ gem "web-push"
 # Image processing
 gem "mini_magick"
 gem "httparty"
+
+# Geocoding
+gem "geocoder"
