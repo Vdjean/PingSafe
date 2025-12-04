@@ -1,4 +1,4 @@
-import consumer from "./consumer"
+import consumer from "channels/consumer"
 
 // This channel will be initialized by the mapbox controller
 // Export the subscription creator for use in other controllers
