@@ -1,17 +1,24 @@
 class Ping < ApplicationRecord
+  reverse_geocoded_by :latitude, :longitude
+
   belongs_to :user
   has_one :chat, dependent: :destroy
+  has_many :proximity_notifications, dependent: :destroy
 
   validates :date, presence: true
   validates :heure, presence: true
   validates :latitude, presence: true
   validates :longitude, presence: true
 
-  # Virtual attributes for form fields
+  scope :active, -> { where("created_at > ?", 15.minutes.ago) }
+  scope :shared, -> { where.not(shared_at: nil) }
+  scope :visible, -> { active.shared }
+
   attr_accessor :nombre_personnes, :signe_distinctif
 
-  # Combine virtual attributes into comment before saving
   before_save :combine_form_fields
+
+  after_update_commit :broadcast_if_shared
 
   private
 
@@ -22,5 +29,12 @@ class Ping < ApplicationRecord
     parts << "Comments: #{comment}" if comment.present?
 
     self.comment = parts.join("\n") if parts.any?
+  end
+
+  def broadcast_if_shared
+    return unless saved_change_to_shared_at? && shared_at.present?
+
+    BroadcastPingJob.perform_later(self)
+    ExpirePingJob.set(wait: 15.minutes).perform_later(id)
   end
 end

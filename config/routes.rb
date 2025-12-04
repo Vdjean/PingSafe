@@ -6,6 +6,12 @@ Rails.application.routes.draw do
 
   get "profile", to: "pages#profile"
 
+  # API endpoints for push notifications and location tracking
+  namespace :api do
+    resources :push_subscriptions, only: [:create, :destroy]
+    resources :locations, only: [:create]
+  end
+
   resources :pages, only: :new do
     collection do
       get :home
