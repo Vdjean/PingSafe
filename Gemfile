@@ -80,4 +80,4 @@ gem "geocoder"
 
 gem "solid_queue"
 
-gem "web-push"
+# gem "web-push" # Désactivé temporairement

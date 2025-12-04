@@ -3,7 +3,8 @@ class Ping < ApplicationRecord
 
   belongs_to :user
   has_one :chat, dependent: :destroy
-  has_many :proximity_notifications, dependent: :destroy
+  # DÉSACTIVÉ TEMPORAIREMENT - Push notifications
+  # has_many :proximity_notifications, dependent: :destroy
 
   validates :date, presence: true
   validates :heure, presence: true
