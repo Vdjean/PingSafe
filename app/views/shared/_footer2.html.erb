@@ -17,8 +17,9 @@
       <span>Location</span>
     <% end %>
 
-    <%= button_tag type: 'button', class: 'pingsafe-nav-sos' do %>
-      <span>SOS</span>
-    <% end %>
+<%= button_tag type: 'button', class: 'pingsafe-nav-sos',
+      onclick: "window.location.href='tel:+3317'" do %>
+  <span>SOS</span>
+<% end %>
   </nav>
 </div>
