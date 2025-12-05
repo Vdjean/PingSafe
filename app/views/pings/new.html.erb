@@ -416,11 +416,10 @@
     }
   }
 
-  // Capture location when page loads (non-camera mode only)
+  // Capture location immediately when page loads (all modes)
   document.addEventListener('DOMContentLoaded', function() {
-    if (!cameraMode) {
-      captureLocation();
-    }
+    // Always capture location on page load
+    captureLocation();
 
     // Form validation before submit
     const form = document.getElementById('ping-form');
@@ -441,6 +440,13 @@
         photo: document.getElementById('photo-data') ? document.getElementById('photo-data').value.substring(0, 50) + '...' : 'none'
       });
     });
+  });
+
+  // Also trigger on Turbo load for SPA-like navigation
+  document.addEventListener('turbo:load', function() {
+    if (!locationCaptured) {
+      captureLocation();
+    }
   });
 </script>
 

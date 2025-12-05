@@ -166,3 +166,99 @@
 <div class="pingsafe-footer" data-map-footer-target="footer">
   <%= render "shared/footer2" %>
 </div>
+
+<!-- Share Success Modal -->
+<div id="shareSuccessModal" class="pingsafe-modal">
+  <div class="pingsafe-modal-overlay"></div>
+  <div class="pingsafe-modal-content">
+    <div class="pingsafe-modal-header">
+      <div class="pingsafe-modal-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+          <polyline points="22 4 12 14.01 9 11.01"/>
+        </svg>
+      </div>
+      <h2 class="pingsafe-modal-title">Congratulations!</h2>
+      <p class="pingsafe-modal-subtitle">Your ping has been shared with the community</p>
+    </div>
+
+    <div class="pingsafe-modal-body">
+      <div class="pingsafe-points-card">
+        <div class="pingsafe-points-earned">
+          <span class="pingsafe-points-label">Points Earned</span>
+          <span class="pingsafe-points-value" id="pointsEarned">+10</span>
+        </div>
+        <div class="pingsafe-score-total">
+          <span class="pingsafe-score-label">Total Score</span>
+          <span class="pingsafe-score-value" id="totalScore">0</span>
+        </div>
+      </div>
+
+      <div class="pingsafe-level-card" id="levelCard">
+        <div class="pingsafe-level-info">
+          <span class="pingsafe-level-label">Current Level</span>
+          <div class="pingsafe-level-display">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2v20m0-20l9 4v8a9 9 0 0 1-9 9 9 9 0 0 1-9-9V6l9-4z"/>
+            </svg>
+            <span id="currentLevel" class="pingsafe-level-number">1</span>
+          </div>
+        </div>
+
+        <div id="levelUpMessage" class="pingsafe-level-up" style="display: none;">
+          <div class="pingsafe-level-up-icon">🎉</div>
+          <p class="pingsafe-level-up-text">You leveled up!</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="pingsafe-modal-footer">
+      <button class="pingsafe-modal-btn" onclick="closeShareModal()">Continue</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function closeShareModal() {
+    const modal = document.getElementById('shareSuccessModal');
+    modal.classList.remove('pingsafe-modal-show');
+
+    // Redirect to homepage
+    window.location.href = '/';
+  }
+
+  // Function to show modal
+  function showShareModal() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const pointsEarned = urlParams.get('points_earned');
+    const newScore = urlParams.get('new_score');
+    const newLevel = urlParams.get('new_level');
+    const leveledUp = urlParams.get('leveled_up');
+
+    if (pointsEarned) {
+      // Update modal content
+      document.getElementById('pointsEarned').textContent = '+' + pointsEarned;
+      document.getElementById('totalScore').textContent = newScore;
+      document.getElementById('currentLevel').textContent = newLevel;
+
+      // Show level up message if applicable
+      if (leveledUp === 'true') {
+        document.getElementById('levelUpMessage').style.display = 'block';
+      } else {
+        document.getElementById('levelUpMessage').style.display = 'none';
+      }
+
+      // Show modal
+      const modal = document.getElementById('shareSuccessModal');
+      if (modal) {
+        setTimeout(function() {
+          modal.classList.add('pingsafe-modal-show');
+        }, 100);
+      }
+    }
+  }
+
+  // Listen to both DOMContentLoaded and Turbo events
+  document.addEventListener('DOMContentLoaded', showShareModal);
+  document.addEventListener('turbo:load', showShareModal);
+</script>
