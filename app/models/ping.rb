@@ -1,6 +1,4 @@
 class Ping < ApplicationRecord
-  reverse_geocoded_by :latitude, :longitude
-
   belongs_to :user
   has_one :chat, dependent: :destroy
   # DÉSACTIVÉ TEMPORAIREMENT - Push notifications
@@ -18,8 +16,46 @@ class Ping < ApplicationRecord
   attr_accessor :nombre_personnes, :signe_distinctif
 
   before_save :combine_form_fields
+  before_save :fetch_address_from_coordinates
 
   after_update_commit :broadcast_if_shared
+
+  # Get formatted address for display (street, city, zip)
+  def formatted_address
+    # Return coordinates if no lat/long
+    return "#{latitude.round(4)}, #{longitude.round(4)}" if latitude.blank? || longitude.blank?
+
+    # If we have a stored address, parse it to extract short format
+    if address.present?
+      return parse_short_address(address)
+    end
+
+    # Otherwise return coordinates
+    "#{latitude.round(4)}, #{longitude.round(4)}"
+  end
+
+  private
+
+  def parse_short_address(full_address)
+    # Try to extract street, city, and zip from full address
+    parts = full_address.split(',').map(&:strip)
+
+    # Try to find zip code (5 digits)
+    zip = parts.find { |p| p =~ /^\d{5}$/ }
+
+    if parts.length >= 3
+      # Usually format is: street, district, city, region, country, zip
+      # We want: street, city, zip
+      street = parts[0]
+      city = parts.find { |p| p =~ /Paris|^\d+e Arrondissement/ } || parts[-3]
+
+      result = [street, city, zip].compact.join(", ")
+      return result if result.present?
+    end
+
+    # Fallback to coordinates
+    "#{latitude.round(4)}, #{longitude.round(4)}"
+  end
 
   private
 
@@ -37,5 +73,22 @@ class Ping < ApplicationRecord
 
     BroadcastPingJob.perform_later(self)
     ExpirePingJob.set(wait: 15.minutes).perform_later(id)
+  end
+
+  def fetch_address_from_coordinates
+    return if latitude.blank? || longitude.blank?
+    return if address.present? # Don't re-fetch if already has address
+
+    begin
+      url = "https://nominatim.openstreetmap.org/reverse?format=json&lat=#{latitude}&lon=#{longitude}&zoom=18&addressdetails=1"
+      response = HTTParty.get(url, headers: { 'User-Agent' => 'PingSafe App' })
+
+      if response.success? && response['display_name']
+        self.address = response['display_name']
+      end
+    rescue => e
+      Rails.logger.error "Error fetching address: #{e.message}"
+      # Don't fail the save if address fetch fails
+    end
   end
 end
