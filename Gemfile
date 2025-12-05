@@ -80,4 +80,8 @@ gem "geocoder"
 
 gem "solid_queue"
 
+# Image processing for face blurring
+gem "mini_magick"
+gem "httparty"
+
 # gem "web-push" # Désactivé temporairement

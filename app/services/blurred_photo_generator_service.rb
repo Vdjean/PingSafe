@@ -6,7 +6,7 @@ require 'tempfile'
 class BlurredPhotoGeneratorService
   include HTTParty
 
-  AZURE_VISION_ENDPOINT = ENV['AZURE_VISION_ENDPOINT'] || 'https://YOUR_RESOURCE_NAME.cognitiveservices.azure.com'
+  AZURE_VISION_ENDPOINT = ENV['AZURE_VISION_ENDPOINT'] || 'https://pingsafe-photo.cognitiveservices.azure.com'
   AZURE_VISION_KEY = ENV['AZURE_VISION_KEY'] || ENV['GITHUB_TOKEN']
 
   def initialize(base64_image)
@@ -85,7 +85,7 @@ class BlurredPhotoGeneratorService
     return [] unless azure_response.is_a?(Array)
 
     azure_response.map do |face|
-      rect = face['faceRectangle']
+      rect = face['faceCircle'] || face['faceRectangle']
       next unless rect
 
       {
