@@ -20,17 +20,10 @@ class PingsController < ApplicationController
 
     if @ping.save
       # Create chat immediately
-      chat = Chat.create(ping: @ping)
+      Chat.create(ping: @ping)
 
-      # Process in a thread to avoid blocking the response
-      Thread.new do
-        Rails.application.executor.wrap do
-          if @ping.photo.present?
-            process_photo_with_llm(@ping)
-          end
-          process_location_with_llm(@ping, chat)
-        end
-      end
+      # Process in background job (replaces Thread.new)
+      ProcessPingJob.perform_later(@ping.id)
 
       redirect_to ping_path(@ping), notice: "Ping created successfully! Analysis in progress..."
     else
@@ -43,7 +36,7 @@ class PingsController < ApplicationController
 
     if @ping.update(ping_params)
       if params[:ping][:photo].present? && @ping.chat.nil?
-        create_chat_and_process(@ping)
+        ProcessPingJob.perform_later(@ping.id)
       end
 
       redirect_to ping_path(@ping), notice: "Photo uploaded and analysis started!"
@@ -55,14 +48,7 @@ class PingsController < ApplicationController
   def share
     @ping = Ping.find(params[:id])
 
-    # Mark ping as shared with the community
     @ping.update(shared_at: Time.current)
-
-    # TODO: In the future, notify users within 300m radius
-    # This could be implemented with:
-    # - Background job to find nearby users
-    # - Push notifications or in-app notifications
-    # - Email notifications
 
     redirect_to ping_path(@ping), notice: "Ping shared with the Pinger community within 300 meters!"
   end

@@ -127,6 +127,46 @@ ping4 = Ping.create!(
 )
 puts "Created #{Ping.count} pings"
 
+puts "Creating 3 shared pings near Saint-Maur, Père Lachaise, Parmentier..."
+
+# Ping près du métro Saint-Maur (ligne 3)
+ping_stmaur = Ping.create!(
+  user: sara,
+  date: Date.today,
+  heure: Time.current,
+  latitude: 48.8621,
+  longitude: 2.3818,
+  comment: "Individu suspect repéré près de la sortie du métro Saint-Maur",
+  shared_at: Time.current
+)
+Chat.create!(ping: ping_stmaur)
+
+# Ping près du métro Père Lachaise (lignes 2 et 3)
+ping_perelachaise = Ping.create!(
+  user: matteo,
+  date: Date.today,
+  heure: Time.current,
+  latitude: 48.8627,
+  longitude: 2.3863,
+  comment: "Pickpocket actif à l'entrée du cimetière Père Lachaise",
+  shared_at: Time.current
+)
+Chat.create!(ping: ping_perelachaise)
+
+# Ping près du métro Parmentier (ligne 3)
+ping_parmentier = Ping.create!(
+  user: victor,
+  date: Date.today,
+  heure: Time.current,
+  latitude: 48.8654,
+  longitude: 2.3747,
+  comment: "Vol à la tire signalé boulevard Voltaire près de Parmentier",
+  shared_at: Time.current
+)
+Chat.create!(ping: ping_parmentier)
+
+puts "Created 3 shared pings (visible on map)"
+
 puts ""
 puts "=" * 50
 puts "SEED COMPLETED!"
