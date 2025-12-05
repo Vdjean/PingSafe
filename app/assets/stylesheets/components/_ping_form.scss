@@ -1,0 +1,312 @@
+$blue: #1e3a5f;
+$desktop-min: 769px;
+
+/* === FORM PING CONTAINER === */
+.pingsafe-form-ping-container {
+  padding: 80px 16px 100px;
+  min-height: 100vh;
+  background-color: #f9fafb;
+
+  @media (min-width: $desktop-min) {
+    max-width: 480px;
+    margin: 0 auto;
+  }
+}
+
+/* === HEADER === */
+.pingsafe-form-ping-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.pingsafe-back-btn {
+  width: 40px;
+  height: 40px;
+  background: white;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease;
+  color: $blue;
+  text-decoration: none;
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transform: translateX(-2px);
+    }
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.pingsafe-form-ping-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+  text-align: center;
+  flex: 1;
+
+  @media (min-width: 400px) {
+    font-size: 1.5rem;
+  }
+}
+
+/* === FORM === */
+.pingsafe-ping-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* === FORM CARD === */
+.pingsafe-ping-form-card {
+  background: white;
+  border-radius: 1.25rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  border: 1px solid #f3f4f6;
+}
+
+.pingsafe-ping-form-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.pingsafe-ping-form-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  svg {
+    color: white;
+  }
+}
+
+.pingsafe-icon-calendar {
+  background: linear-gradient(135deg, $blue 0%, #2d5a8f 100%);
+}
+
+.pingsafe-icon-camera {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff8e72 100%);
+}
+
+.pingsafe-icon-details {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.pingsafe-ping-form-card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.pingsafe-ping-form-body {
+  padding: 1.25rem;
+}
+
+/* === PHOTO ACTIONS === */
+.pingsafe-photo-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.pingsafe-photo-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  border: none;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.pingsafe-photo-btn-primary {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff8e72 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+
+  @media (hover: hover) {
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(255, 107, 107, 0.4);
+    }
+  }
+}
+
+.pingsafe-photo-btn-secondary {
+  background: white;
+  color: $blue;
+  border: 2px solid $blue;
+
+  @media (hover: hover) {
+    &:hover {
+      background: #f0f7ff;
+    }
+  }
+}
+
+/* === PHOTO PREVIEW === */
+.pingsafe-photo-preview {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.pingsafe-photo-preview-img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 0.75rem;
+  margin-bottom: 0.75rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.pingsafe-photo-success {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #f0fdf4;
+  color: #166534;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 1px solid #bbf7d0;
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+/* === LOCATION STATUS === */
+.pingsafe-location-status {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: white;
+  padding: 1rem 1.25rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  color: $blue;
+  font-size: 0.875rem;
+  font-weight: 500;
+
+  svg {
+    flex-shrink: 0;
+    color: $blue;
+  }
+}
+
+/* === FORM ACTIONS === */
+.pingsafe-ping-form-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.pingsafe-submit-ping {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+
+  &:disabled {
+    background: linear-gradient(135deg, #d1d5db 0%, #9ca3af 100%);
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  @media (hover: hover) {
+    &:not(:disabled):hover {
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    }
+  }
+}
+
+.pingsafe-form-cancel {
+  display: block;
+  text-align: center;
+  padding: 0.875rem;
+  color: #6b7280;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: $blue;
+  }
+}
+
+/* === ERROR DISPLAY === */
+.pingsafe-form-error {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 0.75rem;
+  color: #991b1b;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+
+  svg {
+    flex-shrink: 0;
+    color: #dc2626;
+  }
+
+  strong {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 1.25rem;
+
+    li {
+      margin-bottom: 0.25rem;
+    }
+  }
+}
+
+/* === UTILITIES === */
+.d-none {
+  display: none !important;
+}
