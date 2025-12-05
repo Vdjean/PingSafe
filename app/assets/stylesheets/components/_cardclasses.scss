@@ -1,12 +1,15 @@
 
 .pingsafe-card-grid {
-  display: grid;
+  display: flex;
   gap: 1rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.1rem;
+  justify-content: space-between;
 }
 
 .pingsafe-card-grid-horizontal {
   grid-template-columns: repeat(2, 1fr);
+  margin-left: 30px;
+  margin-right: 30px;
 }
 
 .pingsafe-action-card {
@@ -90,11 +93,58 @@
   font-size: 1.125rem;
   font-weight: 700;
   color: white;
-  margin: 0 0 0.25rem 0;
+  margin: 0;
 }
 
 .pingsafe-card-description {
   font-size: 0.875rem;
   color: rgba(255, 255, 255, 0.9);
   margin: 0;
+}
+
+.pingsafe-content {
+  margin-bottom: 40px;
+}
+
+
+  .pingsafe-faq-card {
+  align-items: center;
+  gap: 1rem;
+  background: white;
+  padding: 1.25rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  border: 2px solid #f3f4f6;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: #e5e7eb;
+    transition: all 0.3s ease;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      transform: translateX(4px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    }
+  }
+  }
+
+  .pingsafe-faq-container {
+  padding: 100px 16px 120px;
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #c7d8fe 0%, #f9fafb 30%);
+
+  @media (min-width: $desktop-min) {
+    max-width: 480px;
+    margin: 0 auto;
+  }
 }
