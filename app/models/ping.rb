@@ -11,8 +11,7 @@ class Ping < ApplicationRecord
   reverse_geocoded_by :latitude, :longitude
   after_validation :reverse_geocode, if: ->(obj) { obj.latitude.present? && obj.longitude.present? && obj.address.blank? }
 
-  # Virtual attributes for form fields
-  attr_accessor :nombre_personnes, :signe_distinctif
+
 
   # Combine virtual attributes into comment before saving
   before_save :combine_form_fields
@@ -44,8 +43,6 @@ class Ping < ApplicationRecord
 
   def combine_form_fields
     parts = []
-    parts << "Number of persons: #{nombre_personnes}" if nombre_personnes.present?
-    parts << "Distinguishing sign: #{signe_distinctif}" if signe_distinctif.present?
     parts << "Comments: #{comment}" if comment.present?
 
     self.comment = parts.join("\n") if parts.any?

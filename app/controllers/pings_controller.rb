@@ -23,14 +23,14 @@ class PingsController < ApplicationController
       chat = Chat.create(ping: @ping)
 
       # Process in a thread to avoid blocking the response
-      Thread.new do
-        Rails.application.executor.wrap do
-          if @ping.photo.present?
-            process_photo_with_llm(@ping)
-          end
-          process_location_with_llm(@ping, chat)
-        end
-      end
+      # Thread.new do
+      #   Rails.application.executor.wrap do
+      #     if @ping.photo.present?
+      #       process_photo_with_llm(@ping)
+      #     end
+      #     process_location_with_llm(@ping, chat)
+      #   end
+      # end
 
       redirect_to ping_path(@ping), notice: "Ping created successfully! Analysis in progress..."
     else
