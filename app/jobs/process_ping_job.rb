@@ -14,23 +14,15 @@ class ProcessPingJob < ApplicationJob
   private
 
   def process_photo_with_llm(ping)
-    llm_chat = RubyLLM.chat
-
-    prompt = "Floute dans l'image seulement les visages en conservant les couleurs et les formes générales.
-Applique un flou gaussien homogène sans recadrage, sans ajout d'éléments et sans modification des contrastes.
-Résultat attendu : image avec visages floutés et le reste sans aucune modification."
-
-    response = llm_chat.completion(
-      messages: [
-        { role: "system", content: prompt },
-        { role: "user", content: "Process this photo: #{ping.photo}" }
-      ]
-    )
-
-    blurred_url = response.dig("choices", 0, "message", "content")
-    ping.update(blurred_photo_url: blurred_url)
+    # Use BlurredPhotoGeneratorService to detect faces and blur them
+    blurred_image = BlurredPhotoGeneratorService.blur_faces(ping.photo)
+    ping.update(blurred_photo_url: blurred_image)
+    Rails.logger.info "Successfully blurred faces in photo for ping #{ping.id}"
   rescue => e
     Rails.logger.error "Error processing photo: #{e.message}"
+    Rails.logger.error e.backtrace.join("\n")
+    # Store original photo as fallback
+    ping.update(blurred_photo_url: ping.photo)
   end
 
   def process_location_with_llm(ping, chat)
