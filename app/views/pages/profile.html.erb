@@ -16,6 +16,7 @@
         <% end %>
       </div>
 
+
       <h2 class="pingsafe-profile-name">
         <% if current_user.pseudo.present? %>
           <%= current_user.pseudo %>
@@ -38,9 +39,14 @@
           <span><%= current_user.score %> points</span>
         </div>
       <% end %>
-    </div>
+      <div class="pingsafe-form-links">
+       <%= link_to "Manage my account", edit_user_registration_path %>
+        </div>
 
+
+    </div>
     <div class="pingsafe-profile-menu">
+
 
       <%= link_to pings_path, class: 'pingsafe-profile-item' do %>
         <div class="pingsafe-profile-item-content">
@@ -57,7 +63,7 @@
         </svg>
       <% end %>
 
-      <%= link_to '#', class: 'pingsafe-profile-item' do %>
+      <%= link_to levels_path, class: 'pingsafe-profile-item' do %>
         <div class="pingsafe-profile-item-content">
           <div class="pingsafe-profile-item-icon pingsafe-profile-icon-score">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -124,3 +130,4 @@
     <%= render "shared/footer2" %>
   </div>
 </div>
+
