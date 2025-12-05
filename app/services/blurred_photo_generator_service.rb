@@ -85,7 +85,7 @@ class BlurredPhotoGeneratorService
     return [] unless azure_response.is_a?(Array)
 
     azure_response.map do |face|
-      rect = face['faceCircle'] || face['faceRectangle']
+      rect = face['faceRectangle']
       next unless rect
 
       {
@@ -105,9 +105,12 @@ class BlurredPhotoGeneratorService
 
       image = MiniMagick::Image.open(original_file.path)
 
+      # Auto-orient the image based on EXIF data (critical for mobile photos)
+      image.auto_orient
+
       faces.each do |face|
         # Add padding around face for better coverage
-        padding = 20
+        padding = 30
         x = [face[:x] - padding, 0].max
         y = [face[:y] - padding, 0].max
         width = face[:width] + (padding * 2)
@@ -116,7 +119,7 @@ class BlurredPhotoGeneratorService
         # Create a region and blur it
         image.combine_options do |c|
           c.region "#{width}x#{height}+#{x}+#{y}"
-          c.blur "0x20" # Gaussian blur with radius 20
+          c.blur "0x20"
         end
       end
 
