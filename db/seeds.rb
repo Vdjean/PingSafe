@@ -129,7 +129,6 @@ puts "Created #{Ping.count} pings"
 
 puts "Creating 3 shared pings near Saint-Maur, Père Lachaise, Parmentier..."
 
-# Ping près du métro Saint-Maur (ligne 3)
 ping_stmaur = Ping.create!(
   user: sara,
   date: Date.today,
@@ -141,7 +140,6 @@ ping_stmaur = Ping.create!(
 )
 Chat.create!(ping: ping_stmaur)
 
-# Ping près du métro Père Lachaise (lignes 2 et 3)
 ping_perelachaise = Ping.create!(
   user: matteo,
   date: Date.today,
@@ -153,7 +151,6 @@ ping_perelachaise = Ping.create!(
 )
 Chat.create!(ping: ping_perelachaise)
 
-# Ping près du métro Parmentier (ligne 3)
 ping_parmentier = Ping.create!(
   user: victor,
   date: Date.today,

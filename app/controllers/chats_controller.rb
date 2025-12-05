@@ -57,7 +57,6 @@ Retourne les résultats sous forme de liste structurée en JSON."
   def process_location_with_llm(ping, chat)
     llm_chat = RubyLLM.chat
 
-    # Replace coordinates in the prompt
     location_prompt = SYSTEM_PROMPT_LOCALISATION
       .gsub("[LATITUDE]", ping.latitude.to_s)
       .gsub("[LONGITUDE]", ping.longitude.to_s)

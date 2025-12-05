@@ -17,11 +17,9 @@ export default class extends Controller {
 
     mapboxgl.accessToken = this.accessTokenValue
 
-    // Store markers by ping ID for easy removal
     this.markers = new Map()
     this.expiryTimers = new Map()
 
-    // Default to Paris center
     const defaultCenter = [2.3522, 48.8566]
     const defaultZoom = 13
 
@@ -32,10 +30,8 @@ export default class extends Controller {
       zoom: defaultZoom
     })
 
-    // Add navigation controls
     this.map.addControl(new mapboxgl.NavigationControl(), "top-right")
 
-    // Add geolocate control
     this.geolocateControl = new mapboxgl.GeolocateControl({
       positionOptions: {
         enableHighAccuracy: true
@@ -45,7 +41,6 @@ export default class extends Controller {
     })
     this.map.addControl(this.geolocateControl, "top-right")
 
-    // Trigger geolocation and add markers on map load
     this.map.on("load", () => {
       this.geolocateControl.trigger()
       this.addPingMarkers()
@@ -72,22 +67,19 @@ export default class extends Controller {
     // Don't add duplicate markers
     if (this.markers.has(ping.id)) return
 
-    // Check if ping belongs to current user (different color)
     const isOwnPing = this.hasCurrentUserIdValue && ping.user_id === this.currentUserIdValue
-    const markerColor = isOwnPing ? "#1e3a5f" : "#e63946" // Blue for own, red for others
+    const markerColor = isOwnPing ? "#1e3a5f" : "#e63946"
 
-    // Create custom marker element with fox image
     const el = document.createElement("div")
     el.className = "ping-marker"
     el.style.width = "50px"
     el.style.height = "50px"
-    el.style.backgroundImage = "url('/assets/fox-pin-full.png')"
+    el.style.backgroundImage = "url('/fox-pin-full.png')"
     el.style.backgroundSize = "contain"
     el.style.backgroundRepeat = "no-repeat"
     el.style.backgroundPosition = "center"
     el.style.cursor = "pointer"
 
-    // Create popup
     const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
       <div class="ping-popup">
         <strong>${ping.comment || "Signalement"}</strong>
@@ -96,16 +88,13 @@ export default class extends Controller {
       </div>
     `)
 
-    // Add marker to map
     const marker = new mapboxgl.Marker(el)
       .setLngLat([parseFloat(ping.longitude), parseFloat(ping.latitude)])
       .setPopup(popup)
       .addTo(this.map)
 
-    // Store marker reference
     this.markers.set(ping.id, marker)
 
-    // Set up client-side expiry timer if expires_at is provided
     if (ping.expires_at) {
       const expiresAt = new Date(ping.expires_at)
       const now = new Date()
@@ -127,7 +116,6 @@ export default class extends Controller {
       this.markers.delete(pingId)
     }
 
-    // Clear expiry timer if exists
     const timer = this.expiryTimers.get(pingId)
     if (timer) {
       clearTimeout(timer)
@@ -136,16 +124,13 @@ export default class extends Controller {
   }
 
   disconnect() {
-    // Unsubscribe from ActionCable
     if (this.subscription) {
       this.subscription.unsubscribe()
     }
 
-    // Clear all expiry timers
     this.expiryTimers.forEach(timer => clearTimeout(timer))
     this.expiryTimers.clear()
 
-    // Remove map
     if (this.map) {
       this.map.remove()
     }
