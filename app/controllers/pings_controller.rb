@@ -55,7 +55,15 @@ class PingsController < ApplicationController
 
     @ping.update(shared_at: Time.current)
 
-    redirect_to ping_path(@ping), notice: "Ping shared with the Pinger community within 300 meters!"
+    # Award points to user
+    reward_data = current_user.add_share_points!
+
+    redirect_to ping_path(@ping,
+      points_earned: reward_data[:points_earned],
+      new_score: reward_data[:new_score],
+      new_level: reward_data[:new_level],
+      leveled_up: reward_data[:leveled_up]
+    )
   end
 
   private
