@@ -123,41 +123,47 @@
         </div>
       </div>
 
-      <!-- Additional Information Form -->
-      <div class="pingsafe-ping-form-card" id="details-form" style="display: none;">
-        <div class="pingsafe-ping-form-card-header">
-          <h5 class="pingsafe-ping-form-card-title">Details</h5>
+<!-- Additional Information Form -->
+<div class="pingsafe-ping-form-card" id="details-form" style="display: none;">
 
-          <div class="pingsafe-form-group">
-            <%= f.label :nombre_personnes, "Number of Persons", class: 'pingsafe-form-label' %>
-            <%= f.number_field :nombre_personnes,
-                              class: 'pingsafe-form-label',
-                              placeholder: "How many people are involved?",
-                              id: "nombre-personnes-input",
-                              min: 0 %>
-            <div class='pingsafe-form-label' >Enter the number of persons</div>
-          </div>
+  <div class="pingsafe-ping-form-card-header">
+    <h5 class="pingsafe-ping-form-card-title">Additional Details</h5>
+  </div>
 
-          <div class="mb-3">
-            <%= f.label :signe_distinctif, "Distinguishing Sign", class: "form-label" %>
-            <%= f.text_field :signe_distinctif,
-                            class: "form-control",
-                            id: "signe-distinctif-input",
-                            placeholder: "Any distinctive features or signs..." %>
-            <div class="form-text">Describe any distinguishing characteristics</div>
-          </div>
+  <div class="pingsafe-ping-form-body">
 
-          <div class="mb-3">
-            <%= f.label :comment, "Comments", class: "form-label" %>
-            <%= f.text_area :comment,
-                           class: "form-control",
-                           id: "additional-comments-input",
-                           rows: 4,
-                           placeholder: "Add any additional details or context..." %>
-            <div class="form-text">Additional information about the situation</div>
-          </div>
-        </div>
-      </div>
+    <div class="pingsafe-form-group">
+      <%= f.label :nombre_personnes, "Number of Persons", class: 'pingsafe-form-label' %>
+      <%= f.number_field :nombre_personnes,
+                        class: 'pingsafe-form-input',
+                        placeholder: "How many people are involved?",
+                        id: "nombre-personnes-input",
+                        min: 0 %>
+      <div class='pingsafe-form-label'>Enter the number of persons</div>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :signe_distinctif, "Distinguishing Sign", class: 'pingsafe-form-label' %>
+      <%= f.text_field :signe_distinctif,
+                      class: 'pingsafe-form-input',
+                      id: "signe-distinctif-input",
+                      placeholder: "Any distinctive features or signs..." %>
+      <div class="form-text">Describe any distinguishing characteristics</div>
+    </div>
+
+    <div class="mb-3">
+      <%= f.label :comment, "Comments", class: 'pingsafe-form-label' %>
+      <%= f.text_area :comment,
+                     class: 'pingsafe-form-input',
+                     id: "additional-comments-input",
+                     rows: 4,
+                     placeholder: "Add any additional details or context..." %>
+      <div class="form-text">Additional information about the situation</div>
+    </div>
+
+  </div>
+</div>
+
     <% else %>
       <!-- Location status -->
       <div id="location-status" class="alert alert-info">
