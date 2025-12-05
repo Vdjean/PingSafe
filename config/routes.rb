@@ -7,6 +7,11 @@ Rails.application.routes.draw do
   get "profile", to: "pages#profile"
 
   get "faq", to: "pages#faq"
+  # API endpoints for push notifications and location tracking - DÉSACTIVÉ TEMPORAIREMENT
+  # namespace :api do
+  #   resources :push_subscriptions, only: [:create, :destroy]
+  #   resources :locations, only: [:create]
+  # end
 
   resources :pages, only: :new do
     collection do

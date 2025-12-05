@@ -4,8 +4,9 @@
        data-controller="mapbox map-footer"
        data-map-footer-target="map"
        data-mapbox-target="container"
-       data-mapbox-access-token-value="<%= ENV['Default_public_token'] %>"
-       data-mapbox-pings-value="<%= @pings.to_json %>">
+       data-mapbox-access-token-value="<%= ENV['MAPBOX_TOKEN'] %>"
+       data-mapbox-pings-value="<%= @visible_pings.map { |p| { id: p.id, latitude: p.latitude, longitude: p.longitude, comment: p.comment, date: p.date, user_id: p.user_id, expires_at: (p.created_at + 15.minutes).iso8601 } }.to_json %>"
+       data-mapbox-current-user-id-value="<%= current_user&.id %>">
   </div>
 
   <div class="pingsafe-lower-panel">
