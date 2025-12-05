@@ -76,15 +76,16 @@ export default class extends Controller {
     const isOwnPing = this.hasCurrentUserIdValue && ping.user_id === this.currentUserIdValue
     const markerColor = isOwnPing ? "#1e3a5f" : "#e63946" // Blue for own, red for others
 
-    // Create custom marker element
+    // Create custom marker element with fox image
     const el = document.createElement("div")
     el.className = "ping-marker"
-    el.innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="${markerColor}" stroke="#fff" stroke-width="2">
-        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
-        <circle cx="12" cy="10" r="3" fill="#fff"/>
-      </svg>
-    `
+    el.style.width = "50px"
+    el.style.height = "50px"
+    el.style.backgroundImage = "url('/assets/fox-pin-full.png')"
+    el.style.backgroundSize = "contain"
+    el.style.backgroundRepeat = "no-repeat"
+    el.style.backgroundPosition = "center"
+    el.style.cursor = "pointer"
 
     // Create popup
     const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
