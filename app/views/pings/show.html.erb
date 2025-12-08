@@ -1,37 +1,77 @@
-<div class="container">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h1>Ping Details</h1>
-    <%= button_to "Refresh", ping_path(@ping), method: :get, class: "btn btn-sm btn-outline-primary" %>
+<div class="pingsafe-show-container">
+  <div class="pingsafe-show-header">
+    <h1 class="pingsafe-show-title">Ping Details</h1>
+    <%= button_to ping_path(@ping), method: :get, class: "pingsafe-refresh-btn" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="23 4 23 10 17 10"/>
+        <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+      </svg>
+      Refresh
+    <% end %>
   </div>
 
   <% if (@ping.photo.present? && @ping.blurred_photo_url.blank?) || (@chat.present? && @chat.danger_sites_json.blank?) %>
-    <div class="alert alert-info">
+    <div class="alert alert-info pingsafe-show-alert">
       <i class="fa fa-spinner fa-spin"></i> AI is analyzing your location<%= @ping.photo.present? ? ' and photo' : '' %>... Page will auto-refresh.
     </div>
     <script>
-      
+
       setTimeout(function() {
         window.location.reload();
       }, 3000);
     </script>
   <% end %>
 
-  <div class="card mb-3">
-    <div class="card-body">
-      <h5 class="card-title">Location Information</h5>
-      <p><strong>Date:</strong> <%= @ping.date.strftime("%B %d, %Y") if @ping.date %></p>
-      <p><strong>Time:</strong> <%= @ping.heure.strftime("%H:%M") if @ping.heure %></p>
+  <!-- Map Card -->
+  <div class="pingsafe-show-map-card">
+    <div id="ping-show-map"></div>
 
-      <div id="location-address">
-        <p><strong>Location:</strong> <span id="address-text">Loading address...</span></p>
+    <div class="pingsafe-show-map-caption">
+      <div class="pingsafe-map-caption-header">
+        <div class="pingsafe-map-caption-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+        </div>
+        <div class="pingsafe-map-caption-info">
+          <h3 class="pingsafe-map-caption-title">Location</h3>
+          <p class="pingsafe-map-caption-address" id="map-address-text">Loading address...</p>
+        </div>
+      </div>
+
+      <div class="pingsafe-map-caption-details">
+        <div class="pingsafe-map-detail-item">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          <span><%= @ping.date.strftime("%B %d, %Y") if @ping.date %></span>
+        </div>
+
+        <div class="pingsafe-map-detail-item">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+          <span><%= @ping.heure.strftime("%H:%M") if @ping.heure %></span>
+        </div>
       </div>
 
       <% if @ping.comment.present? %>
-        <p><strong>Comment:</strong> <%= simple_format(@ping.comment) %></p>
+        <div class="pingsafe-map-caption-comment">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+          <p><%= simple_format(@ping.comment) %></p>
+        </div>
       <% end %>
     </div>
   </div>
 
+  <div class="pingsafe-show-content">
   <% if @ping.photo.present? %>
     <div class="card mb-3">
       <div class="card-body">
@@ -98,31 +138,87 @@
     <% end %>
   <% end %>
 
-  <div class="d-grid gap-2 mb-3">
+  <div class="pingsafe-show-actions">
     <% if @ping.shared_at.present? %>
-      <button class="btn btn-success btn-lg" disabled>
-        <i class="fa fa-check-circle"></i> Shared on <%= @ping.shared_at.strftime("%B %d at %H:%M") %>
+      <button class="pingsafe-share-btn pingsafe-share-btn-shared" disabled>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+          <polyline points="22 4 12 14.01 9 11.01"/>
+        </svg>
+        Shared on <%= @ping.shared_at.strftime("%B %d at %H:%M") %>
       </button>
     <% else %>
-      <%= button_to share_ping_path(@ping), method: :post, class: "btn btn-primary btn-lg", data: { confirm: "Share this ping with the Pinger community within 300 meters?" } do %>
-        <i class="fa fa-share-alt"></i> Share with Pinger
+      <%= button_to share_ping_path(@ping), method: :post, class: "pingsafe-share-btn", data: { confirm: "Share this ping with the Pinger community within 300 meters?" } do %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="18" cy="5" r="3"/>
+          <circle cx="6" cy="12" r="3"/>
+          <circle cx="18" cy="19" r="3"/>
+          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+          <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+        </svg>
+        Share with Pinger
       <% end %>
     <% end %>
-  </div>
 
-  <%= link_to "Back to All Pings", pings_path, class: "btn btn-secondary" %>
+    <%= link_to pings_path, class: "pingsafe-back-btn", title: "Back to All Pings" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"/>
+        <polyline points="12 19 5 12 12 5"/>
+      </svg>
+    <% end %>
+  </div>
+  </div>
 </div>
 
 <script>
-  // Reverse geocoding to get address from coordinates
+  // Initialize map for single ping display
   const latitude = <%= @ping.latitude %>;
   const longitude = <%= @ping.longitude %>;
+
+  if (typeof mapboxgl !== 'undefined') {
+    mapboxgl.accessToken = '<%= ENV['MAPBOX_TOKEN'] %>';
+
+    const map = new mapboxgl.Map({
+      container: 'ping-show-map',
+      style: 'mapbox://styles/mapbox/streets-v12',
+      center: [longitude, latitude],
+      zoom: 15
+    });
+
+    // Add geolocate control positioned just under the SOS button
+    const geolocateControl = new mapboxgl.GeolocateControl({
+      positionOptions: {
+        enableHighAccuracy: true
+      },
+      trackUserLocation: false,
+      showUserHeading: true,
+      showUserLocation: true
+    });
+
+    map.addControl(geolocateControl, 'bottom-right');
+
+    // Add marker at ping location
+    const el = document.createElement('div');
+    el.style.width = '40px';
+    el.style.height = '40px';
+    el.style.backgroundImage = 'url(/fox-pin-full.png)';
+    el.style.backgroundSize = 'contain';
+    el.style.backgroundRepeat = 'no-repeat';
+    el.style.backgroundPosition = 'center';
+
+    new mapboxgl.Marker(el)
+      .setLngLat([longitude, latitude])
+      .addTo(map);
+  }
+
+  // Reverse geocoding to get address from coordinates
 
   fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`)
     .then(response => response.json())
     .then(data => {
-      const addressElement = document.getElementById('address-text');
-      if (data.address) {
+      const mapAddressElement = document.getElementById('map-address-text');
+
+      if (data.address && mapAddressElement) {
         const address = data.address;
         let shortAddress = [];
 
@@ -146,20 +242,21 @@
         }
 
         if (shortAddress.length > 0) {
-          addressElement.textContent = shortAddress.join(', ');
+          const formattedAddress = shortAddress.join(', ');
+          mapAddressElement.textContent = formattedAddress;
         } else {
-          addressElement.textContent = data.display_name;
+          mapAddressElement.textContent = data.display_name;
         }
-        addressElement.classList.remove('text-muted');
-      } else {
-        addressElement.textContent = 'Address not available';
-        addressElement.classList.add('text-muted');
+      } else if (mapAddressElement) {
+        mapAddressElement.textContent = 'Address not available';
       }
     })
     .catch(error => {
       console.error('Error fetching address:', error);
-      document.getElementById('address-text').textContent = 'Unable to load address';
-      document.getElementById('address-text').classList.add('text-muted');
+      const mapAddressElement = document.getElementById('map-address-text');
+      if (mapAddressElement) {
+        mapAddressElement.textContent = 'Unable to load address';
+      }
     });
 </script>
 
