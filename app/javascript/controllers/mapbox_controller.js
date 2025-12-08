@@ -2,7 +2,21 @@ import { Controller } from "@hotwired/stimulus"
 import { subscribeToPings } from "channels/pings_channel"
 
 export default class extends Controller {
-  static targets = ["container"]
+  static targets = [
+    "container",
+    "modal",
+    "timerText",
+    "modalPhoto",
+    "photoImg",
+    "photoPlaceholder",
+    "tagsContainer",
+    "tagPersons",
+    "personsText",
+    "tagSign",
+    "signText",
+    "modalComment",
+    "commentText"
+  ]
   static values = {
     accessToken: String,
     pings: Array,
@@ -71,11 +85,7 @@ export default class extends Controller {
   }
 
   addSingleMarker(ping) {
-    // Don't add duplicate markers
     if (this.markers.has(ping.id)) return
-
-    const isOwnPing = this.hasCurrentUserIdValue && ping.user_id === this.currentUserIdValue
-    const markerColor = isOwnPing ? "#1e3a5f" : "#e63946"
 
     const el = document.createElement("div")
     el.className = "ping-marker"
@@ -87,17 +97,13 @@ export default class extends Controller {
     el.style.backgroundPosition = "center"
     el.style.cursor = "pointer"
 
-    const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
-      <div class="ping-popup">
-        <strong>${ping.comment || "Signalement"}</strong>
-        <br>
-        <small>${ping.date || ""}</small>
-      </div>
-    `)
+    el.addEventListener("click", (e) => {
+      e.stopPropagation()
+      this.openModal(ping)
+    })
 
     const marker = new mapboxgl.Marker(el)
       .setLngLat([parseFloat(ping.longitude), parseFloat(ping.latitude)])
-      .setPopup(popup)
       .addTo(this.map)
 
     this.markers.set(ping.id, marker)
@@ -138,8 +144,117 @@ export default class extends Controller {
     this.expiryTimers.forEach(timer => clearTimeout(timer))
     this.expiryTimers.clear()
 
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval)
+    }
+
     if (this.map) {
       this.map.remove()
+    }
+  }
+
+  openModal(ping) {
+    if (!this.hasModalTarget) return
+
+    this.updateTimer(ping.created_at)
+    this.timerInterval = setInterval(() => this.updateTimer(ping.created_at), 60000)
+
+    if (ping.blurred_photo_url) {
+      this.photoImgTarget.src = ping.blurred_photo_url
+      this.photoImgTarget.style.display = "block"
+      this.photoPlaceholderTarget.style.display = "none"
+    } else {
+      this.photoImgTarget.style.display = "none"
+      this.photoPlaceholderTarget.style.display = "flex"
+    }
+
+    this.parseAndDisplayComment(ping.comment)
+
+    this.modalTarget.classList.add("active")
+  }
+
+  closeModal() {
+    if (!this.hasModalTarget) return
+
+    this.modalTarget.classList.remove("active")
+
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval)
+      this.timerInterval = null
+    }
+  }
+
+  updateTimer(createdAt) {
+    const created = new Date(createdAt)
+    const now = new Date()
+    const diffMs = now - created
+    const diffMins = Math.floor(diffMs / 60000)
+
+    let text
+    if (diffMins < 1) {
+      text = "A l'instant"
+    } else if (diffMins === 1) {
+      text = "Il y a 1 min"
+    } else if (diffMins < 60) {
+      text = `Il y a ${diffMins} min`
+    } else {
+      const hours = Math.floor(diffMins / 60)
+      text = hours === 1 ? "Il y a 1 heure" : `Il y a ${hours} heures`
+    }
+
+    this.timerTextTarget.textContent = text
+  }
+
+  parseAndDisplayComment(comment) {
+    this.tagPersonsTarget.style.display = "none"
+    this.tagSignTarget.style.display = "none"
+    this.modalCommentTarget.style.display = "none"
+
+    if (!comment) return
+
+    const personsMatch = comment.match(/Number of persons:\s*(\d+)/i)
+    const signMatch = comment.match(/Distinguishing sign:\s*([^\n]+)/i)
+
+    const commentsMatches = comment.match(/Comments:\s*([^N\n][^\n]*)/gi)
+    let pureComment = null
+    if (commentsMatches) {
+      for (let i = commentsMatches.length - 1; i >= 0; i--) {
+        const match = commentsMatches[i].replace(/Comments:\s*/i, "").trim()
+        if (match && !match.startsWith("Number") && !match.startsWith("Distinguishing")) {
+          pureComment = match
+          break
+        }
+      }
+    }
+
+    if (personsMatch && personsMatch[1]) {
+      const num = parseInt(personsMatch[1])
+      this.personsTextTarget.textContent = num > 1 ? `${num} individus` : `${num} individu`
+      this.tagPersonsTarget.style.display = "inline-flex"
+    }
+
+    if (signMatch && signMatch[1]) {
+      const sign = signMatch[1].trim()
+      if (sign && !sign.startsWith("Comments:")) {
+        this.signTextTarget.textContent = sign
+        this.tagSignTarget.style.display = "inline-flex"
+      }
+    }
+
+    if (pureComment) {
+      pureComment = pureComment.replace(/^\.\s*/, "").trim()
+      if (pureComment) {
+        this.commentTextTarget.textContent = `"${pureComment}"`
+        this.modalCommentTarget.style.display = "flex"
+      }
+    }
+
+    if (!personsMatch && !signMatch && !pureComment) {
+      let cleanComment = comment.replace(/^Comments:\s*/i, "").trim()
+      if (cleanComment) {
+        this.commentTextTarget.textContent = `"${cleanComment}"`
+        this.modalCommentTarget.style.display = "flex"
+      }
     }
   }
 }
