@@ -3,11 +3,7 @@
   <div class="pingsafe-form-ping-container">
 
     <div class="pingsafe-form-ping-header">
-      <%= link_to pings_path, class: 'pingsafe-back-btn' do %>
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="15 18 9 12 15 6"/>
-        </svg>
-      <% end %>
+
       <h1 class="pingsafe-form-ping-title">Create New Ping</h1>
       <div style="width: 40px;"></div>
     </div>
@@ -24,7 +20,6 @@
       </div>
     <% end %>
 
-      <!-- Hidden Date/Time fields - automatically captured -->
       <%= f.hidden_field :date, value: Date.today %>
       <%= f.hidden_field :heure, value: Time.now.strftime("%H:%M") %>
 
