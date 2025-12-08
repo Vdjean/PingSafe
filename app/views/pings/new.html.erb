@@ -83,6 +83,7 @@
         </div>
       </div>
 
+<div class="pingsafe-ping-form-card" id="details-form" style="display: none;">
       <!-- Location status -->
       <div id="location-status" class="alert alert-info">
         <span id="location-message"><i class="fa fa-spinner fa-spin"></i> Getting your location...</span>
@@ -139,12 +140,10 @@
 </div>
 
     <% else %>
-      <!-- Location status -->
       <div id="location-status" class="alert alert-info">
         <span id="location-message"><i class="fa fa-spinner fa-spin"></i> Getting your location...</span>
       </div>
 
-      <!-- Details Form (No Camera Mode) -->
       <div class="pingsafe-ping-form-card" id="details-form">
         <div class="pingsafe-ping-form-body ">
           <h5 class="pingsafe-form-ping-title">Details</h5>
@@ -197,20 +196,16 @@
   const cameraMode = <%= params[:camera] == "true" ? "true" : "false" %>;
 
   function takePicture() {
-    // Trigger location capture if not already captured
     if (!locationCaptured) {
       captureLocation();
     }
-    // Open camera
     document.getElementById('camera-input').click();
   }
 
   function uploadPicture() {
-    // Trigger location capture if not already captured
     if (!locationCaptured) {
       captureLocation();
     }
-    // Open file picker
     document.getElementById('photo-input').click();
   }
 
@@ -240,7 +235,6 @@
     statusDiv.className = 'alert alert-info';
     messageSpan.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Getting your location...';
 
-    // Check if we're in a secure context
     if (!window.isSecureContext && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
       statusDiv.className = 'alert alert-warning';
       messageSpan.innerHTML = `
@@ -264,7 +258,6 @@
       return;
     }
 
-    // Request location with high accuracy
     navigator.geolocation.getCurrentPosition(
       function(position) {
         document.getElementById('latitude-input').value = position.coords.latitude;
@@ -275,10 +268,8 @@
         messageSpan.innerHTML = '<i class="fa fa-check-circle"></i> Location captured successfully! (Lat: ' +
           position.coords.latitude.toFixed(4) + ', Lon: ' + position.coords.longitude.toFixed(4) + ')';
 
-        // Enable submit button
         enableSubmitButton();
 
-        // Hide after 3 seconds
         setTimeout(() => {
           statusDiv.style.display = 'none';
         }, 3000);
@@ -315,7 +306,6 @@
 
         messageSpan.innerHTML = '<i class="fa fa-exclamation-triangle"></i> ' + errorMessage + helpText;
 
-        // Add buttons
         const btnContainer = document.createElement('div');
         btnContainer.className = 'd-flex gap-2 mt-3';
 
@@ -414,23 +404,22 @@
       reader.onload = function(e) {
         const base64Data = e.target.result;
 
-        // Store base64 data in hidden field
         document.getElementById('photo-data').value = base64Data;
 
-        // Show preview
         document.getElementById('preview-image').src = base64Data;
         document.getElementById('photo-preview').style.display = 'block';
+
+        document.getElementById('details-form').style.display = 'block';
+
+        document.getElementById('submit-btn').style.display = 'block';
       }
       reader.readAsDataURL(file);
     }
   }
 
-  // Capture location immediately when page loads (all modes)
   document.addEventListener('DOMContentLoaded', function() {
-    // Always capture location on page load
     captureLocation();
 
-    // Form validation before submit
     const form = document.getElementById('ping-form');
     form.addEventListener('submit', function(e) {
       const latitude = document.getElementById('latitude-input').value;
@@ -451,15 +440,15 @@
     });
   });
 
-  // Also trigger on Turbo load for SPA-like navigation
   document.addEventListener('turbo:load', function() {
     if (!locationCaptured) {
       captureLocation();
     }
   });
 </script>
-
-  <div class="pingsafe-footer" data-map-footer-target="footer">
-    <%= render "shared/footer" %>
-  </div>
+  <div class="pingsafe-lower-panel">
+<div class="pingsafe-footer" data-map-footer-target="footer">
+  <%= render "shared/footer2" %>
+</div>
+</div>
 </div>

@@ -1,3 +1,4 @@
+<div class="pingsafe-footer" id="mainFooter" data-map-footer-target="footer">
 <nav class="pingsafe-nav">
 
   <%= link_to profile_path, class: "pingsafe-nav-item #{current_page?(profile_path) ? 'pingsafe-nav-item-active' : ''}" do %>
@@ -25,3 +26,36 @@
     <span>FAQ</span>
   <% end %>
 </nav>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+  const footer = document.getElementById('mainFooter');
+  if (!footer) return;
+
+  let lastScrollTop = 0;
+  const scrollThreshold = 4;
+
+  window.addEventListener('scroll', function() {
+    const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (currentScrollTop === 0) {
+      footer.classList.remove('hidden');
+      lastScrollTop = currentScrollTop;
+      return;
+    }
+
+    if (Math.abs(lastScrollTop - currentScrollTop) <= scrollThreshold) {
+        return;
+    }
+
+    if (currentScrollTop > lastScrollTop) {
+      footer.classList.add('hidden');
+    } else {
+      footer.classList.remove('hidden');
+    }
+
+    lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop; // Evita numeri negativi
+  }, false);
+});
+</script>

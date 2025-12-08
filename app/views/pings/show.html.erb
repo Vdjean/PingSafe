@@ -9,7 +9,7 @@
       <i class="fa fa-spinner fa-spin"></i> AI is analyzing your location<%= @ping.photo.present? ? ' and photo' : '' %>... Page will auto-refresh.
     </div>
     <script>
-      // Auto-refresh every 3 seconds while processing
+      
       setTimeout(function() {
         window.location.reload();
       }, 3000);

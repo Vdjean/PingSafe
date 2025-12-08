@@ -1,3 +1,5 @@
+<div class="pingsafe-mobile-wrapper">
+        <%= render "shared/header" %>
 <div class="pingsafe-mobile-wrapper"
      data-controller="mapbox map-footer"
      data-mapbox-access-token-value="<%= ENV['MAPBOX_TOKEN'] %>"
@@ -10,6 +12,8 @@
   </div>
 
   <div class="pingsafe-lower-panel">
+<div class="pingsafe-footer" data-map-footer-target="footer">
+  <%= render "shared/footer" %>
     <div class="pingsafe-content">
     </div>
   </div>

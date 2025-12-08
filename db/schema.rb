@@ -49,7 +49,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_04_134410) do
     t.datetime "updated_at", null: false
     t.string "blurred_photo_url"
     t.datetime "shared_at"
-    t.string "address"
     t.index ["created_at"], name: "index_pings_on_created_at"
     t.index ["latitude", "longitude"], name: "index_pings_on_latitude_and_longitude"
     t.index ["shared_at"], name: "index_pings_on_shared_at"
