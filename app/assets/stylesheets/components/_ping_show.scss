@@ -1,0 +1,334 @@
+// Ping show page map card styles
+$blue: #1e3a5f;
+$orange: #fe6f50;
+
+.pingsafe-show-container {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+
+  @media (max-width: 768px) {
+    margin-top: -80px; // Compensate for container margin-top
+    padding-top: 0;
+  }
+}
+
+.pingsafe-show-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+
+  @media (max-width: 768px) {
+    display: none; // Hide header on mobile so map goes to top
+  }
+}
+
+.pingsafe-show-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.pingsafe-refresh-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: $blue;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+
+  svg {
+    flex-shrink: 0;
+    color: $blue;
+  }
+
+  &:hover {
+    background: #f9fafb;
+    border-color: $blue;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(30, 58, 95, 0.1);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.pingsafe-show-alert {
+  @media (max-width: 768px) {
+    margin: 0 1rem 1rem 1rem;
+  }
+}
+
+.pingsafe-show-map-card {
+  background: white;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  margin-bottom: 1.5rem;
+  border: 1px solid #f3f4f6;
+
+  @media (max-width: 768px) {
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    margin-left: -1rem; // Break out of container padding
+    margin-right: -1rem;
+    margin-bottom: 0;
+  }
+}
+
+#ping-show-map {
+  width: 100%;
+  height: 300px;
+  position: relative;
+
+  @media (max-width: 768px) {
+    height: 50vh;
+    min-height: 400px;
+  }
+}
+
+// Position the geolocate control just under the SOS button
+#ping-show-map .mapboxgl-ctrl-bottom-right {
+  @media (max-width: 768px) {
+    bottom: 140px !important;
+    right: 50% !important;
+    left: auto !important;
+    transform: translateX(50%) !important;
+  }
+}
+
+#ping-show-map .mapboxgl-ctrl-geolocate {
+  @media (max-width: 768px) {
+    background: white !important;
+    border-radius: 50% !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+  }
+}
+
+.pingsafe-show-map-caption {
+  padding: 1.25rem;
+  background: white;
+
+  @media (max-width: 768px) {
+    padding: 1.5rem 1rem;
+  }
+}
+
+.pingsafe-show-content {
+  @media (max-width: 768px) {
+    padding: 0 1rem;
+  }
+}
+
+.pingsafe-map-caption-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.pingsafe-map-caption-icon {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, $orange 0%, lighten($orange, 10%) 100%);
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(254, 111, 80, 0.25);
+
+  svg {
+    color: white;
+  }
+}
+
+.pingsafe-map-caption-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.pingsafe-map-caption-title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 0 0 0.375rem 0;
+}
+
+.pingsafe-map-caption-address {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.pingsafe-map-caption-details {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.pingsafe-map-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6b7280;
+  font-size: 0.875rem;
+  font-weight: 500;
+
+  svg {
+    color: $blue;
+    flex-shrink: 0;
+  }
+
+  span {
+    color: #374151;
+  }
+}
+
+.pingsafe-map-caption-comment {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 0.75rem;
+  border-left: 3px solid $orange;
+
+  svg {
+    color: $orange;
+    flex-shrink: 0;
+    margin-top: 0.125rem;
+  }
+
+  p {
+    margin: 0;
+    color: #374151;
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+}
+
+.pingsafe-show-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  margin-top: 1.5rem;
+
+  @media (max-width: 768px) {
+    margin-bottom: 2rem; // Extra space for footer on mobile
+  }
+}
+
+.pingsafe-share-btn {
+  width: 100%;
+  max-width: 400px;
+  background: linear-gradient(135deg, $orange 0%, lighten($orange, 8%) 100%);
+  color: white;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  box-shadow: 0 4px 12px rgba(254, 111, 80, 0.3);
+  transition: all 0.2s ease;
+  letter-spacing: 0.3px;
+
+  svg {
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(254, 111, 80, 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.pingsafe-share-btn-shared {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  cursor: not-allowed;
+  opacity: 0.9;
+
+  &:hover {
+    transform: none;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  }
+}
+
+.pingsafe-back-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 50%;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+
+  svg {
+    color: #6b7280;
+    flex-shrink: 0;
+  }
+
+  &:hover {
+    background: #f9fafb;
+    border-color: $blue;
+    transform: translateX(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    svg {
+      color: $blue;
+    }
+  }
+
+  &:active {
+    transform: translateX(-1px) scale(0.98);
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  #ping-show-map {
+    height: 250px;
+  }
+
+  .pingsafe-map-caption-details {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .pingsafe-share-btn {
+    max-width: 100%;
+  }
+}

@@ -43,10 +43,12 @@ class Ping < ApplicationRecord
     # Try to find zip code (5 digits)
     zip = parts.find { |p| p =~ /^\d{5}$/ }
 
-    if parts.length >= 3
-      # Usually format is: street, district, city, region, country, zip
-      # We want: street, city, zip
-      street = parts[0]
+    if parts.length >= 2
+      # Format is usually: "61", "Rue Servan", "District", "City", "Region", "Country", "75011"
+      # Combine first two parts for full street address (number + street name)
+      street = [parts[0], parts[1]].compact.join(' ')
+
+      # Find city (Paris or arrondissement)
       city = parts.find { |p| p =~ /Paris|^\d+e Arrondissement/ } || parts[-3]
 
       result = [street, city, zip].compact.join(", ")
