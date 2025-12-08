@@ -11,13 +11,14 @@
 
   <div class="pingsafe-lower-panel">
     <div class="pingsafe-content">
+    </div>
+  </div>
 
+  <div class="pingsafe-footer" data-map-footer-target="footer">
+    <%= render "shared/footer" %>
+  </div>
 
-<div class="pingsafe-footer" data-map-footer-target="footer">
-  <%= render "shared/footer" %>
-</div>
-
-<div class="ping-modal" data-mapbox-target="modal">
+  <div class="ping-modal" data-mapbox-target="modal">
   <div class="ping-modal-overlay" data-action="click->mapbox#closeModal"></div>
   <div class="ping-modal-content">
     <button class="ping-modal-close" data-action="click->mapbox#closeModal">
