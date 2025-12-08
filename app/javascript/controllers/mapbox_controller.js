@@ -24,44 +24,60 @@ export default class extends Controller {
   }
 
   connect() {
-    if (typeof mapboxgl === "undefined") {
-      console.error("Mapbox GL JS not loaded")
-      return
-    }
-
-    mapboxgl.accessToken = this.accessTokenValue
-
-    this.markers = new Map()
-    this.expiryTimers = new Map()
-
-    const defaultCenter = [2.3522, 48.8566]
-    const defaultZoom = 13
-
-    this.map = new mapboxgl.Map({
-      container: this.containerTarget,
-      style: "mapbox://styles/mapbox/streets-v12",
-      center: defaultCenter,
-      zoom: defaultZoom
-    })
-
-    this.map.addControl(new mapboxgl.NavigationControl(), "top-right")
-
-    this.geolocateControl = new mapboxgl.GeolocateControl({
-      positionOptions: {
-        enableHighAccuracy: true
-      },
-      trackUserLocation: true,
-      showUserHeading: true
-    })
-    this.map.addControl(this.geolocateControl, "top-right")
-
-    this.map.on("load", () => {
-      this.geolocateControl.trigger()
-      this.addPingMarkers()
-      this.subscribeToChannel()
-    })
+  if (typeof mapboxgl === "undefined") {
+    console.error("Mapbox GL JS not loaded")
+    return
   }
 
+  mapboxgl.accessToken = this.accessTokenValue
+
+  this.markers = new Map()
+  this.expiryTimers = new Map()
+
+  const defaultCenter = [2.3522, 48.8566]
+  const defaultZoom = 13
+
+  this.map = new mapboxgl.Map({
+    container: this.containerTarget,
+    style: "mapbox://styles/mapbox/streets-v12",
+    center: defaultCenter,
+    zoom: defaultZoom,
+    attributionControl: true,
+    // Disable default zoom controls
+    boxZoom: true,
+    doubleClickZoom: true,
+    dragRotate: false,
+    dragPan: true,
+    keyboard: true,
+    scrollZoom: true,
+    touchZoomRotate: true
+  })
+
+  this.geolocateControl = new mapboxgl.GeolocateControl({
+    positionOptions: {
+      enableHighAccuracy: true
+    },
+    trackUserLocation: true,
+    showUserHeading: true,
+    showUserLocation: true,
+    fitBoundsOptions: {
+      maxZoom: 16
+    }
+  })
+
+  this.map.addControl(this.geolocateControl, "top-right")
+
+  this.map.on("load", () => {
+    this.geolocateControl.trigger()
+    this.addPingMarkers()
+    this.subscribeToChannel()
+  })
+
+  // Auto-enable tracking mode to follow user movement
+  this.geolocateControl.on('geolocate', () => {
+    // Map will now follow user position and show heading direction
+  })
+}
   subscribeToChannel() {
     this.subscription = subscribeToPings({
       onPingCreated: (ping) => this.addSingleMarker(ping),

@@ -24,45 +24,9 @@
       </div>
     <% end %>
 
-      <div class="pingsafe-ping-form-card">
-        <div class="pingsafe-ping-form-card-header">
-          <div class="pingsafe-ping-form-icon pingsafe-icon-calendar">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-              <line x1="16" y1="2" x2="16" y2="6"/>
-              <line x1="8" y1="2" x2="8" y2="6"/>
-              <line x1="3" y1="10" x2="21" y2="10"/>
-            </svg>
-          </div>
-          <h3 class="pingsafe-ping-form-card-title">Date & Time</h3>
-        </div>
-
-        <div class="pingsafe-ping-form-body">
-          <div class="pingsafe-form-group">
-            <%= f.label :date, class: 'pingsafe-form-label' do %>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                <line x1="16" y1="2" x2="16" y2="6"/>
-                <line x1="8" y1="2" x2="8" y2="6"/>
-                <line x1="3" y1="10" x2="21" y2="10"/>
-              </svg>
-              <span>Date</span>
-            <% end %>
-            <%= f.date_field :date, class: "pingsafe-form-input", value: Date.today, required: true %>
-          </div>
-
-          <div class="pingsafe-form-group">
-            <%= f.label :heure, class: 'pingsafe-form-label' do %>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"/>
-                <polyline points="12 6 12 12 16 14"/>
-              </svg>
-              <span>Time</span>
-            <% end %>
-            <%= f.time_field :heure, class: "pingsafe-form-input", value: Time.now.strftime("%H:%M"), required: true %>
-          </div>
-        </div>
-      </div>
+      <!-- Hidden Date/Time fields - automatically captured -->
+      <%= f.hidden_field :date, value: Date.today %>
+      <%= f.hidden_field :heure, value: Time.now.strftime("%H:%M") %>
 
     <% if params[:camera] == "true" %>
         <div class="pingsafe-ping-form-card">
@@ -73,7 +37,7 @@
                 <circle cx="12" cy="13" r="4"/>
               </svg>
             </div>
-            <h3 class="pingsafe-ping-form-card-title">Photo</h3>
+            <h3 class="pingsafe-ping-form-card-title">Photo <span style="font-size: 0.75rem; color: #9ca3af; font-weight: 400;">(Optional)</span></h3>
           </div>
 
           <div class="pingsafe-ping-form-body">
@@ -116,18 +80,28 @@
             <img id="preview-image" src="" alt="Photo preview" class="img-fluid rounded mb-2" style="max-height: 300px;">
             <p class="text-success"><i class="fa fa-check-circle"></i> Photo captured!</p>
           </div>
-
-          <div id="location-status" class="alert alert-info" style="display: none;">
-            <i class="fa fa-location-arrow"></i> <span id="location-message">Getting your location...</span>
-          </div>
         </div>
       </div>
 
-<!-- Additional Information Form -->
-<div class="pingsafe-ping-form-card" id="details-form" style="display: none;">
+      <!-- Location status -->
+      <div id="location-status" class="alert alert-info">
+        <span id="location-message"><i class="fa fa-spinner fa-spin"></i> Getting your location...</span>
+      </div>
+
+<!-- Information Form -->
+<div class="pingsafe-ping-form-card" id="details-form">
 
   <div class="pingsafe-ping-form-card-header">
-    <h5 class="pingsafe-ping-form-card-title">Additional Details</h5>
+    <div class="pingsafe-ping-form-icon pingsafe-icon-details">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/>
+        <line x1="16" y1="17" x2="8" y2="17"/>
+        <polyline points="10 9 9 9 8 9"/>
+      </svg>
+    </div>
+    <h3 class="pingsafe-ping-form-card-title">Details</h3>
   </div>
 
   <div class="pingsafe-ping-form-body">
@@ -211,7 +185,7 @@
     <%= f.hidden_field :longitude, id: "longitude-input" %>
 
       <div class="pingsafe-ping-form-actions">
-        <%= f.submit "Create Ping & Analyze", class: "pingsafe-form-submit pingsafe-submit-ping", id: "submit-btn", disabled: true, style: params[:camera] == "true" ? "display:none;" : "" %>
+        <%= f.submit "Create Ping & Analyze", class: "pingsafe-form-submit pingsafe-submit-ping", id: "submit-btn", disabled: true %>
         <%= link_to "Cancel", root_path, class: "pingsafe-form-cancel" %>
       </div>
   <% end %>
@@ -446,12 +420,6 @@
         // Show preview
         document.getElementById('preview-image').src = base64Data;
         document.getElementById('photo-preview').style.display = 'block';
-
-        // Show the details form
-        document.getElementById('details-form').style.display = 'block';
-
-        // Show submit button
-        document.getElementById('submit-btn').style.display = 'block';
       }
       reader.readAsDataURL(file);
     }
