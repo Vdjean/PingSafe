@@ -188,6 +188,8 @@ GEM
       actionview (>= 7.0.0)
       activesupport (>= 7.0.0)
     json (2.16.0)
+    jwt (3.1.2)
+      base64
     listen (3.9.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -243,6 +245,7 @@ GEM
       racc (~> 1.4)
     nokogiri (1.18.10-x86_64-linux-musl)
       racc (~> 1.4)
+    openssl (3.3.2)
     orm_adapter (0.5.0)
     ostruct (0.6.3)
     pg (1.6.2)
@@ -384,6 +387,9 @@ GEM
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
+    web-push (3.0.2)
+      jwt (~> 3.0)
+      openssl (~> 3.0)
     websocket (1.2.11)
     websocket-driver (0.8.0)
       base64
@@ -436,6 +442,7 @@ DEPENDENCIES
   turbo-rails
   tzinfo-data
   web-console
+  web-push
 
 RUBY VERSION
    ruby 3.3.5p100
