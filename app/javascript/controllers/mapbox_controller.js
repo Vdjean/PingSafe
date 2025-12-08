@@ -15,9 +15,7 @@ export default class extends Controller {
     "tagSign",
     "signText",
     "modalComment",
-    "commentText",
-    "modalAddress",
-    "addressText"
+    "commentText"
   ]
   static values = {
     accessToken: String,
@@ -164,13 +162,6 @@ export default class extends Controller {
     }
 
     this.parseAndDisplayComment(ping.comment)
-
-    if (ping.address) {
-      this.addressTextTarget.textContent = ping.address
-      this.modalAddressTarget.style.display = "flex"
-    } else {
-      this.modalAddressTarget.style.display = "none"
-    }
 
     this.modalTarget.classList.add("active")
   }
