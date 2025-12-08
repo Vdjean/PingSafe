@@ -83,14 +83,13 @@
         </div>
       </div>
 
-<div class="pingsafe-ping-form-card" id="details-form" style="display: none;">
       <!-- Location status -->
       <div id="location-status" class="alert alert-info">
         <span id="location-message"><i class="fa fa-spinner fa-spin"></i> Getting your location...</span>
       </div>
 
-<!-- Information Form -->
-<div class="pingsafe-ping-form-card" id="details-form">
+      <!-- Information Form -->
+      <div class="pingsafe-ping-form-card" id="details-form">
 
   <div class="pingsafe-ping-form-card-header">
     <div class="pingsafe-ping-form-icon pingsafe-icon-details">
@@ -408,10 +407,6 @@
 
         document.getElementById('preview-image').src = base64Data;
         document.getElementById('photo-preview').style.display = 'block';
-
-        document.getElementById('details-form').style.display = 'block';
-
-        document.getElementById('submit-btn').style.display = 'block';
       }
       reader.readAsDataURL(file);
     }
