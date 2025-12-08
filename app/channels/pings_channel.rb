@@ -4,6 +4,5 @@ class PingsChannel < ApplicationCable::Channel
   end
 
   def unsubscribed
-    # Cleanup when channel is unsubscribed
   end
 end
