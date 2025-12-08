@@ -22,8 +22,8 @@ $desktop-min: 769px;
   padding: 4px 8px;
   display: flex;
   align-items: center;
-  justify-content: space-around;
-  gap: 8px;
+  justify-content: space-between;
+  gap: 0px;
   box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.08);
   border-radius: 50px;
   max-width: 250px;
@@ -59,7 +59,6 @@ $desktop-min: 769px;
 
   &:hover {
     color: #6b7280;
-    background: #f9fafb;
   }
 
   &:active {
@@ -100,4 +99,3 @@ $desktop-min: 769px;
     font-size: 1.125rem;
   }
 }
-

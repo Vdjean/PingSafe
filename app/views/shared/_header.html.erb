@@ -1,8 +1,59 @@
-  <header class="pingsafe-header">
+ <header class="pingsafe-header">
 
-      <div class="pingsafe-logo-container">
-        <%= image_tag 'logo.png', alt: 'PingSafe', class: 'pingsafe-logo-icon' %>
-      </div>
-      <h1 class="pingsafe-brand">PingSafe</h1>
+  <span class="pingsafe-menu-btn" onclick="openNav()">
+    <i class="fa-solid fa-list"></i>
+  </span>
 
-  </header>
+
+
+<%= button_tag type: 'button', class: 'pingsafe-nav-sos', id: 'sosButton', onclick: 'handleSosClick()' do %>
+  <span>SOS</span>
+<% end %>
+
+</header>
+
+<div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <a href="#">About</a>
+  <a href="#">Services</a>
+  <a href="#">Clients</a>
+  <a href="#">Contact</a>
+</div>
+
+<div class="pingsafe-alert" id="sosAlert">
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="pingsafe-alert-icon">
+    <circle cx="12" cy="12" r="10"/>
+    <line x1="12" x2="12" y1="8" y2="12"/>
+    <line x1="12" x2="12.01" y1="16" y2="16"/>
+  </svg>
+  <div class="pingsafe-alert-content">
+    <p class="pingsafe-alert-title">Emergency?</p>
+    <p class="pingsafe-alert-text">Press and hold the SOS button for 3 seconds to call the police</p>
+  </div>
+</div>
+
+<script>
+function openNav() {
+  document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+
+function handleSosClick() {
+  const sosAlert = document.getElementById("sosAlert");
+
+  sosAlert.style.display = "flex";
+
+  setTimeout(() => {
+
+    sosAlert.style.display = "none";
+
+    window.location.href = 'tel:+3300';
+
+  }, 4000);
+}
+
+
+</script>
