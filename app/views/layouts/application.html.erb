@@ -2,10 +2,15 @@
 <html>
   <head>
     <title>PingSafe</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="theme-color" content="#1e3a5f">
+        <meta name="theme-color" content="#1e3a5f">
     <link rel="manifest" href="/manifest.json">
-    <%= csrf_meta_tags %>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<%= tag.link rel: "manifest", href: webmanifest_path(format: :json) %>
+<%= tag.link rel: "icon", href: image_url("app-icon-512.png"), type: "image/png" %>
+<%= tag.link rel: "apple-touch-icon", href: image_url("app-icon-512.png") %>
+
+<%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
