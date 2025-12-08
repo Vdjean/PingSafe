@@ -9,10 +9,10 @@ $desktop-min: 769px;
   right: 0;
   z-index: 50;
   padding: 0 16px 12px;
- transition: transform 0.3s ease-in-out; /* Aggiunge una transizione fluida */
+ transition: transform 0.3s ease-in-out;
 
  .pingsafe-footer.hidden {
-  transform: translateY(100%); /* Sposta il footer giù del 100% della sua altezza */
+  transform: translateY(100%); 
 }
 
   @media (min-width: $desktop-min) {
