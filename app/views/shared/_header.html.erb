@@ -1,19 +1,17 @@
- <header class="pingsafe-header">
+<!-- Menu button -->
+<span class="pingsafe-menu-btn" onclick="openNav()">
+  <i class="fa-solid fa-list"></i>
+</span>
 
-  <span class="pingsafe-menu-btn" onclick="openNav()">
-    <i class="fa-solid fa-list"></i>
-  </span>
-
-
-
+<!-- SOS button -->
 <%= button_tag type: 'button', class: 'pingsafe-nav-sos', id: 'sosButton', onclick: 'handleSosClick()' do %>
   <span>SOS</span>
 <% end %>
 
-</header>
+<!-- Sidebar with latest pings -->
+<%= render "shared/sidebar" %>
 
-    <%= render "shared/sidebar" %>
-
+<!-- SOS Alert -->
 <div class="pingsafe-alert" id="sosAlert">
   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="pingsafe-alert-icon">
     <circle cx="12" cy="12" r="10"/>
@@ -28,7 +26,7 @@
 
 <script>
 function openNav() {
-  document.getElementById("mySidenav").style.width = "250px";
+  document.getElementById("mySidenav").style.width = "320px";
 }
 
 function closeNav() {
@@ -37,17 +35,11 @@ function closeNav() {
 
 function handleSosClick() {
   const sosAlert = document.getElementById("sosAlert");
-
   sosAlert.style.display = "flex";
 
   setTimeout(() => {
-
     sosAlert.style.display = "none";
-
     window.location.href = 'tel:+3300';
-
   }, 4000);
 }
-
-
 </script>

@@ -12,7 +12,7 @@ $desktop-min: 769px;
  transition: transform 0.3s ease-in-out;
 
  .pingsafe-footer.hidden {
-  transform: translateY(100%); 
+  transform: translateY(100%);
 }
 
   @media (min-width: $desktop-min) {
@@ -24,7 +24,7 @@ $desktop-min: 769px;
 }
 
 .pingsafe-nav {
-  background: white;
+  background: rgb(255, 255, 255);
   padding: 4px 8px;
   display: flex;
   align-items: center;
@@ -75,33 +75,4 @@ $desktop-min: 769px;
 .pingsafe-nav-item-active {
   color: $blue;
   background: rgba(30, 58, 95, 0.08);
-}
-
-.pingsafe-nav-sos {
-  width: 4rem;
-  height: 4rem;
-  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
-  transition: all 0.2s ease;
-  font-weight: 700;
-  font-size: 1rem;
-
-  &:active {
-    transform: scale(0.95);
-  }
-
-  @media (hover: hover) {
-    &:hover {
-      box-shadow: 0 6px 16px rgba(239, 68, 68, 0.5);
-      transform: scale(1.05);
-    }
-  }
-
-  span {
-    font-size: 1.125rem;
-  }
 }

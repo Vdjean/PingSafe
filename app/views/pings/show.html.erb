@@ -1,6 +1,11 @@
 <div class="pingsafe-show-container">
-  <div class="pingsafe-show-header">
-    <h1 class="pingsafe-show-title">Ping Details</h1>
+  <div class="pingsafe-form-ping-header">
+    <%= link_to pings_path, class: 'pingsafe-back-btn' do %>
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+    <% end %>
+    <h1 class="pingsafe-form-ping-title">Ping Details</h1>
     <%= button_to ping_path(@ping), method: :get, class: "pingsafe-refresh-btn" do %>
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="23 4 23 10 17 10"/>
@@ -73,18 +78,33 @@
 
   <div class="pingsafe-show-content">
   <% if @ping.photo.present? %>
-    <div class="card mb-3">
-      <div class="card-body">
-        <h5 class="card-title">Photo</h5>
+    <div class="pingsafe-ping-form-card">
+      <div class="pingsafe-ping-form-card-header">
+        <div class="pingsafe-ping-form-icon pingsafe-icon-camera">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+            <circle cx="12" cy="13" r="4"/>
+          </svg>
+        </div>
+        <h3 class="pingsafe-ping-form-card-title">Photo</h3>
+      </div>
+
+      <div class="pingsafe-ping-form-body">
         <% if @ping.blurred_photo_url.present? %>
-          <p class="text-success mb-3">
-            <i class="fa fa-check-circle"></i> Faces have been automatically blurred
-          </p>
-          <%= image_tag @ping.blurred_photo_url, class: "img-fluid rounded", alt: "Blurred photo" %>
+          <div class="pingsafe-photo-success">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            Faces have been automatically blurred
+          </div>
+          <%= image_tag @ping.blurred_photo_url, class: "pingsafe-photo-preview-img", alt: "Blurred photo" %>
         <% else %>
-          <div class="text-center py-3">
-            <i class="fa fa-spinner fa-spin fa-2x"></i>
-            <p class="text-muted mt-2">Processing photo and blurring faces...</p>
+          <div class="pingsafe-photo-preview" style="text-align: center;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #9ca3af; animation: spin 1s linear infinite;">
+              <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+            </svg>
+            <p style="color: #6b7280; margin-top: 1rem;">Processing photo and blurring faces...</p>
           </div>
         <% end %>
       </div>
@@ -98,38 +118,55 @@
       <% valid_sites = sites.select { |site| site['name'].present? && site['name'] != 'Unknown Site' } if sites.is_a?(Array) %>
 
       <% if valid_sites&.any? %>
-        <div class="card mb-3">
-          <div class="card-body">
-            <h5 class="card-title">
-              <i class="fa fa-exclamation-triangle text-warning"></i> Nearby Safety Analysis
-            </h5>
-            <div class="list-group">
-              <% valid_sites.each_with_index do |site, index| %>
-                <div class="list-group-item">
-                  <div class="d-flex w-100 justify-content-between align-items-start">
-                    <h6 class="mb-1">
-                      <%= index + 1 %>. <%= site['name'] %>
-                    </h6>
-                    <% danger_class = case site['danger_level']&.downcase
-                      when 'high' then 'badge bg-danger'
-                      when 'moderate' then 'badge bg-warning text-dark'
-                      else 'badge bg-info'
-                      end %>
-                    <span class="<%= danger_class %>">
-                      <%= site['danger_level']&.capitalize || 'Low' %>
-                    </span>
-                  </div>
-                  <p class="mb-1 small">
-                    <i class="fa fa-map-marker"></i> <%= site['distance_meters'] %> meters
-                    <span class="text-muted mx-2">|</span>
-                    <i class="fa fa-clock"></i> <%= site['walking_time'] %>
-                  </p>
-                  <p class="mb-0 small text-muted">
-                    <strong>Risk:</strong> <%= site['risk_type']&.capitalize %>
-                  </p>
-                </div>
-              <% end %>
+        <div class="pingsafe-ping-form-card">
+          <div class="pingsafe-ping-form-card-header">
+            <div class="pingsafe-ping-form-icon" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+                <path d="M12 9v4"/>
+                <path d="M12 17h.01"/>
+              </svg>
             </div>
+            <h3 class="pingsafe-ping-form-card-title">Nearby Safety Analysis</h3>
+          </div>
+
+          <div class="pingsafe-ping-form-body">
+            <% valid_sites.each_with_index do |site, index| %>
+              <div class="pingsafe-danger-site-item">
+                <div class="pingsafe-danger-site-header">
+                  <h6 class="pingsafe-danger-site-name">
+                    <%= index + 1 %>. <%= site['name'] %>
+                  </h6>
+                  <% danger_class = case site['danger_level']&.downcase
+                    when 'high' then 'pingsafe-danger-badge-high'
+                    when 'moderate' then 'pingsafe-danger-badge-moderate'
+                    else 'pingsafe-danger-badge-low'
+                    end %>
+                  <span class="pingsafe-danger-badge <%= danger_class %>">
+                    <%= site['danger_level']&.capitalize || 'Low' %>
+                  </span>
+                </div>
+                <div class="pingsafe-danger-site-details">
+                  <span class="pingsafe-danger-site-detail">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                      <circle cx="12" cy="10" r="3"/>
+                    </svg>
+                    <%= site['distance_meters'] %> meters
+                  </span>
+                  <span class="pingsafe-danger-site-detail">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10"/>
+                      <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                    <%= site['walking_time'] %>
+                  </span>
+                </div>
+                <p class="pingsafe-danger-site-risk">
+                  <strong>Risk:</strong> <%= site['risk_type']&.capitalize %>
+                </p>
+              </div>
+            <% end %>
           </div>
         </div>
       <% end %>
@@ -158,13 +195,6 @@
         </svg>
         Share with Pinger
       <% end %>
-    <% end %>
-
-    <%= link_to pings_path, class: "pingsafe-back-btn", title: "Back to All Pings" do %>
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="19" y1="12" x2="5" y2="12"/>
-        <polyline points="12 19 5 12 12 5"/>
-      </svg>
     <% end %>
   </div>
   </div>
