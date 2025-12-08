@@ -1,0 +1,74 @@
+<div id="mySidenav" class="pingsafe-sidenav">
+
+  <div class="pingsafe-sidenav-header">
+    <h3 class="pingsafe-sidenav-title">Active Pings</h3>
+    <button class="pingsafe-sidenav-close" onclick="closeNav()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="pingsafe-sidenav-content">
+    <% if @visible_pings.any? %>
+      <% @visible_pings.order(created_at: :desc).limit(10).each do |ping| %>
+        <%= link_to ping_path(ping), class: 'pingsafe-sidenav-item' do %>
+
+          <!-- Icon -->
+          <div class="pingsafe-sidenav-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+          </div>
+
+          <div class="pingsafe-sidenav-info">
+
+            <div class="pingsafe-sidenav-location">
+              <% full_address = ping.address.to_s
+                 short_parts = full_address.split(',').first(4)
+                 short_address = short_parts.join(',').strip %>
+              <%= short_address %>
+            </div>
+
+            <div class="pingsafe-sidenav-time">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+              <span><%= time_ago_in_words(ping.created_at) %> ago</span>
+            </div>
+
+          </div>
+
+          <% if ping.chat.present? %>
+            <div class="pingsafe-sidenav-status pingsafe-status-analyzed">✓</div>
+          <% elsif ping.photo.present? %>
+            <div class="pingsafe-sidenav-status pingsafe-status-photo">📷</div>
+          <% end %>
+
+        <% end %>
+      <% end %>
+    <% else %>
+      <div class="pingsafe-sidenav-empty">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+        <p>No active pings</p>
+      </div>
+    <% end %>
+  </div>
+
+</div>
+
+<script>
+  function openNav() {
+  document.getElementById("mySidenav").style.width = "320px";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+</script>
