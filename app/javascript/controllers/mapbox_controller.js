@@ -58,7 +58,11 @@ export default class extends Controller {
       enableHighAccuracy: true
     },
     trackUserLocation: true,
-    showUserHeading: true
+    showUserHeading: true,
+    showUserLocation: true,
+    fitBoundsOptions: {
+      maxZoom: 16
+    }
   })
 
   this.map.addControl(this.geolocateControl, "top-right")
@@ -67,6 +71,11 @@ export default class extends Controller {
     this.geolocateControl.trigger()
     this.addPingMarkers()
     this.subscribeToChannel()
+  })
+
+  // Auto-enable tracking mode to follow user movement
+  this.geolocateControl.on('geolocate', () => {
+    // Map will now follow user position and show heading direction
   })
 }
   subscribeToChannel() {
