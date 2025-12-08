@@ -1,13 +1,19 @@
 $blue: #1e3a5f;
 $desktop-min: 769px;
 
+
 .pingsafe-footer {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 4;
+  z-index: 50;
   padding: 0 16px 12px;
+ transition: transform 0.3s ease-in-out; /* Aggiunge una transizione fluida */
+
+ .pingsafe-footer.hidden {
+  transform: translateY(100%); /* Sposta il footer giù del 100% della sua altezza */
+}
 
   @media (min-width: $desktop-min) {
     max-width: 480px;

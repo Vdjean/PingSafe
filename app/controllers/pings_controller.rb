@@ -5,6 +5,8 @@ class PingsController < ApplicationController
     @pings = current_user.pings
   end
 
+  
+
   def show
     @ping = Ping.find(params[:id])
     @chat = @ping.chat
