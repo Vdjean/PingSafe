@@ -1,5 +1,5 @@
 <!-- Menu button -->
-<span class="pingsafe-menu-btn" onclick="openNav()">
+<span class="pingsafe-menu-btn" onclick="toggleNav(this)">
   <i class="fa-solid fa-list"></i>
 </span>
 
@@ -25,8 +25,21 @@
 </div>
 
 <script>
+function toggleNav(element) {
+  const sidebar = document.getElementById("mySidenav");
+
+  if (sidebar.style.width === "280px") {
+    closeNav();
+  } else {
+    const button = element.closest('.pingsafe-menu-btn');
+    const buttonRect = button.getBoundingClientRect();
+    sidebar.style.top = buttonRect.top + "px";
+    openNav();
+  }
+}
+
 function openNav() {
-  document.getElementById("mySidenav").style.width = "320px";
+  document.getElementById("mySidenav").style.width = "280px";
 }
 
 function closeNav() {
