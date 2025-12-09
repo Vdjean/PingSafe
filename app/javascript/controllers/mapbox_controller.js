@@ -71,31 +71,29 @@ export default class extends Controller {
     this.addPingMarkers()
     this.subscribeToChannel()
 
-    // Wait a bit for map to fully initialize, then trigger geolocation
+    // Automatically start tracking user location on load
+    // Simulate a click on the geolocate button to ensure the dot appears
     setTimeout(() => {
-      this.geolocateControl.trigger()
-    }, 500)
+      const geolocateButton = document.querySelector('.mapboxgl-ctrl-geolocate')
+      if (geolocateButton) {
+        geolocateButton.click()
+        console.log('Geolocate button clicked automatically')
+      }
+    }, 800)
   })
 
-  // When geolocation succeeds, trigger again to enter tracking mode
+  // Handle geolocation success
   this.geolocateControl.on('geolocate', (e) => {
-    if (!this.trackingActivated) {
-      this.trackingActivated = true
-      // Trigger again to enter continuous tracking mode
-      setTimeout(() => {
-        this.geolocateControl.trigger()
-      }, 200)
-    }
+    console.log('User location found at:', e.coords.latitude, e.coords.longitude)
   })
 
   // Handle tracking state changes
   this.geolocateControl.on('trackuserlocationstart', () => {
-    console.log('Tracking started - map will follow your movement')
+    console.log('Tracking started - user dot should be visible')
   })
 
   this.geolocateControl.on('trackuserlocationend', () => {
     console.log('Tracking stopped')
-    this.trackingActivated = false
   })
 
   // Handle geolocation errors
