@@ -26,6 +26,7 @@ html {
   width: 100%;
   height: 100%;
   overflow-x: hidden;
+  background-color: #f9fafb;
 }
 
 // Global body styles for mobile-first design
@@ -37,6 +38,7 @@ body {
   height: 100%;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
+  background-color: #f9fafb;
 
   // On desktop, add a subtle background
   @media (min-width: 769px) {
