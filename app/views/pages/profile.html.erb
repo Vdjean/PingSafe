@@ -77,7 +77,7 @@
         </svg>
       <% end %>
 
-      <%= link_to '#', class: 'pingsafe-profile-item' do %>
+      <%= link_to partners_path, class: 'pingsafe-profile-item' do %>
         <div class="pingsafe-profile-item-content">
           <div class="pingsafe-profile-item-icon pingsafe-profile-icon-partners">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -142,7 +142,6 @@ function shareApp() {
       url: window.location.origin
     }).catch(err => console.log('Error sharing:', err));
   } else {
-    // Fallback a WhatsApp
     window.open('https://wa.me/?text=' + encodeURIComponent('Check out PingSafe! ' + window.location.origin), '_blank');
   }
 }
