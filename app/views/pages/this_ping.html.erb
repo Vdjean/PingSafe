@@ -1,0 +1,397 @@
+<div class="pingsafe-show-container">
+  <div class="pingsafe-form-ping-header">
+    <%= link_to root_path, class: 'pingsafe-back-btn' do %>
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"/>
+      </svg>
+    <% end %>
+    <h1 class="pingsafe-form-ping-title">Ping Details</h1>
+    <%= button_to ping_path(@ping), method: :get, class: "pingsafe-refresh-btn" do %>
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="23 4 23 10 17 10"/>
+        <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+      </svg>
+      Refresh
+    <% end %>
+  </div>
+
+  <% if (@ping.photo.present? && @ping.blurred_photo_url.blank?) || (@chat.present? && @chat.danger_sites_json.blank?) %>
+    <div class="pingsafe-location-alert pingsafe-location-alert-info">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M12 16v-4"/>
+        <path d="M12 8h.01"/>
+      </svg>
+      <div class="pingsafe-location-alert-content">
+        <p class="pingsafe-location-alert-text">AI is analyzing your <%= @ping.photo.present? ? 'location and photo' : 'location' %>...</p>
+      </div>
+    </div>
+    <script>
+      setTimeout(function() {
+        window.location.reload();
+      }, 3000);
+    </script>
+  <% end %>
+
+  <!-- Map Card -->
+  <div class="pingsafe-show-map-card">
+    <div id="ping-show-map"></div>
+
+    <div class="pingsafe-show-map-caption">
+      <div class="pingsafe-map-caption-header">
+        <div class="pingsafe-map-caption-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+        </div>
+        <div class="pingsafe-map-caption-info">
+          <h3 class="pingsafe-map-caption-title">Location</h3>
+          <p class="pingsafe-map-caption-address" id="map-address-text">Loading address...</p>
+        </div>
+      </div>
+
+      <div class="pingsafe-map-caption-details">
+        <div class="pingsafe-map-detail-item">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          <span><%= @ping.date.strftime("%B %d, %Y") if @ping.date %></span>
+        </div>
+
+        <div class="pingsafe-map-detail-item">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+          <span><%= @ping.heure.strftime("%H:%M") if @ping.heure %></span>
+        </div>
+      </div>
+
+      <% if @ping.comment.present? %>
+        <div class="pingsafe-map-caption-comment">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+          <p><%= simple_format(@ping.comment) %></p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="pingsafe-show-content">
+  <% if @ping.photo.present? %>
+    <div class="pingsafe-ping-form-card">
+      <div class="pingsafe-ping-form-card-header">
+        <div class="pingsafe-ping-form-icon pingsafe-icon-camera">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+            <circle cx="12" cy="13" r="4"/>
+          </svg>
+        </div>
+        <h3 class="pingsafe-ping-form-card-title">Photo</h3>
+      </div>
+
+      <div class="pingsafe-ping-form-body">
+        <% if @ping.blurred_photo_url.present? %>
+          <div class="pingsafe-photo-success">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            Faces have been automatically blurred
+          </div>
+          <%= image_tag @ping.blurred_photo_url, class: "pingsafe-photo-preview-img", alt: "Blurred photo" %>
+        <% else %>
+          <div class="pingsafe-photo-preview" style="text-align: center;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #9ca3af; animation: spin 1s linear infinite;">
+              <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+            </svg>
+            <p style="color: #6b7280; margin-top: 1rem;">Processing photo and blurring faces...</p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @chat.present? && @chat.danger_sites_json.present? %>
+    <% begin %>
+      <% sites = JSON.parse(@chat.danger_sites_json) %>
+      <% # Filter out sites with no actual data %>
+      <% valid_sites = sites.select { |site| site['name'].present? && site['name'] != 'Unknown Site' } if sites.is_a?(Array) %>
+
+      <% if valid_sites&.any? %>
+        <div class="pingsafe-ping-form-card">
+          <div class="pingsafe-ping-form-card-header">
+            <div class="pingsafe-ping-form-icon" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+                <path d="M12 9v4"/>
+                <path d="M12 17h.01"/>
+              </svg>
+            </div>
+            <h3 class="pingsafe-ping-form-card-title">Nearby Safety Analysis</h3>
+          </div>
+
+          <div class="pingsafe-ping-form-body">
+            <% valid_sites.each_with_index do |site, index| %>
+              <div class="pingsafe-danger-site-item">
+                <div class="pingsafe-danger-site-header">
+                  <h6 class="pingsafe-danger-site-name">
+                    <%= index + 1 %>. <%= site['name'] %>
+                  </h6>
+                  <% danger_class = case site['danger_level']&.downcase
+                    when 'high' then 'pingsafe-danger-badge-high'
+                    when 'moderate' then 'pingsafe-danger-badge-moderate'
+                    else 'pingsafe-danger-badge-low'
+                    end %>
+                  <span class="pingsafe-danger-badge <%= danger_class %>">
+                    <%= site['danger_level']&.capitalize || 'Low' %>
+                  </span>
+                </div>
+                <div class="pingsafe-danger-site-details">
+                  <span class="pingsafe-danger-site-detail">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                      <circle cx="12" cy="10" r="3"/>
+                    </svg>
+                    <%= site['distance_meters'] %> meters
+                  </span>
+                  <span class="pingsafe-danger-site-detail">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="10"/>
+                      <polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                    <%= site['walking_time'] %>
+                  </span>
+                </div>
+                <p class="pingsafe-danger-site-risk">
+                  <strong>Risk:</strong> <%= site['risk_type']&.capitalize %>
+                </p>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    <% rescue JSON::ParserError %>
+      <!-- Invalid JSON, don't display anything -->
+    <% end %>
+  <% end %>
+
+  <div class="pingsafe-show-actions">
+    <% if @ping.shared_at.present? %>
+      <button class="pingsafe-share-btn pingsafe-share-btn-shared" disabled>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+          <polyline points="22 4 12 14.01 9 11.01"/>
+        </svg>
+        Shared on <%= @ping.shared_at.strftime("%B %d at %H:%M") %>
+      </button>
+    <% else %>
+      <%= button_to share_ping_path(@ping), method: :post, class: "pingsafe-share-btn", data: { confirm: "Share this ping with the Pinger community within 300 meters?" } do %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="18" cy="5" r="3"/>
+          <circle cx="6" cy="12" r="3"/>
+          <circle cx="18" cy="19" r="3"/>
+          <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+          <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+        </svg>
+        Share with Pinger
+      <% end %>
+    <% end %>
+  </div>
+  </div>
+</div>
+
+<script>
+  // Initialize map for single ping display
+  const latitude = <%= @ping.latitude %>;
+  const longitude = <%= @ping.longitude %>;
+
+  if (typeof mapboxgl !== 'undefined') {
+    mapboxgl.accessToken = '<%= ENV['MAPBOX_TOKEN'] %>';
+
+    const map = new mapboxgl.Map({
+      container: 'ping-show-map',
+      style: 'mapbox://styles/mapbox/streets-v12',
+      center: [longitude, latitude],
+      zoom: 15
+    });
+
+    // Add geolocate control positioned just under the SOS button
+    const geolocateControl = new mapboxgl.GeolocateControl({
+      positionOptions: {
+        enableHighAccuracy: true
+      },
+      trackUserLocation: false,
+      showUserHeading: true,
+      showUserLocation: true
+    });
+
+    map.addControl(geolocateControl, 'bottom-right');
+
+    // Add marker at ping location
+    const el = document.createElement('div');
+    el.style.width = '40px';
+    el.style.height = '40px';
+    el.style.backgroundImage = 'url(/fox-pin-full.png)';
+    el.style.backgroundSize = 'contain';
+    el.style.backgroundRepeat = 'no-repeat';
+    el.style.backgroundPosition = 'center';
+
+    new mapboxgl.Marker(el)
+      .setLngLat([longitude, latitude])
+      .addTo(map);
+  }
+
+  // Reverse geocoding to get address from coordinates
+
+  fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`)
+    .then(response => response.json())
+    .then(data => {
+      const mapAddressElement = document.getElementById('map-address-text');
+
+      if (data.address && mapAddressElement) {
+        const address = data.address;
+        let shortAddress = [];
+
+        // Add house number and street
+        if (address.house_number) {
+          shortAddress.push(address.house_number);
+        }
+        if (address.road || address.street) {
+          shortAddress.push(address.road || address.street);
+        }
+
+        // Add city (try multiple possible keys)
+        const city = address.city || address.town || address.village || address.municipality;
+        if (city) {
+          shortAddress.push(city);
+        }
+
+        // Add postcode
+        if (address.postcode) {
+          shortAddress.push(address.postcode);
+        }
+
+        if (shortAddress.length > 0) {
+          const formattedAddress = shortAddress.join(', ');
+          mapAddressElement.textContent = formattedAddress;
+        } else {
+          mapAddressElement.textContent = data.display_name;
+        }
+      } else if (mapAddressElement) {
+        mapAddressElement.textContent = 'Address not available';
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching address:', error);
+      const mapAddressElement = document.getElementById('map-address-text');
+      if (mapAddressElement) {
+        mapAddressElement.textContent = 'Unable to load address';
+      }
+    });
+</script>
+
+<div class="pingsafe-footer" data-map-footer-target="footer">
+  <%= render "shared/footer2" %>
+</div>
+
+<!-- Share Success Modal -->
+<div id="shareSuccessModal" class="pingsafe-modal">
+  <div class="pingsafe-modal-overlay"></div>
+  <div class="pingsafe-modal-content">
+    <div class="pingsafe-modal-header">
+      <div class="pingsafe-modal-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+          <polyline points="22 4 12 14.01 9 11.01"/>
+        </svg>
+      </div>
+      <h2 class="pingsafe-modal-title">Congratulations!</h2>
+      <p class="pingsafe-modal-subtitle">Your ping has been shared with the community</p>
+    </div>
+
+    <div class="pingsafe-modal-body">
+      <div class="pingsafe-points-card">
+        <div class="pingsafe-points-earned">
+          <span class="pingsafe-points-label">Points Earned</span>
+          <span class="pingsafe-points-value" id="pointsEarned">+10</span>
+        </div>
+        <div class="pingsafe-score-total">
+          <span class="pingsafe-score-label">Total Score</span>
+          <span class="pingsafe-score-value" id="totalScore">0</span>
+        </div>
+      </div>
+
+      <div class="pingsafe-level-card" id="levelCard">
+        <div class="pingsafe-level-info">
+          <span class="pingsafe-level-label">Current Level</span>
+          <div class="pingsafe-level-display">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2v20m0-20l9 4v8a9 9 0 0 1-9 9 9 9 0 0 1-9-9V6l9-4z"/>
+            </svg>
+            <span id="currentLevel" class="pingsafe-level-number">1</span>
+          </div>
+        </div>
+
+        <div id="levelUpMessage" class="pingsafe-level-up" style="display: none;">
+          <div class="pingsafe-level-up-icon">🎉</div>
+          <p class="pingsafe-level-up-text">You leveled up!</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="pingsafe-modal-footer">
+      <button class="pingsafe-modal-btn" onclick="closeShareModal()">Continue</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function closeShareModal() {
+    const modal = document.getElementById('shareSuccessModal');
+    modal.classList.remove('pingsafe-modal-show');
+
+    // Redirect to homepage
+    window.location.href = '/';
+  }
+
+  // Function to show modal
+  function showShareModal() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const pointsEarned = urlParams.get('points_earned');
+    const newScore = urlParams.get('new_score');
+    const newLevel = urlParams.get('new_level');
+    const leveledUp = urlParams.get('leveled_up');
+
+    if (pointsEarned) {
+      // Update modal content
+      document.getElementById('pointsEarned').textContent = '+' + pointsEarned;
+      document.getElementById('totalScore').textContent = newScore;
+      document.getElementById('currentLevel').textContent = newLevel;
+
+      // Show level up message if applicable
+      if (leveledUp === 'true') {
+        document.getElementById('levelUpMessage').style.display = 'block';
+      } else {
+        document.getElementById('levelUpMessage').style.display = 'none';
+      }
+
+      // Show modal
+      const modal = document.getElementById('shareSuccessModal');
+      if (modal) {
+        setTimeout(function() {
+          modal.classList.add('pingsafe-modal-show');
+        }, 100);
+      }
+    }
+  }
+
+  // Listen to both DOMContentLoaded and Turbo events
+  document.addEventListener('DOMContentLoaded', showShareModal);
+  document.addEventListener('turbo:load', showShareModal);
+</script>
