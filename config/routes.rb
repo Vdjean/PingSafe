@@ -11,6 +11,8 @@ Rails.application.routes.draw do
 
   get "faq", to: "pages#faq"
 
+  get "partners", to: "pages#partners"
+
   get "this_ping/:id", to: "pages#this_ping", as: :this_ping
 
   namespace :api do
