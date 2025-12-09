@@ -1,3 +1,21 @@
+// Home page edge-to-edge support
+html:has(.pingsafe-map-tall),
+body:has(.pingsafe-map-tall) {
+  background-color: #000000 !important;
+  margin: 0;
+  padding: 0;
+}
+
+body:has(.pingsafe-map-tall) {
+  .pingsafe-mobile-app-container,
+  .pingsafe-content-wrapper,
+  .pingsafe-mobile-wrapper {
+    background-color: transparent !important;
+    margin: 0;
+    padding: 0;
+  }
+}
+
 .pingsafe-badge {
   display: flex;
   align-items: center;
@@ -21,9 +39,11 @@
   left: 0;
   right: 0;
   bottom: 0;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   z-index: 1;
+  margin: 0;
+  padding: 0;
 
   // On desktop, constrain to mobile width
   @media (min-width: 769px) {
@@ -31,6 +51,27 @@
     left: 50%;
     transform: translateX(-50%);
     right: auto;
+    width: 430px;
+  }
+}
+
+// Ensure the mapbox map canvas itself is edge-to-edge
+#map {
+  .mapboxgl-map {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  .mapboxgl-canvas-container,
+  .mapboxgl-canvas {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
   }
 }
 
