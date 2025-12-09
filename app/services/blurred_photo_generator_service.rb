@@ -119,7 +119,7 @@ class BlurredPhotoGeneratorService
         # Create a region and blur it
         image.combine_options do |c|
           c.region "#{width}x#{height}+#{x}+#{y}"
-          c.blur "0x20"
+          c.blur "0x35"
         end
       end
 
