@@ -73,6 +73,7 @@ class Ping < ApplicationRecord
 
     BroadcastPingJob.perform_later(self)
     ExpirePingJob.set(wait: 15.minutes).perform_later(id)
+    NotifyNearbyUsersJob.perform_later(id)
   end
 
   def fetch_address_from_coordinates
