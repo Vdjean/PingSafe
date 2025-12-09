@@ -68,22 +68,24 @@ export default class extends Controller {
   this.map.addControl(this.geolocateControl, "top-right")
 
   this.map.on("load", () => {
-    // Trigger geolocation and enter tracking mode
-    this.geolocateControl.trigger()
-
-    // After first trigger, activate tracking mode automatically
-    setTimeout(() => {
-      this.geolocateControl.trigger()
-    }, 100)
-
     this.addPingMarkers()
     this.subscribeToChannel()
+
+    // Wait a bit for map to fully initialize, then trigger geolocation
+    setTimeout(() => {
+      this.geolocateControl.trigger()
+    }, 500)
   })
 
-  // Keep map centered on user as they move
+  // When geolocation succeeds, trigger again to enter tracking mode
   this.geolocateControl.on('geolocate', (e) => {
-    // Map will automatically follow user position and show heading direction
-    // This keeps the camera centered on the user's location
+    if (!this.trackingActivated) {
+      this.trackingActivated = true
+      // Trigger again to enter continuous tracking mode
+      setTimeout(() => {
+        this.geolocateControl.trigger()
+      }, 200)
+    }
   })
 
   // Handle tracking state changes
@@ -93,6 +95,12 @@ export default class extends Controller {
 
   this.geolocateControl.on('trackuserlocationend', () => {
     console.log('Tracking stopped')
+    this.trackingActivated = false
+  })
+
+  // Handle geolocation errors
+  this.geolocateControl.on('error', (error) => {
+    console.log('Geolocation error:', error.message)
   })
 }
   subscribeToChannel() {
