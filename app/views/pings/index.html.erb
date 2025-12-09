@@ -3,19 +3,13 @@
   <div class="pingsafe-pings-container">
 
     <div class="pingsafe-form-ping-header">
-      <%= link_to root_path, class: 'pingsafe-back-btn' do %>
+      <%= link_to profile_path, class: 'pingsafe-back-btn' do %>
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="15 18 9 12 15 6"/>
         </svg>
       <% end %>
       <h1 class="pingsafe-form-ping-title">My Pings</h1>
-      <%= link_to new_ping_path, class: 'pingsafe-btn-create' do %>
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="12" y1="5" x2="12" y2="19"/>
-          <line x1="5" y1="12" x2="19" y2="12"/>
-        </svg>
-        <span>New Ping</span>
-      <% end %>
+
     </div>
 
     <% if @pings.any? %>
