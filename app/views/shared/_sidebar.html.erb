@@ -57,15 +57,6 @@
 </div>
 
 <script>
-function toggleNav() {
-  const sidebar = document.getElementById("mySidenav");
-  if (sidebar.style.width === "280px") {
-    closeNav();
-  } else {
-    openNav();
-  }
-}
-
 function openNav() {
   document.getElementById("mySidenav").style.width = "280px";
 }
@@ -80,18 +71,10 @@ function toggleNav(buttonElement) {
   if (sidebar.style.width === "280px") {
     closeNav();
   } else {
-    // Posiziona la sidebar all'altezza del bottone
     const buttonRect = buttonElement.getBoundingClientRect();
     sidebar.style.top = (buttonRect.top) + "px";
     openNav();
   }
 }
 
-function openNav() {
-  document.getElementById("mySidenav").style.width = "280px";
-}
-
-function closeNav() {
-  document.getElementById("mySidenav").style.width = "0";
-}
 </script>
