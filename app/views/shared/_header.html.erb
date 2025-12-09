@@ -11,6 +11,9 @@
 <!-- Sidebar with latest pings -->
 <%= render "shared/sidebar" %>
 
+<!-- Sidebar overlay -->
+<div class="pingsafe-sidenav-overlay" id="sidenavOverlay" onclick="closeNav()"></div>
+
 <!-- SOS Alert -->
 <div class="pingsafe-alert" id="sosAlert">
   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="pingsafe-alert-icon">
@@ -27,23 +30,37 @@
 <script>
 function toggleNav(element) {
   const sidebar = document.getElementById("mySidenav");
+  const menuBtn = element.closest('.pingsafe-menu-btn');
 
   if (sidebar.style.width === "280px") {
     closeNav();
   } else {
-    const button = element.closest('.pingsafe-menu-btn');
-    const buttonRect = button.getBoundingClientRect();
-    sidebar.style.top = buttonRect.top + "px";
     openNav();
   }
 }
 
 function openNav() {
-  document.getElementById("mySidenav").style.width = "280px";
+  const sidebar = document.getElementById("mySidenav");
+  const menuBtn = document.querySelector('.pingsafe-menu-btn');
+  const overlay = document.getElementById("sidenavOverlay");
+
+  sidebar.style.width = "280px";
+  menuBtn.classList.add('hidden');
+  overlay.classList.add('active');
 }
 
 function closeNav() {
-  document.getElementById("mySidenav").style.width = "0";
+  const sidebar = document.getElementById("mySidenav");
+  const menuBtn = document.querySelector('.pingsafe-menu-btn');
+  const overlay = document.getElementById("sidenavOverlay");
+
+  sidebar.style.width = "0";
+  overlay.classList.remove('active');
+
+  // Delay showing menu button to allow sidenav to shrink first
+  setTimeout(() => {
+    menuBtn.classList.remove('hidden');
+  }, 200);
 }
 
 function handleSosClick() {
