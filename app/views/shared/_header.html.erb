@@ -23,11 +23,14 @@
   </svg>
   <div class="pingsafe-alert-content">
     <p class="pingsafe-alert-title">Emergency?</p>
-    <p class="pingsafe-alert-text">Press and hold the SOS button for 3 seconds to call the police</p>
+    <p class="pingsafe-alert-text" id="sosAlertText">Press again this button to call the police</p>
   </div>
 </div>
 
 <script>
+let sosClickCount = 0;
+let sosResetTimer = null;
+
 function toggleNav(element) {
   const sidebar = document.getElementById("mySidenav");
   const menuBtn = element.closest('.pingsafe-menu-btn');
@@ -65,11 +68,39 @@ function closeNav() {
 
 function handleSosClick() {
   const sosAlert = document.getElementById("sosAlert");
-  sosAlert.style.display = "flex";
+  const sosAlertText = document.getElementById("sosAlertText");
 
-  setTimeout(() => {
-    sosAlert.style.display = "none";
-    window.location.href = 'tel:+3300';
-  }, 4000);
+  sosClickCount++;
+
+  if (sosClickCount === 1) {
+    // First click: Show confirmation message
+    sosAlertText.textContent = "Press again this button to call the police";
+    sosAlert.style.display = "flex";
+
+    // Reset after 10 seconds if not clicked again
+    if (sosResetTimer) {
+      clearTimeout(sosResetTimer);
+    }
+    sosResetTimer = setTimeout(() => {
+      sosClickCount = 0;
+      sosAlert.style.display = "none";
+    }, 10000);
+
+  } else if (sosClickCount === 2) {
+    // Second click: Call the police
+    sosAlertText.textContent = "Calling emergency services...";
+
+    // Clear reset timer
+    if (sosResetTimer) {
+      clearTimeout(sosResetTimer);
+    }
+
+    // Make the call after a brief moment
+    setTimeout(() => {
+      window.location.href = 'tel:+3300';
+      sosAlert.style.display = "none";
+      sosClickCount = 0;
+    }, 500);
+  }
 }
 </script>
