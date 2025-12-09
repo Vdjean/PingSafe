@@ -1,23 +1,25 @@
 $blue: #1e3a5f;
 
 .pingsafe-sidenav {
-  // Start from menu button position with zero width (hidden)
-  width: 0;
+  // Start from menu button position and size
+  width: 48px;
   height: 48px;
   position: fixed;
   z-index: 1000;
-  top: 10px;
-  left: 15px;
+  top: calc(10px + env(safe-area-inset-top));
+  left: calc(15px + env(safe-area-inset-left));
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04);
   display: flex;
   flex-direction: column;
   border-radius: 0.75rem;
   border: 1px solid #f3f4f6;
   pointer-events: none;
+  opacity: 0;
+  transform: scale(0.95);
 
   // When open, expand to full size
   &[style*="width: 280px"] {
@@ -27,6 +29,8 @@ $blue: #1e3a5f;
     border-radius: 16px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
     pointer-events: all;
+    opacity: 1;
+    transform: scale(1);
   }
 
   @media (min-width: 769px) {
@@ -44,7 +48,7 @@ $blue: #1e3a5f;
   flex-shrink: 0;
   border-radius: 16px 16px 0 0;
   opacity: 0;
-  transition: opacity 0.3s ease 0.1s;
+  transition: opacity 0.4s ease 0.25s;
 
   .pingsafe-sidenav[style*="width: 280px"] & {
     opacity: 1;
@@ -94,7 +98,7 @@ $blue: #1e3a5f;
   padding: 8px;
   max-height: calc(80vh - 60px);
   opacity: 0;
-  transition: opacity 0.3s ease 0.2s;
+  transition: opacity 0.4s ease 0.35s;
 
   .pingsafe-sidenav[style*="width: 280px"] & {
     opacity: 1;
@@ -268,7 +272,7 @@ $blue: #1e3a5f;
   z-index: 999;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
   &.active {
     opacity: 1;

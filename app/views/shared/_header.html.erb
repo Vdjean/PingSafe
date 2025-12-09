@@ -47,9 +47,14 @@ function openNav() {
   const menuBtn = document.querySelector('.pingsafe-menu-btn');
   const overlay = document.getElementById("sidenavOverlay");
 
-  sidebar.style.width = "280px";
+  // Hide button immediately
   menuBtn.classList.add('hidden');
-  overlay.classList.add('active');
+
+  // Small delay before showing sidenav to ensure button is fully hidden
+  setTimeout(() => {
+    sidebar.style.width = "280px";
+    overlay.classList.add('active');
+  }, 100);
 }
 
 function closeNav() {
@@ -57,13 +62,14 @@ function closeNav() {
   const menuBtn = document.querySelector('.pingsafe-menu-btn');
   const overlay = document.getElementById("sidenavOverlay");
 
+  // Close sidenav first
   sidebar.style.width = "0";
   overlay.classList.remove('active');
 
-  // Delay showing menu button to allow sidenav to shrink first
+  // Show button after sidenav is fully closed
   setTimeout(() => {
     menuBtn.classList.remove('hidden');
-  }, 200);
+  }, 500);
 }
 
 function handleSosClick() {
