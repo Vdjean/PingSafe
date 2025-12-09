@@ -1,14 +1,18 @@
 .pingsafe-mobile-app-container {
   min-height: 100vh;
+  min-height: -webkit-fill-available;
   background-color: #f9fafb;
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin: 0 auto;
+  margin: 0;
+  padding: 0;
   position: relative;
+  overflow-x: hidden;
 
   @media (min-width: 769px) {
     max-width: 430px;
+    margin: 0 auto;
     box-shadow: 0 0 50px rgba(0, 0, 0, 0.2);
     background-color: white;
   }
@@ -21,7 +25,8 @@
   width: 100%;
   position: relative;
   min-height: 100vh;
-  padding-bottom: 120px;
+  min-height: -webkit-fill-available;
+  padding-bottom: calc(120px + env(safe-area-inset-bottom));
 }
 
 .pingsafe-mobile-container {

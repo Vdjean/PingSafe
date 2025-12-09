@@ -16,8 +16,8 @@
   text-decoration: none;
   cursor: pointer;
   position: fixed;
-  top: 10px;
-  left: 15px;
+  top: calc(10px + env(safe-area-inset-top));
+  left: calc(15px + env(safe-area-inset-left));
   z-index: 1001;
   border: 1px solid #f3f4f6;
   opacity: 1;
@@ -50,7 +50,8 @@
 .pingsafe-nav-sos {
   position: fixed;
   margin-top: 66px;
-  right: 5px;
+  top: env(safe-area-inset-top);
+  right: calc(5px + env(safe-area-inset-right));
   z-index: 100;
 }
 
@@ -68,8 +69,8 @@ color: $blue;
 .pingsafe-alert {
   display: none;
   position: fixed;
-  top: 138px; // 66px (SOS top) + 64px (SOS height) + 8px (gap)
-  right: 15px;
+  top: calc(138px + env(safe-area-inset-top)); // 66px (SOS top) + 64px (SOS height) + 8px (gap)
+  right: calc(15px + env(safe-area-inset-right));
   width: 90%;
   max-width: 280px;
   color: #856404;
