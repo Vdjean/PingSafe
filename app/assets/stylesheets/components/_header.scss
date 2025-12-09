@@ -11,15 +11,21 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04);
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   color: var(--blue-color);
   text-decoration: none;
   cursor: pointer;
   position: fixed;
   top: 10px;
   left: 15px;
-  z-index: 1000;
+  z-index: 1001;
   border: 1px solid #f3f4f6;
+
+  // Hide when sidenav is open
+  &.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
 }
 
 .pingsafe-menu-btn:hover {
