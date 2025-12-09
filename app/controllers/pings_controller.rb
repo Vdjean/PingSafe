@@ -28,6 +28,9 @@ class PingsController < ApplicationController
       end
       process_location_with_llm(@ping, chat)
 
+      # Notify nearby users about this new ping
+      NotifyNearbyUsersJob.perform_later(@ping.id)
+
       redirect_to ping_path(@ping), notice: "Ping created successfully! Analysis in progress..."
     else
       render :new, status: :unprocessable_entity
