@@ -16,11 +16,17 @@
   </div>
 
   <% if (@ping.photo.present? && @ping.blurred_photo_url.blank?) || (@chat.present? && @chat.danger_sites_json.blank?) %>
-    <div class="alert alert-info pingsafe-show-alert">
-      <i class="fa fa-spinner fa-spin"></i> AI is analyzing your location<%= @ping.photo.present? ? ' and photo' : '' %>... Page will auto-refresh.
+    <div class="pingsafe-location-alert pingsafe-location-alert-info">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M12 16v-4"/>
+        <path d="M12 8h.01"/>
+      </svg>
+      <div class="pingsafe-location-alert-content">
+        <p class="pingsafe-location-alert-text">AI is analyzing your <%= @ping.photo.present? ? 'location and photo' : 'location' %>...</p>
+      </div>
     </div>
     <script>
-
       setTimeout(function() {
         window.location.reload();
       }, 3000);
