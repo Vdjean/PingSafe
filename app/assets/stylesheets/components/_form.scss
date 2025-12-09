@@ -273,3 +273,35 @@ input[type="file"].pingsafe-form-input {
     }
   }
 }
+
+/* === DELETE ACCOUNT === */
+.pingsafe-form-hint {
+  text-align: center;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #f3f4f6;
+  color: #6b7280;
+  font-size: 0.875rem;
+
+  form {
+    display: inline;
+    margin-left: 0.5rem;
+  }
+
+  input[type="submit"],
+  button[type="submit"] {
+    background: none;
+    border: none;
+    color: #dc2626;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: #991b1b;
+    }
+  }
+}

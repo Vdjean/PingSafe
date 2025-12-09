@@ -1,6 +1,12 @@
 <div class="pingsafe-mobile-wrapper">
-  <div class="pingsafe-form-container">
+  <div class="pingsafe-faq-container">
     <div class="pingsafe-form-card">
+
+      <%= link_to profile_path, class: 'pingsafe-back-btn' do %>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+      <% end %>
 
       <div class="pingsafe-form-header">
         <div class="pingsafe-form-icon">
@@ -97,19 +103,14 @@
         </div>
       <% end %>
 
-      <h3 class="pingsafe-form-hint">Cancel my account</h3>
       <div class="pingsafe-form-hint">
         Unhappy?
         <%= button_to "Cancel my account",
             registration_path(resource_name),
             data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" },
             method: :delete %>
-      </div>
 
-      <div class="pingsafe-form-links">
-        <%= link_to "Back", :back %>
       </div>
-
     </div>
   </div>
 
