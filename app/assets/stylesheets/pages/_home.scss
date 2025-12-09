@@ -1,28 +1,3 @@
-// Home page edge-to-edge support
-html:has(.pingsafe-map-tall) {
-  background-color: #000000 !important;
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  overflow: hidden;
-}
-
-body:has(.pingsafe-map-tall) {
-  background-color: #000000 !important;
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  overflow: hidden;
-
-  .pingsafe-mobile-app-container,
-  .pingsafe-content-wrapper,
-  .pingsafe-mobile-wrapper {
-    background-color: transparent !important;
-    margin: 0;
-    padding: 0;
-    height: 100%;
-  }
-}
 
 .pingsafe-badge {
   display: flex;
@@ -42,26 +17,18 @@ body:has(.pingsafe-map-tall) {
 }
 
 .pingsafe-map-container.pingsafe-map-tall {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
-  height: 100dvh !important; // Dynamic viewport height for iOS
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
   z-index: 1;
-  margin: 0;
-  padding: 0;
 
   // On desktop, constrain to mobile width
   @media (min-width: 769px) {
     max-width: 430px;
     left: 50%;
     transform: translateX(-50%);
-    right: auto;
-    width: 430px;
-    height: 100vh !important;
   }
 }
 
