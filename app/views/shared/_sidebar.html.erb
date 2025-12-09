@@ -57,11 +57,24 @@
 </div>
 
 <script>
-  function openNav() {
-  document.getElementById("mySidenav").style.width = "320px";
+function openNav() {
+  document.getElementById("mySidenav").style.width = "280px";
 }
 
 function closeNav() {
   document.getElementById("mySidenav").style.width = "0";
 }
+
+function toggleNav(buttonElement) {
+  const sidebar = document.getElementById("mySidenav");
+
+  if (sidebar.style.width === "280px") {
+    closeNav();
+  } else {
+    const buttonRect = buttonElement.getBoundingClientRect();
+    sidebar.style.top = (buttonRect.top) + "px";
+    openNav();
+  }
+}
+
 </script>
