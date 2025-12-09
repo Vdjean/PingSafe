@@ -7,9 +7,8 @@ class User < ApplicationRecord
   has_many :levels, through: :user_levels
   has_many :user_rewards
   has_many :rewards, through: :user_rewards
-  # DÉSACTIVÉ TEMPORAIREMENT - Push notifications
-  # has_many :push_subscriptions, dependent: :destroy
-  # has_many :proximity_notifications, dependent: :destroy
+  has_many :push_subscriptions, dependent: :destroy
+  has_many :proximity_notifications, dependent: :destroy
 
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :password, length: { minimum: 6 }
@@ -39,7 +38,6 @@ class User < ApplicationRecord
     new_level = current_level
     leveled_up = new_level > old_level
 
-    # Update user_level if leveled up
     if leveled_up
       level_record = Level.order(points: :asc).limit(new_level).last
       UserLevel.find_or_create_by!(user: self, level: level_record) do |ul|

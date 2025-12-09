@@ -1,8 +1,10 @@
 class Ping < ApplicationRecord
   belongs_to :user
   has_one :chat, dependent: :destroy
-  # DÉSACTIVÉ TEMPORAIREMENT - Push notifications
-  # has_many :proximity_notifications, dependent: :destroy
+  has_many :proximity_notifications, dependent: :destroy
+
+  # Active la méthode .near() de Geocoder pour les requêtes de proximité
+  reverse_geocoded_by :latitude, :longitude
 
   validates :date, presence: true
   validates :heure, presence: true
@@ -20,7 +22,6 @@ class Ping < ApplicationRecord
 
   after_update_commit :broadcast_if_shared
 
-  # Get formatted address for display (street, city, zip)
   def formatted_address
     # Return coordinates if no lat/long
     return "#{latitude.round(4)}, #{longitude.round(4)}" if latitude.blank? || longitude.blank?
@@ -37,14 +38,11 @@ class Ping < ApplicationRecord
   private
 
   def parse_short_address(full_address)
-    # Try to extract street, city, and zip from full address
     parts = full_address.split(',').map(&:strip)
 
-    # Try to find zip code (5 digits)
     zip = parts.find { |p| p =~ /^\d{5}$/ }
 
     if parts.length >= 2
-      # Format is usually: "61", "Rue Servan", "District", "City", "Region", "Country", "75011"
       # Combine first two parts for full street address (number + street name)
       street = [parts[0], parts[1]].compact.join(' ')
 

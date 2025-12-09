@@ -19,7 +19,8 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
+  <body data-controller="service-worker"
+        data-service-worker-vapid-public-key-value="<%= ENV['VAPID_PUBLIC_KEY'] %>">
     <div class="pingsafe-mobile-app-container">
       <div class="pingsafe-content-wrapper">
         <%= yield %>

@@ -1,57 +1,51 @@
-// PingSafe Service Worker for Push Notifications
+// PingSafe Service Worker - Notifications Push
 
-// self.addEventListener("install", (event) => {
-//   console.log("Service Worker installed")
-//   self.skipWaiting()
-// })
+self.addEventListener("push", (event) => {
+  if (!event.data) return
 
-// self.addEventListener("activate", (event) => {
-//   console.log("Service Worker activated")
-//   event.waitUntil(clients.claim())
-// })
+  const data = event.data.json()
 
-// // Handle push notifications
-// self.addEventListener("push", (event) => {
-//   if (!event.data) return
+  const options = {
+    body: data.body,
+    icon: "/icon-192.png",
+    badge: "/badge-72.png",
+    vibrate: [100, 50, 100],
+    data: {
+      url: data.url,
+      ping_id: data.ping_id
+    },
+    actions: [
+      { action: "open", title: "Voir le signalement" },
+      { action: "close", title: "Fermer" }
+    ]
+  }
 
-//   const data = event.data.json()
+  event.waitUntil(
+    self.registration.showNotification(data.title, options)
+  )
+})
 
-//   const options = {
-//     body: data.body,
-//     icon: "/apple-touch-icon.png",
-//     badge: "/apple-touch-icon.png",
-//     vibrate: [200, 100, 200],
-//     tag: `ping-${data.ping_id}`,
-//     renotify: true,
-//     data: {
-//       url: data.url || "/"
-//     }
-//   }
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close()
 
-//   event.waitUntil(
-//     self.registration.showNotification(data.title || "Alerte PingSafe", options)
-//   )
-// })
+  if (event.action === "close") return
 
-// // Handle notification click
-// self.addEventListener("notificationclick", (event) => {
-//   event.notification.close()
+  const url = event.notification.data?.url || "/"
 
-//   const url = event.notification.data?.url || "/"
+  event.waitUntil(
+    clients.matchAll({ type: "window", includeUncontrolled: true }).then((windowClients) => {
+      for (const client of windowClients) {
+        if (client.url.includes(url) && "focus" in client) {
+          return client.focus()
+        }
+      }
+      if (clients.openWindow) {
+        return clients.openWindow(url)
+      }
+    })
+  )
+})
 
-//   event.waitUntil(
-//     clients.matchAll({ type: "window", includeUncontrolled: true }).then((clientList) => {
-//       // If a window is already open, focus it
-//       for (const client of clientList) {
-//         if (client.url.includes(self.location.origin) && "focus" in client) {
-//           client.navigate(url)
-//           return client.focus()
-//         }
-//       }
-//       // Otherwise open a new window
-//       if (clients.openWindow) {
-//         return clients.openWindow(url)
-//       }
-//     })
-//   )
-// })
+self.addEventListener("activate", (event) => {
+  event.waitUntil(self.clients.claim())
+})
