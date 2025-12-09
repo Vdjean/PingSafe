@@ -47,6 +47,7 @@ $desktop-min: 769px;
   flex-direction: column;
   align-items: center;
   padding: 8px 12px;
+  gap: 0rem !important;
   background: none;
   border: none;
   color: #9ca3af;
@@ -74,4 +75,10 @@ $desktop-min: 769px;
 .pingsafe-nav-item-active {
   color: $blue;
   background: rgba(30, 58, 95, 0.08);
+}
+
+.logo-btn {
+  width: 57px;
+  height: 62px;
+  margin-bottom: 8px;
 }
