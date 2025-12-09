@@ -10,6 +10,9 @@ Rails.application.routes.draw do
   get "profile", to: "pages#profile"
 
   get "faq", to: "pages#faq"
+
+  get "this_ping/:id", to: "pages#this_ping", as: :this_ping
+
   namespace :api do
     resources :push_subscriptions, only: [:create, :destroy]
     resources :locations, only: [:create]

@@ -11,4 +11,8 @@ class PagesController < ApplicationController
   def new
     @Ping = Ping.new
   end
+
+  def this_ping
+   @ping = Ping.find(params[:id])
+  end
 end
