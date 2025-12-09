@@ -68,14 +68,31 @@ export default class extends Controller {
   this.map.addControl(this.geolocateControl, "top-right")
 
   this.map.on("load", () => {
+    // Trigger geolocation and enter tracking mode
     this.geolocateControl.trigger()
+
+    // After first trigger, activate tracking mode automatically
+    setTimeout(() => {
+      this.geolocateControl.trigger()
+    }, 100)
+
     this.addPingMarkers()
     this.subscribeToChannel()
   })
 
-  // Auto-enable tracking mode to follow user movement
-  this.geolocateControl.on('geolocate', () => {
-    // Map will now follow user position and show heading direction
+  // Keep map centered on user as they move
+  this.geolocateControl.on('geolocate', (e) => {
+    // Map will automatically follow user position and show heading direction
+    // This keeps the camera centered on the user's location
+  })
+
+  // Handle tracking state changes
+  this.geolocateControl.on('trackuserlocationstart', () => {
+    console.log('Tracking started - map will follow your movement')
+  })
+
+  this.geolocateControl.on('trackuserlocationend', () => {
+    console.log('Tracking stopped')
   })
 }
   subscribeToChannel() {
