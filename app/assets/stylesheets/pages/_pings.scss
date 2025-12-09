@@ -13,24 +13,7 @@ $desktop-min: 769px;
   }
 }
 
-.pingsafe-pings-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-  gap: 1rem;
-}
-
-.pingsafe-pings-title {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #111827;
-  margin: 0;
-
-  @media (min-width: 400px) {
-    font-size: 2rem;
-  }
-}
+// Header styles now use .pingsafe-form-ping-header from _ping_form.scss
 
 .pingsafe-btn-create {
   display: flex;
