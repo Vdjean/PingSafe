@@ -1,5 +1,5 @@
 class TutorialsController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:install]
+  skip_before_action :authenticate_user!, only: [:install, :skip]
 
   def install
     # Detect browser type
