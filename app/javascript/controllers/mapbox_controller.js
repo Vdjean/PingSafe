@@ -33,6 +33,7 @@ export default class extends Controller {
 
   this.markers = new Map()
   this.expiryTimers = new Map()
+  this.isTracking = false
 
   const defaultCenter = [2.3522, 48.8566]
   const defaultZoom = 13
@@ -74,54 +75,72 @@ export default class extends Controller {
     this.addPingMarkers()
     this.subscribeToChannel()
 
-    // Automatically start tracking user location on load
-    // Simulate a click on the geolocate button to ensure the dot appears
+    // Automatically start tracking with compass mode
     setTimeout(() => {
-      const geolocateButton = document.querySelector('.mapboxgl-ctrl-geolocate')
-      if (geolocateButton) {
-        geolocateButton.click()
-        console.log('Geolocate button clicked automatically')
-      }
-    }, 800)
+      this.geolocateControl.trigger()
+      console.log('Geolocation and compass tracking started')
+    }, 500)
   })
 
-  // Handle geolocation success - move map to follow user and rotate like compass
+  // Handle geolocation success - move map to follow user
   this.geolocateControl.on('geolocate', (e) => {
     console.log('User location found at:', e.coords.latitude, e.coords.longitude)
+    this.isTracking = true
 
-    // Get user heading (direction) if available
-    const heading = e.coords.heading
-
-    // Smoothly move map to follow user position and rotate based on heading
-    const moveOptions = {
+    // Center map on user location smoothly
+    this.map.easeTo({
       center: [e.coords.longitude, e.coords.latitude],
-      duration: 1000, // 1 second smooth transition
-      essential: true // Animation will happen even if user prefers reduced motion
-    }
-
-    // If heading is available, rotate map to match compass direction
-    if (heading !== null && heading !== undefined) {
-      moveOptions.bearing = heading
-      console.log('Rotating map to heading:', heading)
-    }
-
-    this.map.easeTo(moveOptions)
+      zoom: 16,
+      duration: 1000,
+      essential: true
+    })
   })
 
   // Handle tracking state changes
   this.geolocateControl.on('trackuserlocationstart', () => {
     console.log('Tracking started - user dot should be visible')
+    this.isTracking = true
   })
 
   this.geolocateControl.on('trackuserlocationend', () => {
     console.log('Tracking stopped')
+    this.isTracking = false
   })
 
   // Handle geolocation errors
   this.geolocateControl.on('error', (error) => {
     console.log('Geolocation error:', error.message)
   })
+
+  // Track device orientation for compass mode
+  if (window.DeviceOrientationEvent) {
+    // Request permission for iOS 13+
+    if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+      DeviceOrientationEvent.requestPermission()
+        .then(permissionState => {
+          if (permissionState === 'granted') {
+            this.setupCompassTracking()
+          }
+        })
+        .catch(console.error)
+    } else {
+      // Non-iOS or older iOS
+      this.setupCompassTracking()
+    }
+  }
 }
+
+  setupCompassTracking() {
+    window.addEventListener('deviceorientation', (event) => {
+      if (this.isTracking && event.alpha !== null) {
+        // event.alpha gives compass heading (0-360 degrees)
+        // Webkit uses event.webkitCompassHeading for iOS
+        const heading = event.webkitCompassHeading || (360 - event.alpha)
+
+        this.map.rotateTo(heading, { duration: 100 })
+      }
+    })
+  }
   subscribeToChannel() {
     this.subscription = subscribeToPings({
       onPingCreated: (ping) => this.addSingleMarker(ping),
