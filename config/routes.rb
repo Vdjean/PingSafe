@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'tutorials/install'
+  post 'tutorials/skip', to: 'tutorials#skip'
   get "webmanifest"    => "pwa#manifest"
   get "service-worker" => "pwa#service_worker"
 
