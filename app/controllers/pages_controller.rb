@@ -1,11 +1,7 @@
 class PagesController < ApplicationController
   def home
-    # Check if running as PWA (standalone mode)
-    is_pwa = request.headers['HTTP_USER_AGENT']&.include?('standalone') ||
-             request.headers['HTTP_X_PURPOSE'] == 'preview'
-
-    # If not PWA and not authenticated, show tutorial
-    unless is_pwa || user_signed_in? || cookies[:skip_tutorial] == 'true'
+    # If not authenticated and hasn't seen tutorial, show it
+    unless user_signed_in? || cookies[:skip_tutorial] == 'true' || cookies[:is_pwa] == 'true'
       redirect_to tutorials_install_path and return
     end
 
