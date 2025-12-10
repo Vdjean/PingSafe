@@ -3,63 +3,210 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Error 404 - Page Not Found</title>
+    <title>404 - Page not found | PingSafe</title>
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            margin: 0;
-            background-color: #DCDDE1;
+            background: linear-gradient(to bottom, #fef3c7 0%, #f9fafb 30%);
+            padding: 20px;
         }
-        .error-container {
+
+        .pingsafe-error-container {
+            max-width: 480px;
+            width: 100%;
+            background: white;
+            border-radius: 24px;
+            padding: 48px 32px;
             text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
         }
-        .error-image {
-            max-width: 100%;
+
+        .pingsafe-error-icon {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ff8e72 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            box-shadow: 0 8px 24px rgba(255, 107, 107, 0.4);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 8px 24px rgba(255, 107, 107, 0.4);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 12px 32px rgba(255, 107, 107, 0.5);
+            }
+        }
+
+        .pingsafe-error-icon svg {
+            width: 64px;
+            height: 64px;
+            color: white;
+            stroke-width: 2;
+        }
+
+        .pingsafe-error-code {
+            font-size: 72px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8f 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 16px;
+            line-height: 1;
+        }
+
+        .pingsafe-error-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 12px;
+        }
+
+        .pingsafe-error-message {
+            font-size: 16px;
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 32px;
+        }
+
+        .pingsafe-error-image {
+            max-width: 280px;
+            width: 100%;
             height: auto;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
         }
 
-     .home-button-link {
-    text-decoration: none;
-    display: inline-block;
-    margin-top: 20px;
-    color: #0a3052;
-}
+        .pingsafe-error-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
 
-        .cute-button {
-    background-color: #fe7051;
-    padding: 12px 25px;
-    border: none;
-    border-radius: 8px;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.1s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
+        .pingsafe-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
 
-.cute-button:hover {
-    background-color: #ff3c2c;
-    transform: translateY(-2px);
-}
+        .pingsafe-btn-primary {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8f 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(30, 58, 95, 0.3);
+        }
 
-.cute-button:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+        .pingsafe-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(30, 58, 95, 0.4);
+        }
+
+        .pingsafe-btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .pingsafe-btn-secondary {
+            background: white;
+            color: #1e3a5f;
+            border: 2px solid #e5e7eb;
+        }
+
+        .pingsafe-btn-secondary:hover {
+            background: #f9fafb;
+            border-color: #1e3a5f;
+        }
+
+        .pingsafe-error-footer {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid #f3f4f6;
+            font-size: 14px;
+            color: #9ca3af;
+        }
+
+        .pingsafe-error-footer a {
+            color: #1e3a5f;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .pingsafe-error-footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            .pingsafe-error-container {
+                padding: 32px 24px;
+            }
+
+            .pingsafe-error-code {
+                font-size: 56px;
+            }
+
+            .pingsafe-error-title {
+                font-size: 20px;
+            }
+
+            .pingsafe-error-message {
+                font-size: 14px;
+            }
+        }
     </style>
 </head>
 <body>
-<div class="error-container">
-    <img src="error_404.jpg" alt="Error 404: Page Not Found - The fox is confused." class="error-image">
+    <div class="pingsafe-error-container">
+        <img src="error_404.jpg" alt="Page not found" class="pingsafe-error-image">
 
-    <a href="https://www.pingsafe.space/" class="home-button-link">
-        <button class="cute-button">
-             Back to Home 🦊
-        </button>
-    </a>
-</div>
+        <h2 class="pingsafe-error-title">Oops! Something went wrong</h2>
+
+        <p class="pingsafe-error-message">
+            We're experiencing some technical difficulties. Our team has been notified and is working to fix the issue. Please try again in a few moments.
+        </p>
+
+        <div class="pingsafe-error-actions">
+            <a href="/" class="pingsafe-btn pingsafe-btn-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+                Back to Home
+            </a>
+            <button onclick="window.location.reload()" class="pingsafe-btn pingsafe-btn-secondary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="23 4 23 10 17 10"/>
+                    <polyline points="1 20 1 14 7 14"/>
+                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+                </svg>
+                Try Again
+            </button>
+        </div>
+    </div>
 </body>
 </html>
