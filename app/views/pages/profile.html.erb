@@ -3,17 +3,7 @@
 
     <div class="pingsafe-profile-header">
       <div class="pingsafe-profile-avatar">
-        <% if current_user.pseudo.present? %>
-          <div class="pingsafe-avatar-initials">
-            <%= current_user.pseudo.first.upcase %>
-          </div>
-        <% elsif current_user.first_name.present? %>
-          <div class="pingsafe-avatar-initials">
-            <%= current_user.first_name.first.upcase %>
-          </div>
-        <% else %>
-          <%= image_tag 'logo.png', alt: 'Profile', class: 'pingsafe-avatar-img' %>
-        <% end %>
+        <%= image_tag '/victor.jpeg', alt: 'Profile', class: 'pingsafe-avatar-img' %>
       </div>
 
 

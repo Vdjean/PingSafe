@@ -39,9 +39,10 @@ $desktop-min: 769px;
 }
 
 .pingsafe-avatar-img {
-  width: 60%;
-  height: 60%;
-  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .pingsafe-avatar-initials {
