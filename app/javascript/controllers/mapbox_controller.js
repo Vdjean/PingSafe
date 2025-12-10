@@ -29,6 +29,13 @@ export default class extends Controller {
     return
   }
 
+  // Lock screen orientation to portrait
+  if (screen.orientation && screen.orientation.lock) {
+    screen.orientation.lock('portrait').catch(err => {
+      console.log('Orientation lock not supported:', err)
+    })
+  }
+
   mapboxgl.accessToken = this.accessTokenValue
 
   this.markers = new Map()
@@ -131,13 +138,27 @@ export default class extends Controller {
 }
 
   setupCompassTracking() {
+    let lastHeading = null
+
     window.addEventListener('deviceorientation', (event) => {
-      if (this.isTracking && event.alpha !== null) {
+      if (event.alpha !== null) {
         // event.alpha gives compass heading (0-360 degrees)
         // Webkit uses event.webkitCompassHeading for iOS
-        const heading = event.webkitCompassHeading || (360 - event.alpha)
+        let heading = event.webkitCompassHeading || (360 - event.alpha)
 
-        this.map.rotateTo(heading, { duration: 100 })
+        // Smooth the heading to avoid jittery rotation
+        if (lastHeading !== null) {
+          const diff = Math.abs(heading - lastHeading)
+          // Only update if heading changed by more than 2 degrees
+          if (diff < 2 && diff > 0.5) {
+            heading = lastHeading + (heading - lastHeading) * 0.3
+          }
+        }
+
+        lastHeading = heading
+
+        // Always rotate, regardless of tracking state
+        this.map.rotateTo(heading, { duration: 300, easing: t => t })
       }
     })
   }
