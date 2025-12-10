@@ -43,14 +43,17 @@ export default class extends Controller {
     center: defaultCenter,
     zoom: defaultZoom,
     attributionControl: true,
-    // Disable default zoom controls
+    // Enable rotation for compass mode
     boxZoom: true,
     doubleClickZoom: true,
-    dragRotate: false,
+    dragRotate: true,
     dragPan: true,
     keyboard: true,
     scrollZoom: true,
-    touchZoomRotate: true
+    touchZoomRotate: true,
+    touchPitch: true,
+    bearing: 0, // Initial north-facing
+    pitch: 0 // Flat view initially
   })
 
   this.geolocateControl = new mapboxgl.GeolocateControl({
@@ -82,16 +85,27 @@ export default class extends Controller {
     }, 800)
   })
 
-  // Handle geolocation success - move map to follow user
+  // Handle geolocation success - move map to follow user and rotate like compass
   this.geolocateControl.on('geolocate', (e) => {
     console.log('User location found at:', e.coords.latitude, e.coords.longitude)
 
-    // Smoothly move map to follow user position
-    this.map.easeTo({
+    // Get user heading (direction) if available
+    const heading = e.coords.heading
+
+    // Smoothly move map to follow user position and rotate based on heading
+    const moveOptions = {
       center: [e.coords.longitude, e.coords.latitude],
       duration: 1000, // 1 second smooth transition
       essential: true // Animation will happen even if user prefers reduced motion
-    })
+    }
+
+    // If heading is available, rotate map to match compass direction
+    if (heading !== null && heading !== undefined) {
+      moveOptions.bearing = heading
+      console.log('Rotating map to heading:', heading)
+    }
+
+    this.map.easeTo(moveOptions)
   })
 
   // Handle tracking state changes
