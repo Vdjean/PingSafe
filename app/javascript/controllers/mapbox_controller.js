@@ -82,9 +82,16 @@ export default class extends Controller {
     }, 800)
   })
 
-  // Handle geolocation success
+  // Handle geolocation success - move map to follow user
   this.geolocateControl.on('geolocate', (e) => {
     console.log('User location found at:', e.coords.latitude, e.coords.longitude)
+
+    // Smoothly move map to follow user position
+    this.map.easeTo({
+      center: [e.coords.longitude, e.coords.latitude],
+      duration: 1000, // 1 second smooth transition
+      essential: true // Animation will happen even if user prefers reduced motion
+    })
   })
 
   // Handle tracking state changes
