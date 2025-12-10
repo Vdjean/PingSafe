@@ -11,9 +11,17 @@ class PagesController < ApplicationController
   private
 
   def check_tutorial
+    # Check URL params as fallback for cookie issues (especially in Chrome)
+    if params[:skip] == '1' || params[:pwa] == '1'
+      # Make sure cookies are set
+      cookies[:skip_tutorial] = { value: 'true', expires: 1.year.from_now } if params[:skip] == '1'
+      cookies[:is_pwa] = { value: 'true', expires: 1.year.from_now } if params[:pwa] == '1'
+      return
+    end
+
     # If not authenticated and hasn't seen tutorial, show it
     unless user_signed_in? || cookies[:skip_tutorial] == 'true' || cookies[:is_pwa] == 'true'
-      redirect_to tutorials_install_path
+      redirect_to tutorials_install_path and return
     end
   end
 
