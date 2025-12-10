@@ -51,6 +51,12 @@ $desktop-min: 769px;
   }
 }
 
+.pingsafe-header-spacer {
+  width: 40px;
+  height: 40px;
+  visibility: hidden;
+}
+
 .pingsafe-form-ping-title {
   font-size: 1.25rem;
   font-weight: 700;

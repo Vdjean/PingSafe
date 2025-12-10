@@ -17,7 +17,7 @@ class Ping < ApplicationRecord
 
   attr_accessor :nombre_personnes, :signe_distinctif
 
-  before_save :combine_form_fields
+  before_create :combine_form_fields
   before_save :fetch_address_from_coordinates
 
   after_update_commit :broadcast_if_shared
