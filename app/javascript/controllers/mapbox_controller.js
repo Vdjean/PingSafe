@@ -81,6 +81,7 @@ export default class extends Controller {
   this.map.on("load", () => {
     this.addPingMarkers()
     this.subscribeToChannel()
+    this.updateMarkersScale()
 
     // Automatically start tracking
     setTimeout(() => {
@@ -90,6 +91,11 @@ export default class extends Controller {
         console.log('Geolocation started')
       }
     }, 500)
+  })
+
+  // Scale markers on zoom
+  this.map.on("zoom", () => {
+    this.updateMarkersScale()
   })
 
   // Handle geolocation success
@@ -217,7 +223,8 @@ export default class extends Controller {
       .setLngLat([parseFloat(ping.longitude), parseFloat(ping.latitude)])
       .addTo(this.map)
 
-    this.markers.set(ping.id, { marker, radius, createdAt: ping.created_at })
+    this.markers.set(ping.id, { marker, radius, wrapper, createdAt: ping.created_at })
+    this.updateMarkerScale(wrapper)
 
     // Initial color update
     this.updateRadiusColor(ping.id)
@@ -242,6 +249,23 @@ export default class extends Controller {
     } else {
       this.expiryTimers.set(ping.id, { colorTimer })
     }
+  }
+
+  updateMarkersScale() {
+    this.markers.forEach((data) => {
+      if (data.wrapper) {
+        this.updateMarkerScale(data.wrapper)
+      }
+    })
+  }
+
+  updateMarkerScale(wrapper) {
+    const zoom = this.map.getZoom()
+    // Scale: 1 at zoom 15, smaller when zoomed out, larger when zoomed in
+    // Min scale 0.5, max scale 1.2
+    const baseZoom = 15
+    const scale = Math.min(1.2, Math.max(0.4, zoom / baseZoom))
+    wrapper.style.transform = `scale(${scale})`
   }
 
   updateRadiusColor(pingId) {
