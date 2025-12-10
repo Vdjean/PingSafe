@@ -1,0 +1,171 @@
+<div class="pingsafe-tutorial-container">
+  <div class="pingsafe-tutorial-content">
+
+    <!-- Logo and Welcome -->
+    <div class="pingsafe-tutorial-header">
+      <%= image_tag 'logo.png', alt: 'Pingsafe', class: 'pingsafe-tutorial-logo' %>
+      <h1 class="pingsafe-tutorial-title">Bienvenue sur PingSafe</h1>
+      <p class="pingsafe-tutorial-subtitle">Pour une meilleure expérience, installez PingSafe comme une application native sur votre téléphone</p>
+    </div>
+
+    <!-- iOS Safari Instructions -->
+    <% if @is_ios && @is_safari %>
+      <div class="pingsafe-tutorial-steps">
+        <h2 class="pingsafe-tutorial-steps-title">Installation sur iPhone/iPad (Safari)</h2>
+
+        <div class="pingsafe-tutorial-step">
+          <div class="pingsafe-tutorial-step-number">1</div>
+          <div class="pingsafe-tutorial-step-content">
+            <h3>Appuyez sur le bouton Partager</h3>
+            <div class="pingsafe-tutorial-icon-share">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+                <polyline points="16 6 12 2 8 6"/>
+                <line x1="12" y1="2" x2="12" y2="15"/>
+              </svg>
+            </div>
+            <p>Appuyez sur le bouton de partage en bas de l'écran Safari</p>
+          </div>
+        </div>
+
+        <div class="pingsafe-tutorial-step">
+          <div class="pingsafe-tutorial-step-number">2</div>
+          <div class="pingsafe-tutorial-step-content">
+            <h3>Sélectionnez "Sur l'écran d'accueil"</h3>
+            <div class="pingsafe-tutorial-icon-plus">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                <line x1="12" y1="8" x2="12" y2="16"/>
+                <line x1="8" y1="12" x2="16" y2="12"/>
+              </svg>
+            </div>
+            <p>Faites défiler et appuyez sur "Sur l'écran d'accueil"</p>
+          </div>
+        </div>
+
+        <div class="pingsafe-tutorial-step">
+          <div class="pingsafe-tutorial-step-number">3</div>
+          <div class="pingsafe-tutorial-step-content">
+            <h3>Confirmez l'installation</h3>
+            <p>Appuyez sur "Ajouter" en haut à droite pour installer l'application</p>
+          </div>
+        </div>
+
+        <div class="pingsafe-tutorial-step">
+          <div class="pingsafe-tutorial-step-number">4</div>
+          <div class="pingsafe-tutorial-step-content">
+            <h3>Lancez PingSafe</h3>
+            <p>L'icône PingSafe apparaîtra sur votre écran d'accueil. Appuyez dessus pour lancer l'application!</p>
+          </div>
+        </div>
+      </div>
+    <% elsif @is_chrome %>
+      <!-- Chrome/Android Instructions -->
+      <div class="pingsafe-tutorial-steps">
+        <h2 class="pingsafe-tutorial-steps-title">Installation sur Android (Chrome)</h2>
+
+        <div class="pingsafe-tutorial-step">
+          <div class="pingsafe-tutorial-step-number">1</div>
+          <div class="pingsafe-tutorial-step-content">
+            <h3>Ouvrez le menu</h3>
+            <p>Appuyez sur les trois points verticaux en haut à droite</p>
+          </div>
+        </div>
+
+        <div class="pingsafe-tutorial-step">
+          <div class="pingsafe-tutorial-step-number">2</div>
+          <div class="pingsafe-tutorial-step-content">
+            <h3>Installez l'application</h3>
+            <div class="pingsafe-tutorial-icon-plus">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                <line x1="12" y1="8" x2="12" y2="16"/>
+                <line x1="8" y1="12" x2="16" y2="12"/>
+              </svg>
+            </div>
+            <p>Sélectionnez "Installer l'application" ou "Ajouter à l'écran d'accueil"</p>
+          </div>
+        </div>
+
+        <div class="pingsafe-tutorial-step">
+          <div class="pingsafe-tutorial-step-number">3</div>
+          <div class="pingsafe-tutorial-step-content">
+            <h3>Confirmez</h3>
+            <p>Appuyez sur "Installer" dans la popup qui apparaît</p>
+          </div>
+        </div>
+
+        <div class="pingsafe-tutorial-step">
+          <div class="pingsafe-tutorial-step-number">4</div>
+          <div class="pingsafe-tutorial-step-content">
+            <h3>Lancez PingSafe</h3>
+            <p>L'icône PingSafe apparaîtra sur votre écran d'accueil. Appuyez dessus pour lancer l'application!</p>
+          </div>
+        </div>
+      </div>
+    <% else %>
+      <!-- Generic Instructions -->
+      <div class="pingsafe-tutorial-steps">
+        <h2 class="pingsafe-tutorial-steps-title">Installation</h2>
+
+        <div class="pingsafe-tutorial-step">
+          <div class="pingsafe-tutorial-step-content">
+            <h3>Installer comme application</h3>
+            <p>Pour installer PingSafe sur votre appareil:</p>
+            <ul>
+              <li><strong>Sur iPhone/iPad (Safari):</strong> Appuyez sur le bouton Partager puis "Sur l'écran d'accueil"</li>
+              <li><strong>Sur Android (Chrome):</strong> Menu → "Installer l'application"</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Benefits -->
+    <div class="pingsafe-tutorial-benefits">
+      <h3 class="pingsafe-tutorial-benefits-title">Pourquoi installer l'application?</h3>
+      <div class="pingsafe-tutorial-benefits-grid">
+        <div class="pingsafe-tutorial-benefit">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          <span>Accès rapide depuis l'écran d'accueil</span>
+        </div>
+        <div class="pingsafe-tutorial-benefit">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          <span>Fonctionne comme une application native</span>
+        </div>
+        <div class="pingsafe-tutorial-benefit">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          <span>Notifications en temps réel</span>
+        </div>
+        <div class="pingsafe-tutorial-benefit">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+          <span>Plein écran sans barre de navigation</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="pingsafe-tutorial-actions">
+      <%= link_to root_path, class: 'pingsafe-tutorial-btn-skip' do %>
+        Continuer dans le navigateur
+      <% end %>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // Detect if running as PWA and redirect to home
+  if (window.matchMedia('(display-mode: standalone)').matches ||
+      window.navigator.standalone === true) {
+    window.location.href = '<%= root_path %>';
+  }
+</script>

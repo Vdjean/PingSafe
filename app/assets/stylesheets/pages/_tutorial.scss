@@ -1,0 +1,212 @@
+$blue: #1e3a5f;
+
+.pingsafe-tutorial-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, $blue 0%, #2d5a8f 100%);
+  padding: 2rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media (min-width: 769px) {
+    padding: 3rem 1rem;
+  }
+}
+
+.pingsafe-tutorial-content {
+  max-width: 500px;
+  width: 100%;
+}
+
+.pingsafe-tutorial-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  padding: 2rem 1.5rem;
+  background: white;
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.pingsafe-tutorial-logo {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem;
+  display: block;
+}
+
+.pingsafe-tutorial-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: $blue;
+  margin: 0 0 0.75rem 0;
+}
+
+.pingsafe-tutorial-subtitle {
+  font-size: 0.9375rem;
+  color: #6b7280;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.pingsafe-tutorial-steps {
+  background: white;
+  border-radius: 1.5rem;
+  padding: 2rem 1.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  margin-bottom: 1.5rem;
+}
+
+.pingsafe-tutorial-steps-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: $blue;
+  margin: 0 0 1.5rem 0;
+  text-align: center;
+}
+
+.pingsafe-tutorial-step {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.75rem;
+  border-bottom: 1px solid #e5e7eb;
+
+  &:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+}
+
+.pingsafe-tutorial-step-number {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, $blue 0%, #2d5a8f 100%);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.pingsafe-tutorial-step-content {
+  flex: 1;
+
+  h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 0.5rem 0;
+  }
+
+  p {
+    font-size: 0.875rem;
+    color: #6b7280;
+    line-height: 1.5;
+    margin: 0.5rem 0 0 0;
+  }
+
+  ul {
+    margin: 0.75rem 0 0 0;
+    padding-left: 1.25rem;
+
+    li {
+      font-size: 0.875rem;
+      color: #6b7280;
+      line-height: 1.6;
+      margin-bottom: 0.5rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+.pingsafe-tutorial-icon-share,
+.pingsafe-tutorial-icon-plus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  background: #eff6ff;
+  border-radius: 1rem;
+  margin: 1rem auto;
+  color: $blue;
+}
+
+.pingsafe-tutorial-benefits {
+  background: white;
+  border-radius: 1.5rem;
+  padding: 2rem 1.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  margin-bottom: 1.5rem;
+}
+
+.pingsafe-tutorial-benefits-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: $blue;
+  margin: 0 0 1.25rem 0;
+  text-align: center;
+}
+
+.pingsafe-tutorial-benefits-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.pingsafe-tutorial-benefit {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  svg {
+    flex-shrink: 0;
+    color: #10b981;
+    width: 24px;
+    height: 24px;
+  }
+
+  span {
+    font-size: 0.875rem;
+    color: #374151;
+    line-height: 1.5;
+  }
+}
+
+.pingsafe-tutorial-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.pingsafe-tutorial-btn-skip {
+  background: white;
+  color: $blue;
+  padding: 1rem 2rem;
+  border-radius: 0.75rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  display: block;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    color: $blue;
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
