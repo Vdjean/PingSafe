@@ -20,11 +20,46 @@
             max-width: 100%;
             height: auto;
         }
+
+        /* Stile del Contenitore del Tasto (per spaziatura) */
+.home-button-link {
+    text-decoration: none; /* Rimuove la sottolineatura dal link */
+    display: inline-block;
+    margin-top: 20px; /* Spazia il tasto dall'immagine sopra */
+}
+
+.cute-button {
+    background-color: #ff6f61;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.cute-button:hover {
+    background-color: #ff3c2c;
+    transform: translateY(-2px);
+}
+
+.cute-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
     </style>
 </head>
 <body>
-<a href="https://www.pingsafe.space/" class="home-link-container">Home</a>
-    <div class="error-container">
-        <img src="error_500.jpg" alt="Error 500: Internal Server Error - The fox caused a mess." class="error-image">
-    </div></body>
+<div class="error-container">
+    <img src="error_500.jpg" alt="Error 500: Server error - The fox is confused." class="error-image">
+
+    <a href="https://www.pingsafe.space/" class="home-button-link">
+        <button class="cute-button">
+             Back to Home 🦊
+        </button>
+    </a>
+</div>
+  </body>
 </html>
