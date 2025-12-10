@@ -72,53 +72,36 @@ export default class extends Controller {
     showUserHeading: true,
     showUserLocation: true,
     fitBoundsOptions: {
-      maxZoom: 16
+      maxZoom: 17
     }
   })
 
   this.map.addControl(this.geolocateControl, "top-right")
 
-  // Function to start geolocation
-  const startGeolocation = () => {
-    setTimeout(() => {
-      const geolocateButton = document.querySelector('.mapboxgl-ctrl-geolocate')
-      if (geolocateButton && !geolocateButton.classList.contains('mapboxgl-ctrl-geolocate-active')) {
-        geolocateButton.click()
-        console.log('Geolocation and compass tracking started')
-      }
-    }, 800)
-  }
-
   this.map.on("load", () => {
     this.addPingMarkers()
     this.subscribeToChannel()
-    startGeolocation()
+
+    // Automatically start tracking
+    setTimeout(() => {
+      const geolocateButton = document.querySelector('.mapboxgl-ctrl-geolocate')
+      if (geolocateButton) {
+        geolocateButton.click()
+        console.log('Geolocation started')
+      }
+    }, 500)
   })
 
-  // If map is already loaded (when navigating back), start geolocation immediately
-  if (this.map.loaded()) {
-    this.addPingMarkers()
-    this.subscribeToChannel()
-    startGeolocation()
-  }
-
-  // Handle geolocation success - move map to follow user
+  // Handle geolocation success
   this.geolocateControl.on('geolocate', (e) => {
-    console.log('User location found at:', e.coords.latitude, e.coords.longitude)
+    console.log('User location:', e.coords.latitude, e.coords.longitude)
     this.isTracking = true
-
-    // Center map on user location smoothly
-    this.map.easeTo({
-      center: [e.coords.longitude, e.coords.latitude],
-      zoom: 16,
-      duration: 1000,
-      essential: true
-    })
+    this.userLocation = [e.coords.longitude, e.coords.latitude]
   })
 
   // Handle tracking state changes
   this.geolocateControl.on('trackuserlocationstart', () => {
-    console.log('Tracking started - user dot should be visible')
+    console.log('Tracking started')
     this.isTracking = true
   })
 
@@ -152,26 +135,34 @@ export default class extends Controller {
 
   setupCompassTracking() {
     let lastHeading = null
+    let lastUpdate = 0
 
     window.addEventListener('deviceorientation', (event) => {
+      // Only update compass when actively tracking
+      if (!this.isTracking) return
+
+      const now = Date.now()
+      // Throttle updates to every 200ms
+      if (now - lastUpdate < 200) return
+      lastUpdate = now
+
       if (event.alpha !== null) {
-        // event.alpha gives compass heading (0-360 degrees)
-        // Webkit uses event.webkitCompassHeading for iOS
+        // Get compass heading
         let heading = event.webkitCompassHeading || (360 - event.alpha)
 
-        // Smooth the heading to avoid jittery rotation
+        // Smooth the heading
         if (lastHeading !== null) {
           const diff = Math.abs(heading - lastHeading)
-          // Only update if heading changed by more than 2 degrees
-          if (diff < 2 && diff > 0.5) {
-            heading = lastHeading + (heading - lastHeading) * 0.3
+          // Only update if heading changed significantly
+          if (diff > 5) {
+            lastHeading = heading
+            // Rotate map smoothly
+            this.map.rotateTo(heading, { duration: 500, easing: t => t })
           }
+        } else {
+          lastHeading = heading
+          this.map.rotateTo(heading, { duration: 500, easing: t => t })
         }
-
-        lastHeading = heading
-
-        // Always rotate, regardless of tracking state
-        this.map.rotateTo(heading, { duration: 300, easing: t => t })
       }
     })
   }
