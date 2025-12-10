@@ -78,16 +78,29 @@ export default class extends Controller {
 
   this.map.addControl(this.geolocateControl, "top-right")
 
+  // Function to start geolocation
+  const startGeolocation = () => {
+    setTimeout(() => {
+      const geolocateButton = document.querySelector('.mapboxgl-ctrl-geolocate')
+      if (geolocateButton && !geolocateButton.classList.contains('mapboxgl-ctrl-geolocate-active')) {
+        geolocateButton.click()
+        console.log('Geolocation and compass tracking started')
+      }
+    }, 800)
+  }
+
   this.map.on("load", () => {
     this.addPingMarkers()
     this.subscribeToChannel()
-
-    // Automatically start tracking with compass mode
-    setTimeout(() => {
-      this.geolocateControl.trigger()
-      console.log('Geolocation and compass tracking started')
-    }, 500)
+    startGeolocation()
   })
+
+  // If map is already loaded (when navigating back), start geolocation immediately
+  if (this.map.loaded()) {
+    this.addPingMarkers()
+    this.subscribeToChannel()
+    startGeolocation()
+  }
 
   // Handle geolocation success - move map to follow user
   this.geolocateControl.on('geolocate', (e) => {

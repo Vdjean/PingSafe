@@ -154,9 +154,9 @@
 
     <!-- Actions -->
     <div class="pingsafe-tutorial-actions">
-      <%= link_to root_path, class: 'pingsafe-tutorial-btn-skip' do %>
+      <a href="#" class="pingsafe-tutorial-btn-skip" onclick="skipTutorial(event)">
         Continuer dans le navigateur
-      <% end %>
+      </a>
     </div>
 
   </div>
@@ -166,6 +166,15 @@
   // Detect if running as PWA and redirect to home
   if (window.matchMedia('(display-mode: standalone)').matches ||
       window.navigator.standalone === true) {
+    // Set cookie to mark as PWA
+    document.cookie = 'is_pwa=true; path=/; max-age=31536000'; // 1 year
+    window.location.href = '<%= root_path %>';
+  }
+
+  function skipTutorial(event) {
+    event.preventDefault();
+    // Set cookie to skip tutorial
+    document.cookie = 'skip_tutorial=true; path=/; max-age=31536000'; // 1 year
     window.location.href = '<%= root_path %>';
   }
 </script>
