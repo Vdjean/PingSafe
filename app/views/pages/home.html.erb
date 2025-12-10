@@ -83,6 +83,6 @@
   // Set PWA cookie when running as installed app
   if (window.matchMedia('(display-mode: standalone)').matches ||
       window.navigator.standalone === true) {
-    document.cookie = 'is_pwa=true; path=/; max-age=31536000'; // 1 year
+    document.cookie = 'is_pwa=true; path=/; max-age=31536000; SameSite=Lax';
   }
 </script>

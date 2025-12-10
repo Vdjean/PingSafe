@@ -167,14 +167,18 @@
   if (window.matchMedia('(display-mode: standalone)').matches ||
       window.navigator.standalone === true) {
     // Set cookie to mark as PWA
-    document.cookie = 'is_pwa=true; path=/; max-age=31536000'; // 1 year
-    window.location.href = '<%= root_path %>';
+    document.cookie = 'is_pwa=true; path=/; max-age=31536000; SameSite=Lax';
+    // Use URL parameter to confirm cookie was set
+    window.location.href = '<%= root_path %>?pwa=1';
   }
 
   function skipTutorial(event) {
     event.preventDefault();
-    // Set cookie to skip tutorial
-    document.cookie = 'skip_tutorial=true; path=/; max-age=31536000'; // 1 year
-    window.location.href = '<%= root_path %>';
+    // Set cookie to skip tutorial with SameSite attribute for Chrome
+    document.cookie = 'skip_tutorial=true; path=/; max-age=31536000; SameSite=Lax';
+    // Small delay to ensure cookie is saved in Chrome
+    setTimeout(function() {
+      window.location.href = '<%= root_path %>?skip=1';
+    }, 100);
   }
 </script>
