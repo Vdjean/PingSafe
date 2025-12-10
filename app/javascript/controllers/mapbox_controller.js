@@ -184,6 +184,17 @@ export default class extends Controller {
   addSingleMarker(ping) {
     if (this.markers.has(ping.id)) return
 
+    // Wrapper for box-shadow circle
+    const wrapper = document.createElement("div")
+    wrapper.style.width = "50px"
+    wrapper.style.height = "50px"
+    wrapper.style.borderRadius = "50%"
+    wrapper.style.boxShadow = "0 0 0 15px rgba(239, 68, 68, 0.35)"
+    wrapper.style.display = "flex"
+    wrapper.style.alignItems = "center"
+    wrapper.style.justifyContent = "center"
+
+    // Marker icon
     const el = document.createElement("div")
     el.className = "ping-marker"
     el.style.width = "50px"
@@ -193,17 +204,26 @@ export default class extends Controller {
     el.style.backgroundRepeat = "no-repeat"
     el.style.backgroundPosition = "center"
     el.style.cursor = "pointer"
+    wrapper.appendChild(el)
 
-    el.addEventListener("click", (e) => {
+    const radius = { element: wrapper }
+
+    wrapper.addEventListener("click", (e) => {
       e.stopPropagation()
       this.openModal(ping)
     })
 
-    const marker = new mapboxgl.Marker(el)
+    const marker = new mapboxgl.Marker(wrapper)
       .setLngLat([parseFloat(ping.longitude), parseFloat(ping.latitude)])
       .addTo(this.map)
 
-    this.markers.set(ping.id, marker)
+    this.markers.set(ping.id, { marker, radius, createdAt: ping.created_at })
+
+    // Initial color update
+    this.updateRadiusColor(ping.id)
+
+    // Update color every minute
+    const colorTimer = setInterval(() => this.updateRadiusColor(ping.id), 60000)
 
     if (ping.expires_at) {
       const expiresAt = new Date(ping.expires_at)
@@ -212,23 +232,51 @@ export default class extends Controller {
 
       if (timeUntilExpiry > 0) {
         const timer = setTimeout(() => {
+          clearInterval(colorTimer)
           this.removeMarker(ping.id)
         }, timeUntilExpiry)
-        this.expiryTimers.set(ping.id, timer)
+        this.expiryTimers.set(ping.id, { expiryTimer: timer, colorTimer })
+      } else {
+        this.expiryTimers.set(ping.id, { colorTimer })
       }
+    } else {
+      this.expiryTimers.set(ping.id, { colorTimer })
     }
   }
 
+  updateRadiusColor(pingId) {
+    const data = this.markers.get(pingId)
+    if (!data || !data.radius || !data.radius.element) return
+
+    const created = new Date(data.createdAt)
+    const now = new Date()
+    const diffMins = Math.floor((now - created) / 60000)
+
+    let shadow
+    if (diffMins < 5) {
+      shadow = "0 0 0 20px rgba(239, 68, 68, 0.35)" // Rouge
+    } else if (diffMins < 10) {
+      shadow = "0 0 0 20px rgba(249, 115, 22, 0.35)" // Orange
+    } else if (diffMins < 15) {
+      shadow = "0 0 0 20px rgba(234, 179, 8, 0.35)" // Jaune
+    } else {
+      shadow = "none" // Pas de cercle > 15 min
+    }
+
+    data.radius.element.style.boxShadow = shadow
+  }
+
   removeMarker(pingId) {
-    const marker = this.markers.get(pingId)
-    if (marker) {
-      marker.remove()
+    const data = this.markers.get(pingId)
+    if (data && data.marker) {
+      data.marker.remove()
       this.markers.delete(pingId)
     }
 
-    const timer = this.expiryTimers.get(pingId)
-    if (timer) {
-      clearTimeout(timer)
+    const timers = this.expiryTimers.get(pingId)
+    if (timers) {
+      if (timers.expiryTimer) clearTimeout(timers.expiryTimer)
+      if (timers.colorTimer) clearInterval(timers.colorTimer)
       this.expiryTimers.delete(pingId)
     }
   }
@@ -238,7 +286,10 @@ export default class extends Controller {
       this.subscription.unsubscribe()
     }
 
-    this.expiryTimers.forEach(timer => clearTimeout(timer))
+    this.expiryTimers.forEach(timers => {
+      if (timers.expiryTimer) clearTimeout(timers.expiryTimer)
+      if (timers.colorTimer) clearInterval(timers.colorTimer)
+    })
     this.expiryTimers.clear()
 
     if (this.timerInterval) {
