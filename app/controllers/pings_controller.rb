@@ -19,16 +19,13 @@ class PingsController < ApplicationController
     @ping.user = current_user
 
     if @ping.save
-      # Create chat immediately
       chat = Chat.create(ping: @ping)
 
-      # Process photo and location immediately (synchronously)
       if @ping.photo.present?
         process_photo_with_blur(@ping)
       end
       process_location_with_llm(@ping, chat)
 
-      # Notify nearby users about this new ping
       NotifyNearbyUsersJob.perform_later(@ping.id)
 
       redirect_to ping_path(@ping), notice: "Ping created successfully! Analysis in progress..."
