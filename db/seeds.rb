@@ -25,12 +25,12 @@ puts "Created #{Level.count} levels"
 
 puts "Creating rewards..."
 rewards_data = [
-  { reward_type: "first_ping" },
-  { reward_type: "five_pings" },
+  { reward_type: "the_new_kid_waved" },
+  { reward_type: "can't_stop_won't_stop" },
   { reward_type: "badge_bronze" },
   { reward_type: "badge_silver" },
   { reward_type: "helpful_citizen" },
-  { reward_type: "photo_master" }
+  { reward_type: "flash_addict" }
 ]
 
 rewards_data.each do |reward_data|
@@ -77,12 +77,12 @@ UserLevel.create!(user: victor, level: Level.find_by(points: 1000), level_name: 
 puts "Created #{UserLevel.count} user levels"
 
 puts "Assigning rewards to users..."
-UserReward.create!(user: sara, reward: Reward.find_by(reward_type: "first_ping"))
+UserReward.create!(user: sara, reward: Reward.find_by(reward_type: "the_new_kid_waved"))
 UserReward.create!(user: sara, reward: Reward.find_by(reward_type: "badge_bronze"))
-UserReward.create!(user: matteo, reward: Reward.find_by(reward_type: "first_ping"))
-UserReward.create!(user: victor, reward: Reward.find_by(reward_type: "first_ping"))
-UserReward.create!(user: victor, reward: Reward.find_by(reward_type: "five_pings"))
-UserReward.create!(user: victor, reward: Reward.find_by(reward_type: "photo_master"))
+UserReward.create!(user: matteo, reward: Reward.find_by(reward_type: "the_new_kid_waved"))
+UserReward.create!(user: victor, reward: Reward.find_by(reward_type: "the_new_kid_waved"))
+UserReward.create!(user: victor, reward: Reward.find_by(reward_type: "can't_stop_won't_stop"))
+UserReward.create!(user: victor, reward: Reward.find_by(reward_type: "flash_addict"))
 puts "Created #{UserReward.count} user rewards"
 
 puts "Creating pings (pickpocket alerts)..."
