@@ -59,14 +59,10 @@ Return ONLY a valid JSON array with this structure:
 
 Return ONLY the JSON array, no additional text."
 
-    response = llm_chat.completion(
-      messages: [
-        { role: "system", content: "You are a safety analyst that returns only JSON responses." },
-        { role: "user", content: prompt }
-      ]
-    )
+    llm_chat.with_instructions("You are a safety analyst that returns only JSON responses.")
+    response = llm_chat.ask(prompt)
 
-    danger_sites = response.dig("choices", 0, "message", "content")
+    danger_sites = response.content
 
     if danger_sites
       danger_sites = danger_sites.gsub(/```json\n?/, '').gsub(/```\n?/, '').strip

@@ -26,13 +26,18 @@ class MessagesController < ApplicationController
 
   def get_llm_response(user_message, chat)
     llm_chat = RubyLLM.chat
-    previous_messages = chat.messages.order(:created_at).map do |msg|
-      { role: msg.role || "user", content: msg.content }
-    end
-    all_messages = previous_messages + [{ role: "user", content: user_message }]
-    response = llm_chat.completion(messages: all_messages)
 
-    response.dig("choices", 0, "message", "content")
+    # Add previous messages as context
+    previous_messages = chat.messages.order(:created_at)
+    previous_messages.each do |msg|
+      role = msg.role || "user"
+      if role == "assistant"
+        llm_chat.with_instructions(msg.content)
+      end
+    end
+
+    response = llm_chat.ask(user_message)
+    response.content
   rescue => e
     Rails.logger.error "Error getting LLM response: #{e.message}"
     nil
