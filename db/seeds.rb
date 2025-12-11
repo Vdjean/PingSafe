@@ -77,12 +77,12 @@ UserLevel.create!(user: victor, level: Level.find_by(points: 1000), level_name: 
 puts "Created #{UserLevel.count} user levels"
 
 puts "Assigning rewards to users..."
-UserReward.create!(user: sara, reward: Reward.find_by(reward_type: "first_ping"))
+UserReward.create!(user: sara, reward: Reward.find_by(reward_type: "the_new_kid_waved"))
 UserReward.create!(user: sara, reward: Reward.find_by(reward_type: "badge_bronze"))
-UserReward.create!(user: matteo, reward: Reward.find_by(reward_type: "first_ping"))
-UserReward.create!(user: victor, reward: Reward.find_by(reward_type: "first_ping"))
-UserReward.create!(user: victor, reward: Reward.find_by(reward_type: "five_pings"))
-UserReward.create!(user: victor, reward: Reward.find_by(reward_type: "photo_master"))
+UserReward.create!(user: matteo, reward: Reward.find_by(reward_type: "the_new_kid_waved"))
+UserReward.create!(user: victor, reward: Reward.find_by(reward_type: "the_new_kid_waved"))
+UserReward.create!(user: victor, reward: Reward.find_by(reward_type: "can't_stop_won't_stop"))
+UserReward.create!(user: victor, reward: Reward.find_by(reward_type: "helpful_citizen"))
 puts "Created #{UserReward.count} user rewards"
 
 puts "Creating pings (pickpocket alerts)..."
