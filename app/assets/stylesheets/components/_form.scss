@@ -102,11 +102,12 @@ $desktop-min: 769px;
   width: 100%;
   padding: 0.875rem 1rem;
   font-size: 0.875rem;
-  border: 2px solid #e5e7eb;
+  border: 3px solid #d1d5db;
   border-radius: 0.75rem;
   transition: all 0.2s ease;
   background: white;
   color: #111827;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 
   &::placeholder {
     color: #9ca3af;
@@ -115,7 +116,7 @@ $desktop-min: 769px;
   &:focus {
     outline: none;
     border-color: $blue;
-    box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.1);
+    box-shadow: 0 0 0 4px rgba(30, 58, 95, 0.15);
   }
 
   &:disabled {
