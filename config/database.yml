@@ -90,3 +90,4 @@ production:
     username: ping_safe
     password: <%= ENV["PING_SAFE_DATABASE_PASSWORD"] %>
     url: <%= ENV["DATABASE_URL"] %>
+    pool: 5
