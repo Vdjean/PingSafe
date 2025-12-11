@@ -2,8 +2,7 @@ test:
   adapter: test
 
 development:
-  adapter: solid_cable
-  silence_polling: true
+  adapter: async
 
 production:
-  adapter: solid_cable
+  adapter: async
