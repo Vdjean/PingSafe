@@ -108,14 +108,16 @@
 
   <div class="pingsafe-ping-form-body">
 
-    <div class="pingsafe-form-group">
+    <div class="pingsafe-form-group mb-3">
       <%= f.label :nombre_personnes, "Number of Persons", class: 'pingsafe-form-label' %>
       <%= f.number_field :nombre_personnes,
                         class: 'pingsafe-form-input',
                         placeholder: "How many people are involved?",
                         id: "nombre-personnes-input",
-                        min: 0 %>
-      <div class='pingsafe-form-label'>Enter the number of persons</div>
+                        min: 0,
+                        inputmode: "numeric",
+                        pattern: "[0-9]*" %>
+      <div class="form-text">* Enter the number of persons</div>
     </div>
 
     <div class="mb-3">
@@ -124,7 +126,7 @@
                       class: 'pingsafe-form-input',
                       id: "signe-distinctif-input",
                       placeholder: "Any distinctive features or signs..." %>
-      <div class="form-text">Describe any distinguishing characteristics</div>
+      <div class="form-text">* Describe any distinguishing characteristics</div>
     </div>
 
     <div class="mb-3">
@@ -134,7 +136,7 @@
                      id: "additional-comments-input",
                      rows: 4,
                      placeholder: "Add any additional details or context..." %>
-      <div class="form-text">Additional information about the situation</div>
+      <div class="form-text">* Additional information about the situation</div>
     </div>
 
   </div>
@@ -156,23 +158,25 @@
         <div class="pingsafe-ping-form-body ">
           <h5 class="pingsafe-form-ping-title">Details</h5>
 
-          <div class="pingsafe-form-group">
+          <div class="pingsafe-form-group mb-3">
             <%= f.label :nombre_personnes, "Number of Persons", class: 'pingsafe-form-label' %>
             <%= f.number_field :nombre_personnes,
                               class: "pingsafe-form-input",
                               placeholder: "How many people are involved?",
                               id: "nombre-personnes-input",
-                              min: 0 %>
-            <div class="form-text">Enter the number of persons</div>
+                              min: 0,
+                              inputmode: "numeric",
+                              pattern: "[0-9]*" %>
+            <div class="form-text">* Enter the number of persons</div>
           </div>
 
-           <div class="pingsafe-form-group">
+           <div class="pingsafe-form-group mb-3">
             <%= f.label :signe_distinctif, "Distinguishing Sign", class: 'pingsafe-form-label' %>
             <%= f.text_field :signe_distinctif,
                             class: "pingsafe-form-input",
                             id: "signe-distinctif-input",
                             placeholder: "Any distinctive features or signs..." %>
-            <div class="form-text">Describe any distinguishing characteristics</div>
+            <div class="form-text">* Describe any distinguishing characteristics</div>
           </div>
 
           <div class="mb-3">
@@ -182,7 +186,7 @@
                            id: "additional-comments-input",
                            rows: 4,
                            placeholder: "Add any additional details or context..." %>
-            <div class="form-text">Additional information about the situation</div>
+            <div class="form-text">* Additional information about the situation</div>
           </div>
         </div>
       </div>

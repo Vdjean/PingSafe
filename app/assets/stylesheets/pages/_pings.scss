@@ -61,10 +61,10 @@ $desktop-min: 769px;
   background: white;
   border-radius: 1rem;
   padding: 1.25rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
   transition: all 0.2s ease;
   text-decoration: none;
-  border: 1px solid #f3f4f6;
+  border: 4px solid #d1d5db;
 
   &:active {
     transform: scale(0.98);
@@ -73,8 +73,8 @@ $desktop-min: 769px;
   @media (hover: hover) {
     &:hover {
       transform: translateY(-4px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-      border-color: #e5e7eb;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+      border-color: #9ca3af;
     }
   }
 }
@@ -85,7 +85,7 @@ $desktop-min: 769px;
   align-items: center;
   margin-bottom: 1rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid #f3f4f6;
+  border-bottom: 3px solid #d1d5db;
 }
 
 .pingsafe-ping-date {
@@ -119,19 +119,19 @@ $desktop-min: 769px;
 .pingsafe-badge-success {
   background: #f0fdf4;
   color: #166534;
-  border: 1px solid #bbf7d0;
+  border: 3px solid #86efac;
 }
 
 .pingsafe-badge-warning {
   background: #fef3c7;
   color: #92400e;
-  border: 1px solid #fde68a;
+  border: 3px solid #fbbf24;
 }
 
 .pingsafe-badge-secondary {
   background: #f3f4f6;
   color: #6b7280;
-  border: 1px solid #e5e7eb;
+  border: 3px solid #9ca3af;
 }
 
 .pingsafe-ping-info {
@@ -185,7 +185,7 @@ $desktop-min: 769px;
   justify-content: space-between;
   align-items: center;
   padding-top: 1rem;
-  border-top: 1px solid #f3f4f6;
+  border-top: 3px solid #d1d5db;
 }
 
 .pingsafe-ping-view {
@@ -208,7 +208,8 @@ $desktop-min: 769px;
   border-radius: 1.5rem;
   padding: 3rem 2rem;
   text-align: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  border: 4px solid #d1d5db;
   margin-top: 2rem;
 }
 
